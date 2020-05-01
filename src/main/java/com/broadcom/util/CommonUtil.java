@@ -22,6 +22,18 @@ public final class CommonUtil {
 	}
 
 	/**
+	 * Method to format error message in the format "ERROR | message"
+	 *
+	 * @param message
+	 * @return formatted message
+	 */
+	public static final String formatErrorMessage(final String message) {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("ERROR").append(" | ").append(message);
+		return sb.toString();
+	}
+
+	/**
 	 * Method to convert a stream into Json object
 	 * 
 	 * @param is input stream
@@ -44,7 +56,7 @@ public final class CommonUtil {
 	}
 
 	/**
-	 * Method to beautify the jsonand write on the console
+	 * Method to beautify the json and write on the console
 	 * 
 	 * @param jsonObj
 	 */
@@ -63,7 +75,7 @@ public final class CommonUtil {
 	}
 
 	/**
-	 * Method to beautify the jsonand write on the console
+	 * Method to beautify the json and write on the console
 	 * 
 	 * @param jsonObj
 	 */

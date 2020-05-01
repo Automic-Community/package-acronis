@@ -1,15 +1,20 @@
 package com.broadcom.filter;
 
+import javax.json.JsonObject;
+import javax.ws.rs.core.MediaType;
+
 import org.apache.commons.lang3.StringUtils;
 
+import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisRuntimeException;
+import com.broadcom.util.CommonUtil;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
 /**
  * This class acts as a filter and intercept the response to validate it.
- * 
+ *
  */
 
 public class GenericResponseFilter extends ClientFilter {
@@ -21,24 +26,37 @@ public class GenericResponseFilter extends ClientFilter {
 	private static final String RESPONSE_MSG = RESPONSE_CODE + " Message : [%s]";
 
 	@Override
-	public ClientResponse handle(ClientRequest request) {
-		ClientResponse response = getNext().handle(request);
-		String msg = null;
-		if (StringUtils.isNotEmpty(response.getClientResponseStatus().getReasonPhrase())) {
-			msg = String.format(RESPONSE_MSG, response.getStatus(),
-					response.getClientResponseStatus().getReasonPhrase());
-		} else {
-			msg = String.format(RESPONSE_CODE, response.getStatus());
-		}
-		if (!(response.getStatus() >= HTTP_SUCCESS_START && response.getStatus() <= HTTP_SUCCESS_END)) {
-		//	log.error("ERROR | " + msg);
-			String responseMsg = response.getEntity(String.class);
-			throw new AcronisRuntimeException(responseMsg);
+    public ClientResponse handle(ClientRequest request) {
 
-		} else {
-	//		log.error(msg);
-		}
-		return response;
-	}
+        boolean ignoreHttpError = (request.getHeaders().remove(Constants.IGNORE_HTTPERROR) != null);
 
+        ClientResponse response = getNext().handle(request);
+        String msg = null;
+        if (response.getClientResponseStatus() != null
+                && StringUtils.isNotEmpty(response.getClientResponseStatus().getReasonPhrase())) {
+            msg = String.format(RESPONSE_MSG, response.getStatus(),
+                    response.getClientResponseStatus().getReasonPhrase());
+        } else {
+            msg = String.format(RESPONSE_CODE, response.getStatus());
+        }
+        if (!(response.getStatus() >= HTTP_SUCCESS_START && response.getStatus() <= HTTP_SUCCESS_END)) {
+
+            System.out.println(CommonUtil.formatErrorMessage(msg));
+            MediaType contentType = response.getType();
+            if (ignoreHttpError) {
+                return response;
+            } else if (contentType != null && contentType.isCompatible(MediaType.APPLICATION_JSON_TYPE)) {
+                JsonObject jsonResponse = CommonUtil.jsonObjectResponse(response.getEntityInputStream());
+                String responseMsg = CommonUtil.jsonPrettyPrinting(jsonResponse);
+                throw new AcronisRuntimeException(responseMsg);
+            } else {
+                String errorMsg = response.getEntity(String.class);
+                throw new AcronisRuntimeException(errorMsg);
+            }
+
+        } else {
+            System.out.println(msg);
+        }
+        return response;
+    }
 }

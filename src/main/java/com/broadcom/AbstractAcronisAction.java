@@ -10,6 +10,7 @@ import com.broadcom.apdk.api.annotations.ActionInputParam;
 import com.broadcom.config.HttpClientConfig;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
+import com.broadcom.exceptions.AcronisRuntimeException;
 import com.broadcom.filter.GenericResponseFilter;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
@@ -43,9 +44,8 @@ public abstract class AbstractAcronisAction extends BaseAction {
 			executeSpecific();
 		} catch (Exception exception) {
 			String errorMsg = String.format("Error occured during execution of action [%s]", getActionName());
-			// _log.error(errorMsg, exception);
-			// return new ActionResult(false, "The " + getActionName() + " failed \n" +
-	//		throw new AcronisException(errorMsg, exception);
+			 LOGGER.info(exception.getMessage());
+			throw new AcronisRuntimeException(errorMsg, exception);
 		} finally {
 			if (client != null) {
 				client.destroy();
@@ -76,7 +76,7 @@ public abstract class AbstractAcronisAction extends BaseAction {
 			// _log.error(msg);
 			throw new AcronisException(msg);
 		}
-		
+
 		if (StringUtils.isEmpty(version)) {
 			String msg = String.format(Constants.ISEMPTY, "Version");
 			// _log.error(msg);

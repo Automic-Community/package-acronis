@@ -22,15 +22,15 @@ public final class Constants {
 	public static final String ACTION_CATEGORY = "Ansible Tower";
 	public static final String ACRONIS_VERSION = "2";
 	public static final String UNABLE_TO_WRITE = "Unable to write at the given file path [%s]";
+	public static final String IGNORE_HTTPERROR = "IGNORE-HTTPERROR";
 
-	
 	public enum Kind {
 		@EnumValue("Customer")
 		CUSTOMER, @EnumValue("Partner")
 		PARTNER, @EnumValue("Folder")
 		FOLDER
 	}
-	
+
 	private Constants() {
 	}
 
