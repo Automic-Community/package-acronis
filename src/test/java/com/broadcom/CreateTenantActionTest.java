@@ -7,10 +7,10 @@ public class CreateTenantActionTest {
 	
 	@Test
 	public void CreateTenantAction() {
-		DemoAction action = new DemoAction();
-		action.yourname = "Michael"; 
+		CreateTenantAction action = new CreateTenantAction();
+		action.parentTenantId = ""; 
 		action.run();
-		Assertions.assertEquals("Hello Michael", action.greeting);
+		Assertions.assertEquals("", action.tenantId);
 	} 
 
 }

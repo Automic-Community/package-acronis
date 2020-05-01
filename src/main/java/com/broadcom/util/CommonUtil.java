@@ -1,12 +1,16 @@
 package com.broadcom.util;
 
 import java.io.InputStream;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.broadcom.constants.Constants;
-import com.broadcom.exceptions.AcronisException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.jersey.api.client.ClientResponse;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonWriter;
+import javax.json.JsonWriterFactory;
+import javax.json.stream.JsonGenerator;
 
 /**
  * Utility class
@@ -17,20 +21,64 @@ public final class CommonUtil {
 	private CommonUtil() {
 	}
 
-	public static JsonNode getRootNode(ClientResponse response) throws AcronisException {
-		InputStream is = response.getEntityInputStream();
-		ObjectMapper mapper = new ObjectMapper();
-		JsonNode rootNode;
-		try {
-			rootNode = mapper.readTree(is);
-		} catch (Exception e) {
-			String msg = String.format(Constants.RES_ERROR_MESSAGE, e.getMessage());
-			throw new AcronisException(msg, e);
-		}
-		return rootNode;
+	/**
+	 * Method to convert a stream into Json object
+	 * 
+	 * @param is input stream
+	 * @return {@link JsonObject}
+	 */
+	public static final JsonObject jsonObjectResponse(InputStream is) {
+		return Json.createReader(is).readObject();
+
 	}
 
-	
-	
-	 
+	/**
+	 * Method to convert a stream into JSON Array
+	 * 
+	 * @param is input stream
+	 * @return {@link JsonArray}
+	 */
+	public static final JsonArray jsonArrayResponse(InputStream is) {
+		return Json.createReader(is).readArray();
+
+	}
+
+	/**
+	 * Method to beautify the jsonand write on the console
+	 * 
+	 * @param jsonObj
+	 */
+	public static final String jsonPrettyPrinting(JsonObject jsonObj) {
+		StringWriter stringWriter = new StringWriter();
+
+		Map<String, Boolean> config = new HashMap<>();
+		config.put(JsonGenerator.PRETTY_PRINTING, true);
+
+		JsonWriterFactory writerFactory = Json.createWriterFactory(config);
+		JsonWriter jsonWriter = writerFactory.createWriter(stringWriter);
+		jsonWriter.writeObject(jsonObj);
+		jsonWriter.close();
+
+		return stringWriter.toString();
+	}
+
+	/**
+	 * Method to beautify the jsonand write on the console
+	 * 
+	 * @param jsonObj
+	 */
+	public static final String jsonPrettyPrinting(JsonArray jsonObj) {
+		StringWriter stringWriter = new StringWriter();
+
+		Map<String, Boolean> config = new HashMap<>();
+		config.put(JsonGenerator.PRETTY_PRINTING, true);
+
+		JsonWriterFactory writerFactory = Json.createWriterFactory(config);
+		JsonWriter jsonWriter = writerFactory.createWriter(stringWriter);
+		jsonWriter.writeArray(jsonObj);
+		jsonWriter.close();
+
+		return stringWriter.toString();
+	}
+
 }

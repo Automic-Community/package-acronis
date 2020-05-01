@@ -23,11 +23,12 @@ public final class Constants {
 	public static final String ACRONIS_VERSION = "2";
 	public static final String UNABLE_TO_WRITE = "Unable to write at the given file path [%s]";
 
-	public enum Gender {
-		@EnumValue("male")
-		M, @EnumValue("female")
-		F, @EnumValue("unspecified")
-		X
+	
+	public enum Kind {
+		@EnumValue("Customer")
+		CUSTOMER, @EnumValue("Partner")
+		PARTNER, @EnumValue("Folder")
+		FOLDER
 	}
 	
 	private Constants() {

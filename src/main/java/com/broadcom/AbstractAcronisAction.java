@@ -16,16 +16,16 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
 public abstract class AbstractAcronisAction extends BaseAction {
 
-	@ActionInputParam(required = true, tooltip = "", name = "UC4RB_AC_ENDPOINT", label = "Endpoint")
+	@ActionInputParam(required = true, tooltip = "Provide the endpoint to connect to the acronis. E.g. https://sg-cloud.acronis.com", name = "UC4RB_AC_ENDPOINT", label = "Endpoint")
 	private String endpoint;
 
-	@ActionInputParam(required = true, tooltip = "", name = "UC4RB_AC_VERSION", label = "Version")
+	@ActionInputParam(required = true, tooltip = "Provide the version for the Acronis API. E.g. 2", name = "UC4RB_AC_VERSION", label = "Version")
 	protected String version = Constants.ACRONIS_VERSION;
 
-	@ActionInputParam(required = true, tooltip = "", name = "UC4RB_AC_USERNAME", label = "Username")
+	@ActionInputParam(required = true, tooltip = "Provide the username to connect to the acronis. E.g. SP1089871", name = "UC4RB_AC_USERNAME", label = "Username")
 	private String username;
 
-	@ActionInputParam(password = true, required = true, tooltip = "", name = "UC4RB_AC_PASSWORD", label = "Password")
+	@ActionInputParam(password = true, required = true, tooltip = "Provide the password to connect to the acronis.", name = "UC4RB_AC_PASSWORD", label = "Password")
 	private String password;
 
 	/**
@@ -45,13 +45,12 @@ public abstract class AbstractAcronisAction extends BaseAction {
 			String errorMsg = String.format("Error occured during execution of action [%s]", getActionName());
 			// _log.error(errorMsg, exception);
 			// return new ActionResult(false, "The " + getActionName() + " failed \n" +
-			// exception.getMessage(), exception);
+	//		throw new AcronisException(errorMsg, exception);
 		} finally {
 			if (client != null) {
 				client.destroy();
 			}
 		}
-
 	}
 
 	private void prepareInputParameters() throws AcronisException {
@@ -67,7 +66,7 @@ public abstract class AbstractAcronisAction extends BaseAction {
 	private void validateInputs() throws AcronisException {
 
 		if (StringUtils.isEmpty(endpoint)) {
-			String msg = String.format(Constants.ISEMPTY, "Acronis REST API Endpoint");
+			String msg = String.format(Constants.ISEMPTY, "Endpoint");
 			// _log.error(msg);
 			throw new AcronisException(msg);
 		}
@@ -77,19 +76,24 @@ public abstract class AbstractAcronisAction extends BaseAction {
 			// _log.error(msg);
 			throw new AcronisException(msg);
 		}
-
-		if (StringUtils.isEmpty(password)) {
-			String msg = String.format(Constants.ISEMPTY, "password");
+		
+		if (StringUtils.isEmpty(version)) {
+			String msg = String.format(Constants.ISEMPTY, "Version");
 			// _log.error(msg);
 			throw new AcronisException(msg);
 		}
 
+		if (StringUtils.isEmpty(password)) {
+			String msg = String.format(Constants.ISEMPTY, "Password");
+			// _log.error(msg);
+			throw new AcronisException(msg);
+		}
 	}
 
 	/**
 	 * Method to execute the action.
 	 * 
-	 * @throws AutomicException
+	 * @throws AcronisException
 	 */
 	protected abstract void executeSpecific() throws AcronisException;
 
