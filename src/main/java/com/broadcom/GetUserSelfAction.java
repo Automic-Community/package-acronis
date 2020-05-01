@@ -18,11 +18,6 @@ public class GetUserSelfAction extends AbstractAcronisAction {
 	String tenantId;
 
 	@Override
-	public void run() {
-		execute();
-	}
-
-	@Override
 	protected void executeSpecific() throws AcronisException {
 		ClientResponse response = null;
 		try {
@@ -32,7 +27,7 @@ public class GetUserSelfAction extends AbstractAcronisAction {
 			response = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
 		} catch (Exception e) {
 			String msg = String.format(Constants.REQ_ERROR_MESSAGE, url, e.getMessage());
-			 throw new AcronisException(msg, e);
+			throw new AcronisException(msg, e);
 		}
 		prepareOutput(CommonUtil.jsonObjectResponse(response.getEntityInputStream()));
 	}

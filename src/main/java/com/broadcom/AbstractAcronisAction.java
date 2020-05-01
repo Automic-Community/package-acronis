@@ -35,6 +35,11 @@ public abstract class AbstractAcronisAction extends BaseAction {
 	protected transient Client client;
 	protected URI url;
 
+	@Override
+	public void run() {
+		execute();
+	}
+
 	public void execute() {
 		try {
 			prepareInputParameters();
@@ -44,7 +49,7 @@ public abstract class AbstractAcronisAction extends BaseAction {
 			executeSpecific();
 		} catch (Exception exception) {
 			String errorMsg = String.format("Error occured during execution of action [%s]", getActionName());
-			 LOGGER.info(exception.getMessage());
+			LOGGER.info(exception.getMessage());
 			throw new AcronisRuntimeException(errorMsg, exception);
 		} finally {
 			if (client != null) {
