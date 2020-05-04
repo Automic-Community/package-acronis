@@ -23,6 +23,9 @@ public final class Constants {
 	public static final String ACRONIS_VERSION = "2";
 	public static final String UNABLE_TO_WRITE = "Unable to write at the given file path [%s]";
 	public static final String IGNORE_HTTPERROR = "IGNORE-HTTPERROR";
+	public static final String API = "api";
+	public static final String TENANTS = "tenants";
+	public static final String VERSION = "version";
 
 	public enum Kind {
 		@EnumValue("Customer")
