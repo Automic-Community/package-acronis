@@ -17,6 +17,12 @@ public class GetUserAction extends AbstractAcronisAction {
 
 	@ActionOutputParam(name = "UC4RB_AC_TENANT_ID")
 	String tenantId;
+	@ActionOutputParam(name = "UC4RB_AC_VERSION")
+	Integer userVersion;
+	@ActionOutputParam(name = "UC4RB_AC_ACTIVATED")
+	Boolean activated;
+	@ActionOutputParam(name = "UC4RB_AC_ENABLED")
+	Boolean enabled;
 	
 	@ActionInputParam(required = true , name = "UC4RB_AC_USER_ID" ,  tooltip = "Provide the user id to fetch the details. E.g. d540ac7f-2e8b-4451-a1cc-18ee9586af69", label = "User Id")
 	String userId;
@@ -25,6 +31,7 @@ public class GetUserAction extends AbstractAcronisAction {
 	protected void executeSpecific() throws AcronisException {
 		ClientResponse response = null;
 		try {
+			validateInputs();
 			WebResource webResource = client.resource(url);
 			webResource = webResource.path("api").path(version).path("users").path(userId);
 			LOGGER.info("Calling url: " + webResource.getURI());
@@ -40,8 +47,17 @@ public class GetUserAction extends AbstractAcronisAction {
 		// write response to console
 		System.out.println(CommonUtil.jsonPrettyPrinting(jsonObjectResponse));
 		tenantId = jsonObjectResponse.getString("tenant_id");
+		userVersion=jsonObjectResponse.getInt("version");
+		activated=jsonObjectResponse.getBoolean("activated");
+		enabled=jsonObjectResponse.getBoolean("enabled");		
 	}
 
+	private void validateInputs() throws AcronisException {
+		if(userId==null) {
+			throw new  AcronisException(Constants.ISEMPTY);
+		}
+	}
+	
 	@Override
 	protected String getActionName() {
 		return "Get User";
