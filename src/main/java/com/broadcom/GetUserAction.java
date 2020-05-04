@@ -18,7 +18,7 @@ public class GetUserAction extends AbstractAcronisAction {
 	@ActionOutputParam(name = "UC4RB_AC_TENANT_ID")
 	String tenantId;
 	
-	@ActionInputParam(name = "UC4RB_AC_USER_ID")
+	@ActionInputParam(required = true , name = "UC4RB_AC_USER_ID" ,  tooltip = "Provide the user id to fetch the details. E.g. d540ac7f-2e8b-4451-a1cc-18ee9586af69", label = "User Id")
 	String userId;
 
 	@Override
