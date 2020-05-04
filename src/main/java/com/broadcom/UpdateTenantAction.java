@@ -14,6 +14,7 @@ import com.broadcom.apdk.api.annotations.ActionOutputParam;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
 import com.broadcom.util.CommonUtil;
+import com.broadcom.util.ConsoleWriter;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
@@ -62,16 +63,17 @@ public class UpdateTenantAction extends AbstractAcronisAction {
 		try {
 			WebResource webResource = client.resource(url);
 			webResource = webResource.path(Constants.API).path(version).path(Constants.TENANTS).path(tenantId);
-			System.out.println("Calling url: " + webResource.getURI());
-			System.out.println("Request: " + request);
+			ConsoleWriter.writeln("Calling url: " + webResource.getURI());
+			ConsoleWriter.writeln("Request: " + request);
 
 			response = webResource.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, request);
-			JsonObject jsonObject = CommonUtil.jsonObjectResponse(response.getEntityInputStream());
-			newVersion = jsonObject.getInt(Constants.VERSION);
+			JsonObject jsonResponse = CommonUtil.jsonObjectResponse(response.getEntityInputStream());
+			ConsoleWriter.writeln("Response: " + CommonUtil.jsonPrettyPrinting(jsonResponse));
+			newVersion = jsonResponse.getInt(Constants.VERSION);
 		} catch (Exception e) {
 			String msg = String.format(Constants.REQ_ERROR_MESSAGE, url, e.getMessage());
 			// LOGGER.error(msg, e);
-			throw new AcronisException(msg);
+			throw new AcronisException(msg, e);
 		}
 		// return new ActionResult(true, "The action executed Sucessfully \n");
 	}
