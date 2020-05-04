@@ -15,7 +15,7 @@ public final class Constants {
 	public static final String ISEMPTY = "The %s can't be empty or null";
 	public static final String INVALID_INPUT_PARAMETER = "Invalid value for parameter [%s] : [%s]";
 	public static final String REQUEST_BODY_ERROR = "Exception occured in preparation of request body : %s";
-	public static final String REQ_ERROR_MESSAGE = "Exception occured while making request : [%s] : %s";
+	public static final String REQ_ERROR_MESSAGE = "Exception occured while making request : [%s]";
 	public static final String RES_ERROR_MESSAGE = "Exception occured while parsing the response : %s";
 	public static final String ERROR_SKIPPING_CERT = "Exception occured while parsing the response : %s";
 	public static final String ERROR_MESSAGE = null;

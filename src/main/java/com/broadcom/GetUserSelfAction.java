@@ -8,6 +8,7 @@ import com.broadcom.apdk.api.annotations.ActionOutputParam;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
 import com.broadcom.util.CommonUtil;
+import com.broadcom.util.ConsoleWriter;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
@@ -24,9 +25,10 @@ public class GetUserSelfAction extends AbstractAcronisAction {
 			WebResource webResource = client.resource(url);
 			webResource = webResource.path("api").path(version).path("users").path("me");
 			LOGGER.info("Calling url: " + webResource.getURI());
+			ConsoleWriter.writeln("Calling url: " + webResource.getURI());
 			response = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
 		} catch (Exception e) {
-			String msg = String.format(Constants.REQ_ERROR_MESSAGE, url, e.getMessage());
+			String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);
 			throw new AcronisException(msg, e);
 		}
 		prepareOutput(CommonUtil.jsonObjectResponse(response.getEntityInputStream()));
@@ -34,7 +36,7 @@ public class GetUserSelfAction extends AbstractAcronisAction {
 
 	private void prepareOutput(JsonObject jsonObjectResponse) {
 		// write response to console
-		System.out.println(CommonUtil.jsonPrettyPrinting(jsonObjectResponse));
+		ConsoleWriter.writeln("Response: " + CommonUtil.jsonPrettyPrinting(jsonObjectResponse));
 		tenantId = jsonObjectResponse.getString("tenant_id");
 	}
 

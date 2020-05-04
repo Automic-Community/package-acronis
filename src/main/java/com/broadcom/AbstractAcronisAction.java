@@ -12,6 +12,7 @@ import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
 import com.broadcom.exceptions.AcronisRuntimeException;
 import com.broadcom.filter.GenericResponseFilter;
+import com.broadcom.util.ConsoleWriter;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
@@ -49,9 +50,10 @@ public abstract class AbstractAcronisAction extends BaseAction {
 			executeSpecific();
 		} catch (Exception exception) {
 			String errorMsg = String.format("Error occured during execution of action [%s]", getActionName());
-			LOGGER.info(exception.getMessage());
+			LOGGER.warning("Exception: " + exception.getMessage());
 			throw new AcronisRuntimeException(errorMsg, exception);
 		} finally {
+			ConsoleWriter.flush();
 			if (client != null) {
 				client.destroy();
 			}
@@ -72,25 +74,21 @@ public abstract class AbstractAcronisAction extends BaseAction {
 
 		if (StringUtils.isEmpty(endpoint)) {
 			String msg = String.format(Constants.ISEMPTY, "Endpoint");
-			// _log.error(msg);
 			throw new AcronisException(msg);
 		}
 
 		if (StringUtils.isEmpty(username)) {
 			String msg = String.format(Constants.ISEMPTY, "Username");
-			// _log.error(msg);
 			throw new AcronisException(msg);
 		}
 
 		if (StringUtils.isEmpty(version)) {
 			String msg = String.format(Constants.ISEMPTY, "Version");
-			// _log.error(msg);
 			throw new AcronisException(msg);
 		}
 
 		if (StringUtils.isEmpty(password)) {
 			String msg = String.format(Constants.ISEMPTY, "Password");
-			// _log.error(msg);
 			throw new AcronisException(msg);
 		}
 	}
