@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisRuntimeException;
 import com.broadcom.util.CommonUtil;
+import com.broadcom.util.ConsoleWriter;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
@@ -41,7 +42,7 @@ public class GenericResponseFilter extends ClientFilter {
         }
         if (!(response.getStatus() >= HTTP_SUCCESS_START && response.getStatus() <= HTTP_SUCCESS_END)) {
 
-            System.out.println(CommonUtil.formatErrorMessage(msg));
+           ConsoleWriter.writeln(CommonUtil.formatErrorMessage(msg));
             MediaType contentType = response.getType();
             if (ignoreHttpError) {
                 return response;
@@ -55,7 +56,7 @@ public class GenericResponseFilter extends ClientFilter {
             }
 
         } else {
-            System.out.println(msg);
+        	 ConsoleWriter.writeln(msg);
         }
         return response;
     }
