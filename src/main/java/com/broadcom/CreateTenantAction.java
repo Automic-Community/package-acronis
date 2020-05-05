@@ -16,7 +16,7 @@ public class CreateTenantAction extends AbstractAcronisAction {
 
 	@ActionInputParam(name = "UC4RB_AC_TENANT_NAME")
 	String tenantName;
-	
+
 	@ActionInputParam(name = "UC4RB_AC_PARENT_TENANT_ID")
 	String parentTenantId;
 
@@ -28,11 +28,6 @@ public class CreateTenantAction extends AbstractAcronisAction {
 
 	@ActionOutputParam(name = "UC4RB_AC_TENANT_VERSION")
 	Long tenantVersion;
-
-	@Override
-	public void run() {
-		execute();
-	}
 
 	@Override
 	protected void executeSpecific() throws AcronisException {

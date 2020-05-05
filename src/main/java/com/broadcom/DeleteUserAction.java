@@ -1,64 +1,56 @@
 package com.broadcom;
 
-import javax.json.JsonObject;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.broadcom.apdk.api.annotations.Action;
 import com.broadcom.apdk.api.annotations.ActionInputParam;
 import com.broadcom.apdk.api.annotations.ActionOutputParam;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
-import com.broadcom.util.CommonUtil;
+import com.broadcom.util.ConsoleWriter;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 @Action(name = "DELETE_USER", title = "Delete User", path = "ACRONIS")
 public class DeleteUserAction extends AbstractAcronisAction {
 
-	@ActionInputParam(name = "UC4RB_AC_USER_ID" , tooltip="Provide the userid Of the User for deletion",required=true)
-	String Userid;
-	
-	@ActionInputParam(name = "UC4RB_AC_USER_VERSION" , tooltip="Provide the version Of the User for deletion",required=true)
-	int Userversion;
-	
-	
-	@ActionOutputParam(name = "UC4RB_AC_USER_STATUS")
-	Boolean UserStatus;
-	
+	@ActionInputParam(name = "UC4RB_AC_USER_ID", tooltip = "Provide the id of the user to be deleted E.g. 88b24185-9b91-43d1-aa2c-b94665adcade8", required = true, label = "User Id")
+	String userId;
 
-	@Override
-	public void run() {
-		execute();
-	}
+	@ActionInputParam(name = "UC4RB_AC_USER_VERSION", tooltip = "Provide the version of the user E.g. 158384848", required = true, label = "User Version")
+	Long userVersion;
+
+	@ActionOutputParam(name = "UC4RB_AC_USER_STATUS")
+	Boolean userStatus;
 
 	@Override
 	protected void executeSpecific() throws AcronisException {
-		
-		String Status=validateInputs();
-		if (Status == "Valid");
-		{
-		ClientResponse response = null;
+
+		validateInputs();
 		try {
 			WebResource webResource = client.resource(url);
-			webResource = webResource.path("api").path(version).path("users").path(Userid);
+			webResource = webResource.path("api").path(version).path("users").path(userId).queryParam("version",
+					String.valueOf(userVersion));
 			LOGGER.info("Calling url: " + webResource.getURI());
-			response = webResource.queryParam("version", String.valueOf(Userversion)).accept(MediaType.APPLICATION_JSON).delete(ClientResponse.class);
+			ConsoleWriter.writeln("Calling url: " + webResource.getURI());
+			webResource.delete(ClientResponse.class);
 		} catch (Exception e) {
-			String msg = String.format(Constants.REQ_ERROR_MESSAGE, url, e.getMessage());
+			String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);
+			LOGGER.warning(e.getMessage());
 			throw new AcronisException(msg, e);
 		}
 	}
-	}
-	private String validateInputs() {
-		if(!Userid.isEmpty())
-		{
-		return "Valid";
+
+	private void validateInputs() throws AcronisException {
+		if (StringUtils.isEmpty(userId)) {
+			throw new AcronisException(String.format(Constants.ISEMPTY, "User Id"));
 		}
-		else
-			{
-			return "Invalid";
-			}
+
+		if (StringUtils.isEmpty(userId)) {
+			throw new AcronisException(String.format(Constants.ISEMPTY, "User Version"));
+		}
 	}
 
 	@Override
