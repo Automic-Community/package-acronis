@@ -1,0 +1,11 @@
+*** Settings ***
+Resource          ../../../Env/default.txt
+
+*** Variables ***
+#----Global----------------------------------------------------------------------------------
+${Acronis_URL}    https://sg-cloud.acronis.com/
+${Acronis_Version}    2
+${Acronis_Username}    SP1089871
+${Acronis_Password}    Passw0rd@1
+${User_ID}        e9a9c6dd-57ba-4574-8d5c-2c41b600698c
+${User_Version}    1
