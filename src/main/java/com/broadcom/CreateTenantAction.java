@@ -28,16 +28,16 @@ public class CreateTenantAction extends AbstractAcronisAction {
 	@ActionInputParam(label = "Parent Id", name = "UC4RB_AC_PARENT_ID", tooltip = "Provide the parent id of the tenant to be created. E.g. 2720cf58-d084-4b22-a284-4a4564fe1e4d", required = true)
 	String parentId;
 
-	@ActionInputParam(label = "Tenant Kind", name = "UC4RB_AC_TENANT_TYPE", tooltip = "Provide the kind of the tenant to be created.")
+	@ActionInputParam(label = "Tenant Kind", name = "UC4RB_AC_TENANT_TYPE", tooltip = "Provide the kind of tenant to be created.")
 	Kind tenantKind = Kind.CUSTOMER;
 
-	@ActionInputParam(label = "First Name", name = "UC4RB_AC_FIRST_NAME", tooltip = "Provide the first name for the administrator. E.g. Vishal")
+	@ActionInputParam(label = "First Name", name = "UC4RB_AC_FIRST_NAME", tooltip = "Provide the first name of the tenant administrator. E.g. Vishal")
 	String firstName;
 
-	@ActionInputParam(label = "Last Name", name = "UC4RB_AC_LAST_NAME", tooltip = "Provide the last name for the administrator. E.g. Kumar")
+	@ActionInputParam(label = "Last Name", name = "UC4RB_AC_LAST_NAME", tooltip = "Provide the last name of the tenant administrator. E.g. Kumar")
 	String lastName;
 
-	@ActionInputParam(label = "Email", name = "UC4RB_AC_EMAIL", tooltip = "Provide the email for the administrator. E.g. test@gmail.com")
+	@ActionInputParam(label = "Email", name = "UC4RB_AC_EMAIL", tooltip = "Provide the email of the tenant administrator. E.g. test@gmail.com")
 	String email;
 
 	@ActionOutputParam(name = "UC4RB_AC_TENANT_ID")
