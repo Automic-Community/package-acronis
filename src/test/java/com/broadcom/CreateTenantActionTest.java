@@ -8,7 +8,7 @@ public class CreateTenantActionTest {
 	@Test
 	public void CreateTenantAction() {
 		CreateTenantAction action = new CreateTenantAction();
-		action.parentTenantId = ""; 
+//		action.parentTenantId = ""; 
 		action.run();
 		Assertions.assertEquals("", action.tenantId);
 	} 
