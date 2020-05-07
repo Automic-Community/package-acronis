@@ -26,12 +26,18 @@ public final class Constants {
 	public static final String API = "api";
 	public static final String TENANTS = "tenants";
 	public static final String VERSION = "version";
+	public static final String USERS = "users";
 
 	public enum Kind {
 		@EnumValue("Customer")
 		CUSTOMER, @EnumValue("Partner")
 		PARTNER, @EnumValue("Folder")
-		FOLDER
+		FOLDER;
+
+		@Override
+		public String toString() {
+			return name().toLowerCase();
+		}
 	}
 
 	private Constants() {

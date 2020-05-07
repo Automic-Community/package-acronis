@@ -23,7 +23,7 @@ public class GetUserSelfAction extends AbstractAcronisAction {
 		ClientResponse response = null;
 		try {
 			WebResource webResource = client.resource(url);
-			webResource = webResource.path("api").path(version).path("users").path("me");
+			webResource = webResource.path(Constants.API).path(version).path(Constants.USERS).path("me");
 			LOGGER.info("Calling url: " + webResource.getURI());
 			ConsoleWriter.writeln("Calling url: " + webResource.getURI());
 			response = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
