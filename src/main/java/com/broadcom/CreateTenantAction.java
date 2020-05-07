@@ -28,7 +28,7 @@ public class CreateTenantAction extends AbstractAcronisAction {
 	@ActionInputParam(label = "Parent Id", name = "UC4RB_AC_PARENT_ID", tooltip = "Provide the parent id of the tenant to be created. E.g. 2720cf58-d084-4b22-a284-4a4564fe1e4d", required = true)
 	String parentId;
 
-	@ActionInputParam(label = "Tenant Kind", name = "UC4RB_AC_TENANT_TYPE", tooltip = "Provide the kind of tenant to be created.")
+	@ActionInputParam(label = "Tenant Kind", name = "UC4RB_AC_TENANT_KIND", tooltip = "Provide the kind of tenant to be created.")
 	Kind tenantKind = Kind.CUSTOMER;
 
 	@ActionInputParam(label = "First Name", name = "UC4RB_AC_FIRST_NAME", tooltip = "Provide the first name of the tenant administrator. E.g. Vishal")
