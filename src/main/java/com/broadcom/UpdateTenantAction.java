@@ -43,7 +43,7 @@ public class UpdateTenantAction extends AbstractAcronisAction {
 
 	@ActionInputParam(name = "UC4RB_AC_EMAIL", label = "Email", tooltip = "Provide the email if you want to update. E.G. test@gmail.com")
 	String email;
-	
+
 	@ActionInputParam(name = "UC4RB_AC_FIRST_NAME", label = "First Name", tooltip = "Provide the first name if you want to update. E.g. Vishal")
 	String firstName;
 
@@ -89,14 +89,19 @@ public class UpdateTenantAction extends AbstractAcronisAction {
 
 		Map<String, Object> request = new HashMap<>();
 
+		if (StringUtils.isNotEmpty(enable)) {
+			if (enable.equalsIgnoreCase("true") || enable.equalsIgnoreCase("false")) {
+				request.put("enabled", Boolean.parseBoolean(enable));
+			} else {
+				String msg = String.format(Constants.TRUEFALSE, "Enable");
+				throw new AcronisException(msg);
+			}
+		}
+		
 		if (Objects.isNull(currentVersion)) {
 			getCurrentVersion();
 		}
 		request.put(Constants.VERSION, currentVersion);
-
-		if (StringUtils.isNotEmpty(enable)) {
-			request.put("enabled", enable);
-		}
 
 		if (StringUtils.isNotEmpty(tenantName)) {
 			request.put("tenantName", tenantName);
@@ -144,5 +149,4 @@ public class UpdateTenantAction extends AbstractAcronisAction {
 	protected String getActionName() {
 		return "Update Tenant";
 	}
-
 }

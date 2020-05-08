@@ -26,6 +26,7 @@ public final class Constants {
 	public static final String TENANTS = "tenants";
 	public static final String VERSION = "version";
 	public static final String USERS = "users";
+	public static final String TRUEFALSE = "The value for %s should be true or false";
 
 	public enum Kind {
 		@EnumValue("Customer")
