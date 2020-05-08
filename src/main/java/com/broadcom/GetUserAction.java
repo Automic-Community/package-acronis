@@ -39,8 +39,9 @@ public class GetUserAction extends AbstractAcronisAction {
 		try {
 			validateInputs();
 			WebResource webResource = client.resource(url);
-			webResource = webResource.path(Constants.API).path(version).path("users").path(userId);
+			webResource = webResource.path(Constants.API).path(version).path(Constants.USERS).path(userId);
 			LOGGER.info("Calling url: " + webResource.getURI());
+			ConsoleWriter.writeln("Calling url: " + webResource.getURI());
 			response = GetHelper.urlCall(webResource);
 		} catch (Exception e) {
 			String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);
