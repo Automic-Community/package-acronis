@@ -14,6 +14,7 @@ import com.broadcom.apdk.api.annotations.ActionInputParam;
 import com.broadcom.apdk.api.annotations.ActionOutputParam;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
+import com.broadcom.helper.GetHelper;
 import com.broadcom.util.CommonUtil;
 import com.broadcom.util.ConsoleWriter;
 import com.sun.jersey.api.client.ClientResponse;
@@ -37,17 +38,17 @@ public class UpdateTenantAction extends AbstractAcronisAction {
 	@ActionInputParam(name = "UC4RB_AC_TENANT_NAME", label = "Tenant Name", tooltip = "Provide the tenant name if you want to update. E.g. Test")
 	String tenantName;
 
-	@ActionInputParam(name = "UC4RB_AC_ENABLED", label = "Enable", tooltip = "Enable or Disable the tenant. It accepts only true/false E.g. true")
+	@ActionInputParam(name = "UC4RB_AC_ENABLED", label = "Enable", tooltip = "Enable or disable the tenant. Accepts only true/false E.g. true")
 	String enable;
 
+	@ActionInputParam(name = "UC4RB_AC_EMAIL", label = "Email", tooltip = "Provide the email if you want to update. E.G. test@gmail.com")
+	String email;
+	
 	@ActionInputParam(name = "UC4RB_AC_FIRST_NAME", label = "First Name", tooltip = "Provide the first name if you want to update. E.g. Vishal")
 	String firstName;
 
 	@ActionInputParam(name = "UC4RB_AC_LAST_NAME", label = "Last Name", tooltip = "Provide the last name if you want to update. E.g. Kumar")
 	String lastName;
-
-	@ActionInputParam(name = "UC4RB_AC_EMAIL", label = "Email", tooltip = "Provide the email if you want to update. E.G. test@gmail.com")
-	String email;
 
 	@ActionOutputParam(name = "UC4RB_AC_NEW_VERSION")
 	Long newVersion;
@@ -129,7 +130,8 @@ public class UpdateTenantAction extends AbstractAcronisAction {
 			WebResource webResource = client.resource(url);
 			webResource = webResource.path(Constants.API).path(version).path(Constants.TENANTS).path(tenantId);
 			LOGGER.info("Calling url: " + webResource.getURI());
-			JsonObject jsonResponseObject = CommonUtil.getDetails(webResource);
+			ClientResponse clientResponse = GetHelper.urlCall(webResource);
+			JsonObject jsonResponseObject = CommonUtil.jsonObjectResponse(clientResponse.getEntityInputStream());
 			currentVersion = jsonResponseObject.getJsonNumber(Constants.VERSION).longValue();
 		} catch (Exception e) {
 			String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);

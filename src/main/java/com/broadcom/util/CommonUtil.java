@@ -96,16 +96,4 @@ public final class CommonUtil {
 
 		return stringWriter.toString();
 	}
-
-	/**
-	 * Used to get the details of a user or tenant.
-	 * 
-	 * @param webResource
-	 * @return json object with the details
-	 */
-	public static JsonObject getDetails(WebResource webResource) {
-		ClientResponse clientResponse = GetHelper.urlCall(webResource);
-		return CommonUtil.jsonObjectResponse(clientResponse.getEntityInputStream());
-	}
-
 }

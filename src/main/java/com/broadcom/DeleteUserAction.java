@@ -9,6 +9,7 @@ import com.broadcom.apdk.api.annotations.ActionInputParam;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
 import com.broadcom.helper.DisableHelper;
+import com.broadcom.helper.GetHelper;
 import com.broadcom.util.CommonUtil;
 import com.broadcom.util.ConsoleWriter;
 import com.sun.jersey.api.client.ClientResponse;
@@ -20,15 +21,22 @@ public class DeleteUserAction extends AbstractAcronisAction {
 	@ActionInputParam(name = "UC4RB_AC_USER_ID", tooltip = "Provide the id of the user to be deleted. E.g. 88b24185-9b91-43d1-aa2c-b94665adcade8", required = true, label = "User Id")
 	String userId;
 
+	boolean isEnabled;
+
 	@Override
 	protected void executeSpecific() throws AcronisException {
 		validateInputs();
 
 		try {
-			Long currentVersion = getCurrentVersion();
 			WebResource webResource = client.resource(url);
-			webResource = webResource.path(Constants.API).path(version).path("users").path(userId)
-					.queryParam(Constants.VERSION, String.valueOf(currentVersion));
+			webResource = webResource.path(Constants.API).path(version).path(Constants.USERS).path(userId);
+
+			Long currentVersion = getCurrentVersion(webResource);
+			if (isEnabled) {
+				currentVersion = disableUser(webResource, currentVersion);
+			}
+
+			webResource = webResource.queryParam(Constants.VERSION, String.valueOf(currentVersion));
 			LOGGER.info("Calling url: " + webResource.getURI());
 			ConsoleWriter.writeln("Calling url: " + webResource.getURI());
 			webResource.delete(ClientResponse.class);
@@ -50,22 +58,18 @@ public class DeleteUserAction extends AbstractAcronisAction {
 	}
 
 	/**
-	 * Calls the get user API to get the current version and disable the user if it
-	 * is not disabled, after that get the new current version.
+	 * Calls the get user API to get the current version 
 	 * 
-	 * @return updated version
+	 * @param webResource
+	 * 
+	 * @return version
 	 */
-	private Long getCurrentVersion() {
-		WebResource webResource = client.resource(url);
-		webResource = webResource.path(Constants.API).path(version).path("users").path(userId);
+	private Long getCurrentVersion(WebResource webResource) {
 		LOGGER.info("Calling url: " + webResource.getURI());
-		JsonObject jsonResponseObject = CommonUtil.getDetails(webResource);
-		Long currentVersion = jsonResponseObject.getJsonNumber(Constants.VERSION).longValue();
-		boolean enabled = jsonResponseObject.getBoolean("enabled");
-		if (enabled) {
-			currentVersion = disableUser(currentVersion);
-		}
-		return currentVersion;
+		ClientResponse clientResponse = GetHelper.urlCall(webResource);
+		JsonObject jsonResponseObject = CommonUtil.jsonObjectResponse(clientResponse.getEntityInputStream());
+		isEnabled = jsonResponseObject.getBoolean("enabled");
+		return jsonResponseObject.getJsonNumber(Constants.VERSION).longValue();
 	}
 
 	/**
@@ -73,9 +77,7 @@ public class DeleteUserAction extends AbstractAcronisAction {
 	 * 
 	 * @return updated version
 	 */
-	private Long disableUser(Long currentVersion) {
-		WebResource webResource = client.resource(url);
-		webResource = webResource.path(Constants.API).path(version).path("users").path(userId);
+	private Long disableUser(WebResource webResource, Long currentVersion) {
 		LOGGER.info("Calling url: " + webResource.getURI());
 		ClientResponse clientResponse = DisableHelper.urlCall(currentVersion, webResource);
 		JsonObject jsonResponseObject = CommonUtil.jsonObjectResponse(clientResponse.getEntityInputStream());

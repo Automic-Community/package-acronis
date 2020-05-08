@@ -14,6 +14,7 @@ import com.broadcom.apdk.api.annotations.ActionInputParam;
 import com.broadcom.apdk.api.annotations.ActionOutputParam;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
+import com.broadcom.helper.GetHelper;
 import com.broadcom.util.CommonUtil;
 import com.broadcom.util.ConsoleWriter;
 import com.sun.jersey.api.client.ClientResponse;
@@ -95,7 +96,8 @@ public class DisableTenantAction extends AbstractAcronisAction {
 			WebResource webResource = client.resource(url);
 			webResource = webResource.path(Constants.API).path(version).path(Constants.TENANTS).path(tenantId);
 			LOGGER.info("Calling url: " + webResource.getURI());
-			JsonObject jsonResponseObject = CommonUtil.getDetails(webResource);
+			ClientResponse clientResponse = GetHelper.urlCall(webResource);
+			JsonObject jsonResponseObject = CommonUtil.jsonObjectResponse(clientResponse.getEntityInputStream());
 			if (Objects.isNull(currentVersion)) {
 				currentVersion = jsonResponseObject.getJsonNumber(Constants.VERSION).longValue();
 			}
