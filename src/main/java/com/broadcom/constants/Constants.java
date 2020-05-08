@@ -19,7 +19,6 @@ public final class Constants {
 	public static final String RES_ERROR_MESSAGE = "Exception occured while parsing the response : %s";
 	public static final String ERROR_SKIPPING_CERT = "Exception occured while parsing the response : %s";
 	public static final String ERROR_MESSAGE = null;
-	public static final String ACTION_CATEGORY = "Ansible Tower";
 	public static final String ACRONIS_VERSION = "2";
 	public static final String UNABLE_TO_WRITE = "Unable to write at the given file path [%s]";
 	public static final String IGNORE_HTTPERROR = "IGNORE-HTTPERROR";
@@ -32,7 +31,8 @@ public final class Constants {
 		@EnumValue("Customer")
 		CUSTOMER, @EnumValue("Partner")
 		PARTNER, @EnumValue("Folder")
-		FOLDER;
+		FOLDER, @EnumValue("Unit")
+		UNIT;
 
 		@Override
 		public String toString() {
