@@ -37,8 +37,8 @@ public class UpdateTenantAction extends AbstractAcronisAction {
 	@ActionInputParam(name = "UC4RB_AC_TENANT_NAME", label = "Tenant Name", tooltip = "Provide the tenant name if you want to update. E.g. Test")
 	String tenantName;
 
-	@ActionInputParam(name = "UC4RB_AC_ENABLED", label = "Enabled", tooltip = "Enable or Disable the tenant. E.g. true")
-	Boolean enabled;
+	@ActionInputParam(name = "UC4RB_AC_ENABLED", label = "Enable", tooltip = "Enable or Disable the tenant. It accepts only true/false E.g. true")
+	String enable;
 
 	@ActionInputParam(name = "UC4RB_AC_FIRST_NAME", label = "First Name", tooltip = "Provide the first name if you want to update. E.g. Vishal")
 	String firstName;
@@ -87,12 +87,15 @@ public class UpdateTenantAction extends AbstractAcronisAction {
 		}
 
 		Map<String, Object> request = new HashMap<>();
-		request.put("enabled", enabled);
 
 		if (Objects.isNull(currentVersion)) {
 			getCurrentVersion();
 		}
 		request.put(Constants.VERSION, currentVersion);
+
+		if (StringUtils.isNotEmpty(enable)) {
+			request.put("enabled", enable);
+		}
 
 		if (StringUtils.isNotEmpty(tenantName)) {
 			request.put("tenantName", tenantName);
