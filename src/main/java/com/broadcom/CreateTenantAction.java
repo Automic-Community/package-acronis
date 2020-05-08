@@ -3,6 +3,7 @@ package com.broadcom;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -70,11 +71,12 @@ public class CreateTenantAction extends AbstractAcronisAction {
 		prepareOutput(CommonUtil.jsonObjectResponse(response.getEntityInputStream()));
 	}
 	
+	@SuppressWarnings("unchecked")
 	private Object getJsonObject(Map<String, Object> request) {
 		JsonObjectBuilder builder = Json.createObjectBuilder();
-		Iterator it = request.entrySet().iterator();
+		Iterator<Entry<String, Object>> it = request.entrySet().iterator();
 		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry) it.next();
+			Entry<String, Object> pair = it.next();
 			Object value = pair.getValue();
 			if (value instanceof Map<?, ?>) {
 				value = getJsonObject((Map<String, Object>) value);
