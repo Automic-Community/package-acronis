@@ -12,6 +12,10 @@ import javax.json.JsonWriter;
 import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
 
+import com.broadcom.helper.GetHelper;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+
 /**
  * Utility class
  * 
@@ -91,6 +95,17 @@ public final class CommonUtil {
 		jsonWriter.close();
 
 		return stringWriter.toString();
+	}
+
+	/**
+	 * Used to get the details of a user or tenant.
+	 * 
+	 * @param webResource
+	 * @return json object with the details
+	 */
+	public static JsonObject getDetails(WebResource webResource) {
+		ClientResponse clientResponse = GetHelper.urlCall(webResource);
+		return CommonUtil.jsonObjectResponse(clientResponse.getEntityInputStream());
 	}
 
 }
