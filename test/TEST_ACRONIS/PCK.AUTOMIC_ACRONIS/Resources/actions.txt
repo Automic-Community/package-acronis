@@ -1,0 +1,4 @@
+*** Variables ***
+#---- AE Actions-------------------------
+${GET_USER}       PCK.AUTOMIC_ACRONIS.PUB.ACTION.GET_USER
+${DELETE_USER}    PCK.AUTOMIC_ACRONIS.PUB.ACTION.DELETE_USER
