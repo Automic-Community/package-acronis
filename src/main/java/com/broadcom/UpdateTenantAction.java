@@ -14,7 +14,6 @@ import com.broadcom.apdk.api.annotations.ActionInputParam;
 import com.broadcom.apdk.api.annotations.ActionOutputParam;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
-import com.broadcom.helper.GetTenantHelper;
 import com.broadcom.util.CommonUtil;
 import com.broadcom.util.ConsoleWriter;
 import com.sun.jersey.api.client.ClientResponse;
@@ -124,10 +123,11 @@ public class UpdateTenantAction extends AbstractAcronisAction {
 	 */
 	private void getCurrentVersion() throws AcronisException {
 		try {
-			ClientResponse response = GetTenantHelper.urlCall(tenantId, client, url,
-					new String[] { Constants.API, version, "tenants" });
-			JsonObject jsonObject = CommonUtil.jsonObjectResponse(response.getEntityInputStream());
-			currentVersion = jsonObject.getJsonNumber(Constants.VERSION).longValue();
+			WebResource webResource = client.resource(url);
+			webResource = webResource.path(Constants.API).path(version).path(Constants.TENANTS).path(tenantId);
+			LOGGER.info("Calling url: " + webResource.getURI());
+			JsonObject jsonResponseObject = CommonUtil.getDetails(webResource);
+			currentVersion = jsonResponseObject.getJsonNumber(Constants.VERSION).longValue();
 		} catch (Exception e) {
 			String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);
 			LOGGER.warning(e.getMessage());
