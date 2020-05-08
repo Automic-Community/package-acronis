@@ -2,6 +2,7 @@ package com.broadcom;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.json.JsonObject;
 import javax.ws.rs.core.MediaType;
@@ -30,6 +31,9 @@ public class DisableTenantAction extends AbstractAcronisAction {
 	@ActionInputParam(required = true, name = "UC4RB_AC_TENANT_ID", label = "Tenant Id", tooltip = "Provide the tenant id that you want to update. E.g. 9b81bf31-0c04-4f6e-8ebe-56900a3f9e76")
 	String tenantId;
 
+	@ActionInputParam(name = "UC4RB_AC_TENANT_VERSION", label = "Current Version", tooltip = "Version should be same as the tenant that you want to update. E.g. 1")
+	Long currentVersion;
+
 	@ActionOutputParam(name = "UC4RB_AC_NEW_VERSION")
 	Long newVersion;
 
@@ -39,9 +43,7 @@ public class DisableTenantAction extends AbstractAcronisAction {
 	protected void executeSpecific() throws AcronisException {
 		ClientResponse response = null;
 		Map<String, Object> request = createRequest();
-		Long currentVersion = getCurrentVersion();
 		if (enabled) {
-			request.put(Constants.VERSION, currentVersion);
 			try {
 				WebResource webResource = client.resource(url);
 				webResource = webResource.path(Constants.API).path(version).path(Constants.TENANTS).path(tenantId);
@@ -73,27 +75,31 @@ public class DisableTenantAction extends AbstractAcronisAction {
 			throw new AcronisException(msg);
 		}
 
+		getCurrentVersion();
+
 		Map<String, Object> request = new HashMap<>();
+		request.put(Constants.VERSION, currentVersion);
 		request.put("enabled", false);
 
 		return request;
 	}
 
 	/**
-	 * Calls the get tenant API to get the current version and check the tenant is
-	 * already disabled or not.
+	 * Calls the get tenant API to get the current version only if user doesn't
+	 * provide the current version.
 	 * 
-	 * @return version value
 	 * @throws AcronisException
 	 */
-	private Long getCurrentVersion() throws AcronisException {
+	private void getCurrentVersion() throws AcronisException {
 		try {
 			WebResource webResource = client.resource(url);
 			webResource = webResource.path(Constants.API).path(version).path(Constants.TENANTS).path(tenantId);
 			LOGGER.info("Calling url: " + webResource.getURI());
 			JsonObject jsonResponseObject = CommonUtil.getDetails(webResource);
+			if (Objects.isNull(currentVersion)) {
+				currentVersion = jsonResponseObject.getJsonNumber(Constants.VERSION).longValue();
+			}
 			enabled = jsonResponseObject.getBoolean("enabled");
-			return jsonResponseObject.getJsonNumber(Constants.VERSION).longValue();
 		} catch (Exception e) {
 			String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);
 			LOGGER.warning(e.getMessage());
