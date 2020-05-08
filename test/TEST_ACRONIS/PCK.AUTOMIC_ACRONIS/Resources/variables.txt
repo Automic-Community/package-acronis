@@ -8,7 +8,4 @@ ${Acronis_Version}    2
 ${Acronis_Username}    SP1089871
 ${Acronis_Password}    Passw0rd@1
 ${User_ID}        e9a9c6dd-57ba-4574-8d5c-2c41b600698c
-${User_Version}    1
-${Parent_TenantID}    79100dc2-757a-4261-a9a8-dac20a112e00
-${First_Name}     John
-${Last_Name}      Doe
+${User_Version}    2

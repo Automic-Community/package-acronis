@@ -9,7 +9,6 @@ public final class Constants {
     /**
      * int constant for IO Buffer used to buffer the data.
      */
-
     public static final String HTTPS = "https";
     public static final String ISEMPTY = "The %s can't be empty or null";
     public static final String INVALID_INPUT_PARAMETER = "Invalid value for parameter [%s] : [%s]";
@@ -37,11 +36,19 @@ public final class Constants {
     /** EMAIL_VALIATION_REGEX used to validate the email. */
     public static final String EMAIL_VALIATION_REGEX = "^(.+)@(.+)$";
 
-    public enum Kind {
-        @EnumValue("Customer") CUSTOMER,
-        @EnumValue("Partner") PARTNER,
-        @EnumValue("Folder") FOLDER
-    }
+
+	public enum Kind {
+		@EnumValue("Customer")
+		CUSTOMER, @EnumValue("Partner")
+		PARTNER, @EnumValue("Folder")
+		FOLDER, @EnumValue("Unit")
+		UNIT;
+
+		@Override
+		public String toString() {
+			return name().toLowerCase();
+		}
+	}
 
     private Constants() {
     }

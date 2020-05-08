@@ -1,6 +1,7 @@
 package com.broadcom;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -31,8 +32,17 @@ public class CreateTenantAction extends AbstractAcronisAction {
 	@ActionInputParam(label = "Parent Id", name = "UC4RB_AC_PARENT_ID", tooltip = "Provide the parent id of the tenant to be created. E.g. 2720cf58-d084-4b22-a284-4a4564fe1e4d", required = true)
 	String parentId;
 
-	@ActionInputParam(label = "Tenant Kind", name = "UC4RB_AC_TENANT_TYPE", tooltip = "Provide the kind of the tenant to be created.")
+	@ActionInputParam(label = "Tenant Kind", name = "UC4RB_AC_TENANT_KIND", tooltip = "Provide the kind of tenant to be created.")
 	Kind tenantKind = Kind.CUSTOMER;
+
+	@ActionInputParam(label = "Email", name = "UC4RB_AC_EMAIL", tooltip = "Provide the email of the tenant administrator. E.g. test@gmail.com")
+	String email;
+	
+	@ActionInputParam(label = "First Name", name = "UC4RB_AC_FIRST_NAME", tooltip = "Provide the first name of the tenant administrator. E.g. Vishal")
+	String firstName;
+
+	@ActionInputParam(label = "Last Name", name = "UC4RB_AC_LAST_NAME", tooltip = "Provide the last name of the tenant administrator. E.g. Kumar")
+	String lastName;
 
 	@ActionOutputParam(name = "UC4RB_AC_TENANT_ID")
 	String tenantId;
@@ -43,19 +53,15 @@ public class CreateTenantAction extends AbstractAcronisAction {
 	@Override
 	protected void executeSpecific() throws AcronisException {
 		validateInputs();
-		Map<String, String> request = createRequest();
-		JsonObjectBuilder builder = Json.createObjectBuilder();
-		for (Entry<String, String> entry : request.entrySet()) {
-			builder.add(entry.getKey(), entry.getValue());
-		}
-		JsonObject jsonObjectRequest = builder.build();
+		Map<String, Object> request = createRequest();
+		JsonObject requestObject = ((JsonObjectBuilder) getJsonObject(request)).build();
 		ClientResponse response = null;
 		try {
 			WebResource webResource = client.resource(url);
-			webResource = webResource.path("api").path(version).path("tenants");
+			webResource = webResource.path(Constants.API).path(version).path(Constants.TENANTS);
 			LOGGER.info("Calling url: " + webResource.getURI());
 			ConsoleWriter.writeln("Calling url: " + webResource.getURI());
-			ConsoleWriter.writeln("Request Body: " + CommonUtil.jsonPrettyPrinting(jsonObjectRequest));
+			ConsoleWriter.writeln("Request Body: " + CommonUtil.jsonPrettyPrinting(requestObject));
 			response = webResource.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, request);
 		} catch (Exception e) {
 			String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);
@@ -64,6 +70,26 @@ public class CreateTenantAction extends AbstractAcronisAction {
 		}
 		prepareOutput(CommonUtil.jsonObjectResponse(response.getEntityInputStream()));
 	}
+	
+	@SuppressWarnings("unchecked")
+	private Object getJsonObject(Map<String, Object> request) {
+		JsonObjectBuilder builder = Json.createObjectBuilder();
+		Iterator<Entry<String, Object>> it = request.entrySet().iterator();
+		while (it.hasNext()) {
+			Entry<String, Object> pair = it.next();
+			Object value = pair.getValue();
+			if (value instanceof Map<?, ?>) {
+				value = getJsonObject((Map<String, Object>) value);
+			}
+
+			if (value instanceof String) {
+				builder.add((String) pair.getKey(), value.toString());
+			} else {
+				builder.add((String) pair.getKey(), (JsonObjectBuilder) value);
+			}
+		}
+		return builder;
+	}
 
 	/**
 	 * Creates the request
@@ -71,11 +97,26 @@ public class CreateTenantAction extends AbstractAcronisAction {
 	 * @return map with string keys and object type values
 	 * @throws AcronisException
 	 */
-	private Map<String, String> createRequest() throws AcronisException {
-		Map<String, String> request = new HashMap<>();
+	private Map<String, Object> createRequest() {
+		Map<String, Object> request = new HashMap<>();
 		request.put("name", tenantName);
 		request.put("parent_id", parentId);
 		request.put("kind", tenantKind.toString());
+
+		Map<String, Object> contactRequest = new HashMap<>();
+		if (StringUtils.isNotEmpty(firstName)) {
+			contactRequest.put("firstname", firstName);
+		}
+		if (StringUtils.isNotEmpty(lastName)) {
+			contactRequest.put("lastname", lastName);
+		}
+		if (StringUtils.isNotEmpty(email)) {
+			contactRequest.put("email", email);
+		}
+
+		if (!contactRequest.isEmpty()) {
+			request.put("contact", contactRequest);
+		}
 		return request;
 	}
 
