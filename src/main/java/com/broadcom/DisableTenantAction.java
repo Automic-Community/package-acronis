@@ -60,6 +60,8 @@ public class DisableTenantAction extends AbstractAcronisAction {
 				LOGGER.warning(e.getMessage());
 				throw new AcronisException(msg, e);
 			}
+		} else {
+			newVersion = currentVersion;
 		}
 	}
 
