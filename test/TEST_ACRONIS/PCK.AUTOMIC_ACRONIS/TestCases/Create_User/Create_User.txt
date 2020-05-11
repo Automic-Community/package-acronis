@@ -49,6 +49,7 @@ Create User Template
     Action Execute
     Run Keyword If    '${OK_NOK}' == 'OK'    Assert Success    ELSE    Assert Failure
     Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_USER_ID#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_USER_ID#
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_USER_VERSION#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_USER_VERSION#
 
 Teardown
     Log    *******End Test "CREATE USER"*******
