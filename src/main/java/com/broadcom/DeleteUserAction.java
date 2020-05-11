@@ -42,15 +42,10 @@ public class DeleteUserAction extends AbstractAcronisAction {
 			LOGGER.info("Calling url: " + webResource.getURI());
 			ConsoleWriter.writeln("Calling url: " + webResource.getURI());
 			webResource.delete(ClientResponse.class);
-		} catch (NotFoundRuntimeException e) {
-			if (failIfNotExist) {
-				String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);
-				LOGGER.warning(e.getMessage());
-				throw new AcronisException(msg, e);
-			} else {
+		} catch (Exception e) {
+			if (e instanceof NotFoundRuntimeException && !failIfNotExist) {
 				return;
 			}
-		} catch (Exception e) {
 			String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);
 			LOGGER.warning(e.getMessage());
 			throw new AcronisException(msg, e);
