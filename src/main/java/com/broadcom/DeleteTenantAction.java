@@ -22,9 +22,9 @@ public class DeleteTenantAction extends AbstractAcronisAction {
 	@ActionInputParam(required = true, name = "UC4RB_AC_TENANT_ID", tooltip = "Provide the name of the tenant to be deleted. E.g. d540ac7f-2e8b-4451-a1cc-18ee9586af69", label = "Tenant Id")
 	String tenantId;
 
-	@ActionInputParam(required = true, name = "UC4RB_AC_FAIL", tooltip = "", label = "Fail if non-existing")
+	@ActionInputParam(required = true, name = "UC4RB_AC_FAIL", tooltip = "Specifies if the job should fail in case of non-existing tenant E.g. true/false", label = "Fail if non-existing")
 	Boolean fail = true;
-	
+
 	boolean isEnabled;
 
 	@Override
@@ -41,28 +41,23 @@ public class DeleteTenantAction extends AbstractAcronisAction {
 			LOGGER.info("Calling url: " + webResource.getURI());
 			ConsoleWriter.writeln("Calling url: " + webResource.getURI());
 			webResource.delete(ClientResponse.class);
-		} catch (NotFoundRuntimeException e) {
-			if (fail) {
-				String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);
-				LOGGER.warning(e.getMessage());
-				throw new AcronisException(msg, e);
-			} else {
-				ConsoleWriter.writeln("INFO:  Tenant does not exist.");
-			}
 		} catch (Exception e) {
+			if (e instanceof NotFoundRuntimeException && !fail) {
+				ConsoleWriter.writeln("INFO:  Tenant does not exist.");
+				return;
+			}
 			String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);
 			LOGGER.warning(e.getMessage());
 			throw new AcronisException(msg, e);
 		}
 	}
 
-	
 	/**
-	 * Calls the get tenant API to get the current version 
+	 * Calls the get tenant API to get the current version
 	 * 
 	 * @param webResource
 	 * 
-	 * @return  version
+	 * @return version
 	 */
 	private Long getCurrentVersion(WebResource webResource) {
 		LOGGER.info("Calling url: " + webResource.getURI());
@@ -91,7 +86,7 @@ public class DeleteTenantAction extends AbstractAcronisAction {
 			throw new AcronisException(String.format(Constants.ISEMPTY, "Tenant Id"));
 		}
 	}
-	
+
 	@Override
 	protected String getActionName() {
 		return "Delete Tenant";
