@@ -49,14 +49,14 @@ public class GenericResponseFilter extends ClientFilter {
 			MediaType contentType = response.getType();
 			if (ignoreHttpError) {
 				return response;
-			} else if (response.getStatus() == NOT_FOUND_404) {
-				JsonObject jsonResponse = CommonUtil.jsonObjectResponse(response.getEntityInputStream());
-				String responseMsg = CommonUtil.jsonPrettyPrinting(jsonResponse);
-				throw new NotFoundRuntimeException(responseMsg);
 			} else if (contentType != null && contentType.isCompatible(MediaType.APPLICATION_JSON_TYPE)) {
 				JsonObject jsonResponse = CommonUtil.jsonObjectResponse(response.getEntityInputStream());
 				String responseMsg = CommonUtil.jsonPrettyPrinting(jsonResponse);
-				throw new AcronisRuntimeException(responseMsg);
+				if (response.getStatus() == NOT_FOUND_404) {
+					throw new NotFoundRuntimeException(responseMsg);
+				} else {
+					throw new AcronisRuntimeException(responseMsg);
+				}
 			} else {
 				String errorMsg = response.getEntity(String.class);
 				throw new AcronisRuntimeException(errorMsg);
