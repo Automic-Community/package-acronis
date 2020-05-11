@@ -24,8 +24,8 @@ import java.util.regex.Pattern;
 @Action(title = "Create User", name = "CREATE_USER", path = "ACRONIS")
 public class CreateUserAction extends AbstractAcronisAction {
 
-    @ActionInputParam(name = "UC4RB_AC_TENANT_ID", required = true, tooltip = "Provide the Tenant id. E.g: "
-            + "6f2e420b-bd8c-4ade-b3bb-4942d7c89032", label = "Tenant Id")
+    @ActionInputParam(name = "UC4RB_AC_TENANT_ID", required = true, tooltip = "Provide the Tenant ID. E.g: "
+            + "6f2e420b-bd8c-4ade-b3bb-4942d7c89032", label = "Tenant ID")
     private String tenantId;
 
     @ActionInputParam(name = "UC4RB_AC_USER_LOGIN", required = true, tooltip =

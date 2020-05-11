@@ -24,9 +24,13 @@ import java.util.regex.Pattern;
 @Action(name = "UPDATE_USER_CONTACT_INFO", title = "Update User Contact Info", path = "ACRONIS")
 public class UpdateUserContactInfoAction extends AbstractAcronisAction {
 
-    @ActionInputParam(name = "UC4RB_AC_USER_ID", required = true, tooltip = "Provide the User id. E.g: "
-            + "6f2e420b-bd8c-4ade-b3bb-4942d7c89032", label = "User Id")
+    @ActionInputParam(name = "UC4RB_AC_USER_ID", required = true, tooltip = "Provide the User ID. E.g: "
+            + "6f2e420b-bd8c-4ade-b3bb-4942d7c89032", label = "User ID")
     private String userId;
+
+    @ActionInputParam(name = "UC4RB_AC_USER_VERSION", tooltip = "Provide the user current version. E.g: 2", label =
+            "Current Version")
+    private String oldVersion;
 
     @ActionInputParam(name = "UC4RB_AC_USER_EMAIL", tooltip = "Provide contact email of the user. E.g: "
             + "johndoe@newmail.net", label = "Email")
@@ -39,10 +43,6 @@ public class UpdateUserContactInfoAction extends AbstractAcronisAction {
     @ActionInputParam(name = "UC4RB_AC_USER_LAST_NAME", tooltip = "Provide the user last name. E.g: bar", label =
             "Last Name")
     private String userLastName;
-
-    @ActionInputParam(name = "UC4RB_AC_USER_VERSION", tooltip = "Provide the user current version. E.g: 2", label =
-            "User Version")
-    private long oldVersion;
 
     @ActionOutputParam(name = "UC4RB_AC_NEW_USER_VERSION")
     private long newVersion;
@@ -63,10 +63,10 @@ public class UpdateUserContactInfoAction extends AbstractAcronisAction {
         try {
             WebResource webResource = client.resource(url);
             webResource = webResource.path(Constants.API).path(version).path(Constants.USERS).path(userId);
-            if (oldVersion > 0) {
-                this.newVersion = oldVersion;
-            } else {
+            if (StringUtils.isBlank(oldVersion)) {
                 this.newVersion = getVersion(webResource);
+            } else {
+                this.newVersion = Long.parseLong(oldVersion);
             }
 
             request.put("version", this.newVersion);
@@ -102,6 +102,9 @@ public class UpdateUserContactInfoAction extends AbstractAcronisAction {
      * @return
      */
     private boolean validateEmail(String email) {
+        if (StringUtils.isBlank(email)) {
+            return true;
+        }
         Pattern pattern = Pattern.compile(Constants.EMAIL_VALIATION_REGEX);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
@@ -125,16 +128,31 @@ public class UpdateUserContactInfoAction extends AbstractAcronisAction {
             throw new AcronisException(msg);
         }
 
+        if (StringUtils.isNoneBlank(oldVersion) && !StringUtils.isNumeric(oldVersion)) {
+            String msg = String.format(Constants.INVALID_INPUT_PARAMETER, "Current Version", oldVersion);
+            throw new AcronisException(msg);
+        }
+
         Map<String, Object> request = new HashMap<>();
         Map<String, Object> contactRequest = new HashMap<>();
+        boolean isContactInfoPresent = false;
         if (StringUtils.isNotEmpty(userFirstName)) {
             contactRequest.put(Constants.FIRST_NAME, userFirstName);
+            isContactInfoPresent = true;
         }
         if (StringUtils.isNotEmpty(userLastName)) {
             contactRequest.put(Constants.LAST_NAME, userLastName);
+            isContactInfoPresent = true;
         }
         if (StringUtils.isNotEmpty(email)) {
             contactRequest.put("email", email);
+            isContactInfoPresent = true;
+        }
+
+        if (!isContactInfoPresent) {
+            String msg = String.format(Constants.BLANK_INPUT_PARAMETER_ERROR_MESSAGE, "Email", "First Name",
+                    "Last Name");
+            throw new AcronisException(msg);
         }
 
         if (!contactRequest.isEmpty()) {

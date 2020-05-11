@@ -32,23 +32,23 @@ public final class Constants {
     public static final String FIRST_NAME = "firstname";
     public static final String LAST_NAME = "lastname";
     public static final String CONTACT = "contact";
+    public static final String BLANK_INPUT_PARAMETER_ERROR_MESSAGE = "All input parameter [%s, %s, %s] cannot left "
+            + "blank.";
 
     /** EMAIL_VALIATION_REGEX used to validate the email. */
     public static final String EMAIL_VALIATION_REGEX = "^(.+)@(.+)$";
 
+    public enum Kind {
+        @EnumValue("Customer") CUSTOMER,
+        @EnumValue("Partner") PARTNER,
+        @EnumValue("Folder") FOLDER,
+        @EnumValue("Unit") UNIT;
 
-	public enum Kind {
-		@EnumValue("Customer")
-		CUSTOMER, @EnumValue("Partner")
-		PARTNER, @EnumValue("Folder")
-		FOLDER, @EnumValue("Unit")
-		UNIT;
-
-		@Override
-		public String toString() {
-			return name().toLowerCase();
-		}
-	}
+        @Override
+        public String toString() {
+            return name().toLowerCase();
+        }
+    }
 
     private Constants() {
     }
