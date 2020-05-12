@@ -70,9 +70,7 @@ public class UpdateUserContactInfoAction extends AbstractAcronisAction {
             }
 
             request.put("version", this.newVersion);
-            ConsoleWriter.writeln("Received User version: " + newVersion);
             ConsoleWriter.writeln("Calling url: " + webResource.getURI());
-
             response = webResource.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, request);
             prepareOutput(CommonUtil.jsonObjectResponse(response.getEntityInputStream()));
         } catch (Exception e) {
@@ -85,7 +83,7 @@ public class UpdateUserContactInfoAction extends AbstractAcronisAction {
     private long getVersion(WebResource webResource) {
         ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
         JsonObject jsonResponse = CommonUtil.jsonObjectResponse(response.getEntityInputStream());
-        ConsoleWriter.writeln("Response: " + CommonUtil.jsonPrettyPrinting(jsonResponse));
+        LOGGER.info("Response: " + CommonUtil.jsonPrettyPrinting(jsonResponse));
         return jsonResponse.getJsonNumber(Constants.VERSION).longValue();
     }
 
@@ -128,34 +126,28 @@ public class UpdateUserContactInfoAction extends AbstractAcronisAction {
             throw new AcronisException(msg);
         }
 
-        if (StringUtils.isNoneBlank(oldVersion) && !StringUtils.isNumeric(oldVersion)) {
+        if (StringUtils.isNotBlank(oldVersion) && !StringUtils.isNumeric(oldVersion)) {
             String msg = String.format(Constants.INVALID_INPUT_PARAMETER, "Current Version", oldVersion);
             throw new AcronisException(msg);
         }
 
         Map<String, Object> request = new HashMap<>();
         Map<String, Object> contactRequest = new HashMap<>();
-        boolean isContactInfoPresent = false;
         if (StringUtils.isNotEmpty(userFirstName)) {
             contactRequest.put(Constants.FIRST_NAME, userFirstName);
-            isContactInfoPresent = true;
         }
         if (StringUtils.isNotEmpty(userLastName)) {
             contactRequest.put(Constants.LAST_NAME, userLastName);
-            isContactInfoPresent = true;
         }
         if (StringUtils.isNotEmpty(email)) {
             contactRequest.put("email", email);
-            isContactInfoPresent = true;
         }
 
-        if (!isContactInfoPresent) {
+        if (contactRequest.isEmpty()) {
             String msg = String.format(Constants.BLANK_INPUT_PARAMETER_ERROR_MESSAGE, "Email", "First Name",
                     "Last Name");
             throw new AcronisException(msg);
-        }
-
-        if (!contactRequest.isEmpty()) {
+        } else {
             request.put("contact", contactRequest);
         }
         return request;

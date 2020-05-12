@@ -106,6 +106,10 @@ public class CreateUserAction extends AbstractAcronisAction {
             throw new AcronisException(msg);
         }
 
+        if (StringUtils.isEmpty(login)) {
+            throw new AcronisException(String.format(Constants.ISEMPTY, Constants.LOGIN));
+        }
+
         Map<String, Object> request = new HashMap<>();
         request.put(Constants.TENANT_ID, tenantId);
         request.put(Constants.LOGIN, login);
