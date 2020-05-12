@@ -100,9 +100,12 @@ public class DisableTenantAction extends AbstractAcronisAction {
 			LOGGER.info("Calling url: " + webResource.getURI());
 			ClientResponse clientResponse = GetHelper.urlCall(webResource);
 			JsonObject jsonResponseObject = CommonUtil.jsonObjectResponse(clientResponse.getEntityInputStream());
-			if (Objects.isNull(currentVersion)) {
-				currentVersion = jsonResponseObject.getJsonNumber(Constants.VERSION).longValue();
+			Long responseVersion = jsonResponseObject.getJsonNumber(Constants.VERSION).longValue();
+			if (Objects.nonNull(currentVersion) && !currentVersion.equals(responseVersion)) {
+				throw new AcronisException(Constants.TENANT_VERSION_MISMATCH);
 			}
+
+			currentVersion = responseVersion;
 			enabled = jsonResponseObject.getBoolean("enabled");
 		} catch (Exception e) {
 			String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);

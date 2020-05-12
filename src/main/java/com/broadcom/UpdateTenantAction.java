@@ -93,7 +93,7 @@ public class UpdateTenantAction extends AbstractAcronisAction {
 			if (enable.equalsIgnoreCase("true") || enable.equalsIgnoreCase("false")) {
 				request.put("enabled", Boolean.parseBoolean(enable));
 			} else {
-				String msg = String.format(Constants.TRUEFALSE, "Enable");
+				String msg = String.format(Constants.TRUE_FALSE, "Enable");
 				throw new AcronisException(msg);
 			}
 		}
