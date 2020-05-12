@@ -102,6 +102,16 @@ Assert Failure
     Action Return Status Should Not Be    ${ENDED_OK}
     Action Return Code Should Not Equal    ${RETURN_CODE_SUCCESS}
 
+Set ID Global
+    [Arguments]    ${Object_Variable}
+    ${ID}=    Action Get Variable    ${Object_Variable}
+    Should Not Be Empty    ${ID}
+    Set Global Variable    ${ID}
+	
+Generate Number
+    ${Generated_Number}    Generate Random String    8    [NUMBERS]
+    Set Global Variable    ${Generated_Number}
+
 Generate String
     ${Generated_Name}    Generate Random String    8    [LETTERS]
     ${Time}    Get Time
@@ -118,3 +128,28 @@ Connect to Acronis
     Action Set    &UC4RB_AC_API_VERSION#    ${Acronis_Version}
     Action Set    &UC4RB_AC_USERNAME#    ${Acronis_Username}
     Action Set    &UC4RB_AC_PASSWORD#    ${Acronis_Password}
+
+Create Tenant
+    [Arguments]    ${CREATE_TENANT_ACTION}    ${TenantName}    ${ParentTenantID}    ${Type}    ${Email}    ${FirstName}
+    ...    ${LastName}
+    Init Action    ${CREATE_TENANT_ACTION}
+    Connect to Acronis
+    Action Set    &UC4RB_AC_TENANT_NAME#    ${TenantName}
+    Action Set    &UC4RB_AC_PARENT_ID#    ${ParentTenantID}
+    Action Set    &UC4RB_AC_TENANT_KIND#    ${Type}
+    Action Set    &UC4RB_AC_EMAIL#    ${Email}
+    Action Set    &UC4RB_AC_FIRST_NAME#    ${FirstName}
+    Action Set    &UC4RB_AC_LAST_NAME#    ${LastName}
+    Action Execute
+    ${Gen_Tenant_ID}=    Action Get Variable    &UC4RB_AC_TENANT_ID#
+    Set Global Variable    ${Gen_Tenant_ID}
+    ${Gen_Tenant_Version}=    Action Get Variable    &UC4RB_AC_TENANT_VERSION#
+    Set Global Variable    ${Gen_Tenant_Version}
+
+Delete Tenant
+    [Arguments]    ${DELETE_TENANT_ACTION}    ${TenantID}    ${FailIfNonExisting}
+    Init Action    ${DELETE_TENANT_ACTION}
+    Connect to Acronis
+    Action Set    &UC4RB_AC_TENANT_ID#    ${TenantID}
+    Action Set    &UC4RB_AC_FAIL#    ${FailIfNonExisting}
+    Action Execute

@@ -14,22 +14,22 @@ Resource          ../../Resources/actions.txt
 *** Test Cases ***    OK_NOK    TenantID          Version
 Disable tenant for valid ID and version
                       [Tags]    main_scenarios
-                      OK        ${Tenant_ID}      3
+                      OK        ${Tenant_ID}      5
+
+Disable tenant without version
+                      OK        ${Tenant_ID}      ${EMPTY}
+
+Disable tenant for invalid version
+                      OK        ${Tenant_ID}      Invalid
 
 Disable tenant for invalid ID
-                      NOK       Invalid           3
+                      NOK       Invalid           7
 
 Disable tenant details without ID
-                      NOK       ${EMPTY}          3
+                      NOK       ${EMPTY}          7
 
 Disable tenant for version not current
                       NOK       ${Tenant_ID}      1
-
-Disable tenant for invalid version
-                      NOK       ${Tenant_ID}      Invalid
-
-Disable tenant without version
-                      NOK       ${Tenant_ID}      ${EMPTY}
 
 *** Keywords ***
 Startup

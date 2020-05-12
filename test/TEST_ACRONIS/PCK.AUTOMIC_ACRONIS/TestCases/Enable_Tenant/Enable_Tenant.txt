@@ -14,22 +14,22 @@ Resource          ../../Resources/actions.txt
 *** Test Cases ***    OK_NOK    TenantID          Version
 Enable tenant for valid ID and version
                       [Tags]    main_scenarios
-                      OK        ${Tenant_ID}      2
-
-Enable tenant for invalid ID
-                      NOK       Invalid           2
-
-Enable tenant details without ID
-                      NOK       ${EMPTY}          3
-
-Enable tenant for version not current
-                      NOK       ${Tenant_ID}      1
-
-Enable tenant for invalid version
-                      NOK       ${Tenant_ID}      Invalid
+                      OK        ${Tenant_ID}      5
 
 Enable tenant without version
-                      NOK       ${Tenant_ID}      ${EMPTY}
+                      OK        ${Tenant_ID}      ${EMPTY}
+
+Enable tenant for invalid version
+                      OK        ${Tenant_ID}      Invalid
+
+Enable tenant for invalid Tenant ID
+                      NOK       Invalid           7
+
+Enable tenant details without Tenant ID
+                      NOK       ${EMPTY}          7
+
+Enable tenant for old version
+                      NOK       ${Tenant_ID}      1
 
 *** Keywords ***
 Startup
