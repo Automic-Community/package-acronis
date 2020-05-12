@@ -21,8 +21,8 @@ import java.util.regex.Pattern;
 /**
  * This action class used to update the existing user contact info.
  */
-@Action(name = "UPDATE_USER_CONTACT_INFO", title = "Update User Contact Info", path = "ACRONIS")
-public class UpdateUserContactInfoAction extends AbstractAcronisAction {
+@Action(name = "UPDATE_USER", title = "Update User Contact Info", path = "ACRONIS")
+public class UpdateUserAction extends AbstractAcronisAction {
 
     @ActionInputParam(name = "UC4RB_AC_USER_ID", required = true, tooltip = "Provide the User ID. E.g: "
             + "6f2e420b-bd8c-4ade-b3bb-4942d7c89032", label = "User ID")
