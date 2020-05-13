@@ -118,3 +118,23 @@ Connect to Acronis
     Action Set    &UC4RB_AC_API_VERSION#    ${Acronis_Version}
     Action Set    &UC4RB_AC_USERNAME#    ${Acronis_Username}
     Action Set    &UC4RB_AC_PASSWORD#    ${Acronis_Password}
+
+Create User
+    [Arguments]    ${CREATE_USER_ACTION}    ${TenantID}    ${Login}    ${Email}    ${FirstName}    ${LastName}
+    Init Action    ${CREATE_USER_ACTION}
+    Connect to Acronis
+    Action Set    &UC4RB_AC_TENANT_ID#    ${TenantID}
+    Action Set    &UC4RB_AC_USER_LOGIN#    ${Login}
+    Action Set    &UC4RB_AC_USER_EMAIL#    ${Email}
+    Action Set    &UC4RB_AC_USER_FIRST_NAME#    ${FirstName}
+    Action Set    &UC4RB_AC_USER_LAST_NAME#    ${LastName}
+    Action Execute
+    ${Gen_UserID}=    Action Get Variable    &UC4RB_AC_USER_ID#
+    Set Global Variable    ${Gen_UserID}
+
+Delete User
+    [Arguments]    ${DELETE_USER}    ${UserID}
+    Init Action    ${DELETE_USER}
+    Connect to Acronis
+    Action Set    &UC4RB_AC_USER_ID#    ${UserID}
+    Action Execute

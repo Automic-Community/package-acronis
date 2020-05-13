@@ -1,0 +1,63 @@
+*** Settings ***
+Suite Setup       Startup
+Suite Teardown    Teardown
+Force Tags        update_user_contact_info
+Test Template     Update User Contact Info Template
+Library           com.automic.robot.itpa.ItpaLibrary
+Library           String
+Library           DateTime
+Resource          ../../Resources/messages.txt
+Resource          ../../Resources/keywords.txt
+Resource          ../../Resources/variables.txt
+Resource          ../../Resources/actions.txt
+
+*** Test Cases ***    OK_NOK    UserID           Version     Email                            FirstName        LastName
+Update user email while providing user id and version
+                      OK        ${Gen_UserID}    1           ${Generated_Name}@automic.com    ${EMPTY}         ${EMPTY}
+
+Update user first name and last name while providing user id
+                      OK        ${Gen_UserID}    ${EMPTY}    ${EMPTY}                         ${First_Name}    ${Last_Name}
+
+Update user for invalid user id.
+                      NOK       Invalid          ${EMPTY}    ${EMPTY}                         ${First_Name}    ${Last_Name}
+
+Update user for invalid version
+                      NOK       ${Gen_UserID}    Invalid     ${EMPTY}                         ${Last_Name}     ${Last_Name}
+
+Update user without providing any input to update
+                      NOK       ${Gen_UserID}    ${EMPTY}    ${EMPTY}                         ${EMPTY}         ${EMPTY}
+
+*** Keywords ***
+Startup
+    Log    *******Start Test "UPDATE USER CONTACT INFO"*******
+    Log    *******Connect to AE*******
+    Connect AE
+    Generate String
+    Create User    ${CREATE_USER_ACTION}    ${Parent_TenantID}    ${Generated_Name}    ${Generated_Name}@broadcom.com    ${EMPTY}    ${EMPTY}
+
+Update User Contact Info Template
+    [Arguments]    ${OK_NOK}    ${UserID}    ${Version}    ${Email}    ${FirstName}    ${LastName}
+    [Documentation]    This action updates a user on Acronis.
+    ...    -${OK_NOK}: Boolean value indicate if the action is ENDED_OK or ENDED_NOT_OK. Value of this variable should be OK or NOK.
+    ...    -${UserID}: Provide the user id that you want to update.
+    ...    -${Version}: Provide the user version you want to update.
+    ...    -${Email}: Provide the user email you want to update.
+    ...    -${FirstName}: Provide the user first name you want to update.
+    ...    -${LastName}: Provide the user last name you want to update.
+    Generate String
+    Init Action    ${UPDATE_USER_CONTACT_INFO_ACTION}
+    Connect to Acronis
+    Run Keyword If    '${UserID}' == 'Invalid'    Action Set    &UC4RB_AC_USER_ID#    ${Generated_Name}_${Time}    ELSE    Action Set
+    ...    &UC4RB_AC_USER_ID#    ${UserID}
+    Run Keyword If    '${Version}' == 'Invalid'    Action Set    &UC4RB_AC_USER_VERSION#    ${Generated_Name}    ELSE    Action Set
+    ...    &UC4RB_AC_USER_VERSION#    ${Version}
+    Action Set    &UC4RB_AC_USER_EMAIL#    ${Email}
+    Action Set    &UC4RB_AC_USER_FIRST_NAME#    ${FirstName}
+    Action Set    &UC4RB_AC_USER_LAST_NAME#    ${LastName}
+    Action Execute
+    Run Keyword If    '${OK_NOK}' == 'OK'    Assert Success    ELSE    Assert Failure
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_NEW_USER_VERSION#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_NEW_USER_VERSION#
+
+Teardown
+    #Delete User    ${DELETE_USER}    ${Gen_UserID}
+    Log    *******End Test "UPDATE USER CONTACT INFO"*******
