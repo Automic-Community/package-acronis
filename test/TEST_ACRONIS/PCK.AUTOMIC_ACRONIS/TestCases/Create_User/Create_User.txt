@@ -1,0 +1,55 @@
+*** Settings ***
+Suite Setup       Startup
+Suite Teardown    Teardown
+Force Tags        create_user
+Test Template     Create User Template
+Library           com.automic.robot.itpa.ItpaLibrary
+Library           String
+Library           DateTime
+Resource          ../../Resources/messages.txt
+Resource          ../../Resources/keywords.txt
+Resource          ../../Resources/variables.txt
+Resource          ../../Resources/actions.txt
+
+*** Test Cases ***    OK_NOK    TenantID              Login                 Email                              FirstName        LastName
+Create user for valid user name
+                      [Tags]    main_scenarios
+                      OK        ${Parent_TenantID}    ${Generated_Name}     ${Generated_Name}@broadcom.com     ${First_Name}    ${Last_Name}
+
+Create user for already existing Login
+                      NOK       ${Parent_TenantID}    ${Generated_Name}     ${Generated_Name}1@broadcom.com    ${EMPTY}         ${EMPTY}
+
+Create user for non existing Tenant ID
+                      NOK       Invalid               ${Generated_Name}1    ${Generated_Name}2@broadcom.com    ${EMPTY}         ${EMPTY}
+
+*** Keywords ***
+Startup
+    Log    *******Start Test "CREATE USER"*******
+    Log    *******Connect to AE*******
+    Connect AE
+    Generate String
+
+Create User Template
+    [Arguments]    ${OK_NOK}    ${TenantID}    ${Login}    ${Email}    ${FirstName}    ${LastName}
+    [Documentation]    This action creates a new user on Acronis.
+    ...    -${OK_NOK}: Boolean value indicate if the action is ENDED_OK or ENDED_NOT_OK. Value of this variable should be OK or NOK.
+    ...    -${TenantID}: Provide the tenant id under which user will be created.
+    ...    -${Login}: Provide the login for user which will be created.
+    ...    -${Email}: Provide the email for user which will be created.
+    ...    -${FirstName}: Provide the first name for user which will be created.
+    ...    -${LastName}: Provide the last name for user which will be created.
+    Init Action    ${CREATE_USER_ACTION}
+    Connect to Acronis
+    Run Keyword If    '${TenantID}' == 'Invalid'    Action Set    &UC4RB_AC_TENANT_ID#    ${Generated_Name}_${Time}    ELSE    Action Set
+    ...    &UC4RB_AC_TENANT_ID#    ${TenantID}
+    Action Set    &UC4RB_AC_USER_LOGIN#    ${Login}
+    Action Set    &UC4RB_AC_USER_EMAIL#    ${Email}
+    Action Set    &UC4RB_AC_USER_FIRST_NAME#    ${FirstName}
+    Action Set    &UC4RB_AC_USER_LAST_NAME#    ${LastName}
+    Action Execute
+    Run Keyword If    '${OK_NOK}' == 'OK'    Assert Success    ELSE    Assert Failure
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_USER_ID#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_USER_ID#
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_USER_VERSION#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_USER_VERSION#
+
+Teardown
+    Log    *******End Test "CREATE USER"*******
