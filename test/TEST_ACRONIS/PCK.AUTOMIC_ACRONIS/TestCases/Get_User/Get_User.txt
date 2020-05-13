@@ -14,7 +14,7 @@ Resource          ../../Resources/actions.txt
 *** Test Cases ***    OK_NOK    UserID
 Get user details for valid ID
                       [Tags]    main_scenarios
-                      OK        ${User_ID}
+                      OK        ${Gen_UserID}
 
 Get user details for invalid ID
                       NOK       Invalid
@@ -27,6 +27,8 @@ Startup
     Log    *******Start Test "GET USER"*******
     Log    *******Connect to AE*******
     Connect AE
+    Generate String
+    Create User    ${CREATE_USER_ACTION}    ${Parent_TenantID}    ${Generated_Name}    ${Generated_Name}@broadcom.com    ${EMPTY}    ${EMPTY}
 
 Get User Template
     [Arguments]    ${OK_NOK}    ${UserID}
@@ -42,4 +44,5 @@ Get User Template
     Run Keyword If    '${OK_NOK}' == 'OK'    Assert Success    ELSE    Assert Failure
 
 Teardown
+    Delete User    ${DELETE_USER_ACTION}    ${Gen_UserID}    true
     Log    *******End Test "GET USER"*******

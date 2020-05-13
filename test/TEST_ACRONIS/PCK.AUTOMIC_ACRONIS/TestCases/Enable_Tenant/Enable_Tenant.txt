@@ -11,31 +11,35 @@ Resource          ../../Resources/keywords.txt
 Resource          ../../Resources/variables.txt
 Resource          ../../Resources/actions.txt
 
-*** Test Cases ***    OK_NOK    TenantID          Version
+*** Test Cases ***    OK_NOK    TenantID            Version
 Enable tenant for valid ID and version
                       [Tags]    main_scenarios
-                      OK        ${Tenant_ID}      5
+                      OK        ${Gen_Tenant_ID}    ${Gen_Tenant_Version}
 
 Enable tenant without version
-                      OK        ${Tenant_ID}      ${EMPTY}
+                      OK        ${Gen_Tenant_ID}    ${EMPTY}
 
 Enable tenant for invalid version
-                      OK        ${Tenant_ID}      Invalid
+                      OK        ${Gen_Tenant_ID}    Invalid
 
 Enable tenant for invalid Tenant ID
-                      NOK       Invalid           7
+                      NOK       Invalid             ${Gen_Tenant_Version}
 
 Enable tenant details without Tenant ID
-                      NOK       ${EMPTY}          7
+                      NOK       ${EMPTY}            ${Gen_Tenant_Version}
 
 Enable tenant for old version
-                      NOK       ${Tenant_ID}      1
+                      NOK       ${Gen_Tenant_ID}    1
 
 *** Keywords ***
 Startup
     Log    *******Start Test "ENABLE TENANT"*******
     Log    *******Connect to AE*******
     Connect AE
+    Generate String
+    Generate Number
+    Create Tenant    ${CREATE_TENANT_ACTION}    ${Generated_Name}    ${Parent_TenantID}    Customer    ${Generated_Name}@broadcom.com    ${FirstName}
+    ...    ${LastName}
 
 Enable tenant Template
     [Arguments]    ${OK_NOK}    ${TenantID}    ${Version}
@@ -54,4 +58,5 @@ Enable tenant Template
     Run Keyword If    '${OK_NOK}' == 'OK'    Assert Success    ELSE    Assert Failure
 
 Teardown
+    Delete Tenant    ${DELETE_TENANT_ACTION}    ${Gen_Tenant_ID}    true
     Log    *******End Test "ENABLE TENANT"*******

@@ -107,7 +107,7 @@ Set ID Global
     ${ID}=    Action Get Variable    ${Object_Variable}
     Should Not Be Empty    ${ID}
     Set Global Variable    ${ID}
-	
+
 Generate Number
     ${Generated_Number}    Generate Random String    8    [NUMBERS]
     Set Global Variable    ${Generated_Number}
@@ -151,5 +151,26 @@ Delete Tenant
     Init Action    ${DELETE_TENANT_ACTION}
     Connect to Acronis
     Action Set    &UC4RB_AC_TENANT_ID#    ${TenantID}
+    Action Set    &UC4RB_AC_FAIL#    ${FailIfNonExisting}
+    Action Execute
+
+Create User
+    [Arguments]    ${CREATE_USER_ACTION}    ${TenantID}    ${Login}    ${Email}    ${FirstName}    ${LastName}
+    Init Action    ${CREATE_USER_ACTION}
+    Connect to Acronis
+    Action Set    &UC4RB_AC_TENANT_ID#    ${TenantID}
+    Action Set    &UC4RB_AC_USER_LOGIN#    ${Login}
+    Action Set    &UC4RB_AC_USER_EMAIL#    ${Email}
+    Action Set    &UC4RB_AC_USER_FIRST_NAME#    ${FirstName}
+    Action Set    &UC4RB_AC_USER_LAST_NAME#    ${LastName}
+    Action Execute
+    ${Gen_UserID}=    Action Get Variable    &UC4RB_AC_USER_ID#
+    Set Global Variable    ${Gen_UserID}
+
+Delete User
+    [Arguments]    ${DELETE_USER_ACTION}    ${UserID}    ${FailIfNonExisting}
+    Init Action    ${DELETE_USER_ACTION}
+    Connect to Acronis
+    Action Set    &UC4RB_AC_USER_ID#    ${UserID}
     Action Set    &UC4RB_AC_FAIL#    ${FailIfNonExisting}
     Action Execute
