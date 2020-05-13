@@ -15,13 +15,13 @@ import com.broadcom.util.ConsoleWriter;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
-public abstract class AbstractAcronisAction extends EndpointAction {
+public abstract class APIClientAuthAction extends EndpointAction {
 
-	@ActionInputParam(required = true, tooltip = "Provide the username to connect to the acronis. E.g. SP1089871", name = "UC4RB_AC_USERNAME", label = "Username")
-	private String username;
+	@ActionInputParam(required = true, tooltip = "Provide the client id to authenticate to the acronis. E.g. 748fa2a7-9efc-44a3-af3c-9c457e21a920", name = "UC4RB_AC_CLIENT_ID", label = "Client Id")
+	private String clientId;
 
-	@ActionInputParam(password = true, required = true, tooltip = "Provide the password to connect to the acronis.", name = "UC4RB_AC_PASSWORD", label = "Password")
-	private String password;
+	@ActionInputParam(password = true, required = true, tooltip = "Provide the client secret to authenticate to the acronis. E.g. 7d9691b747c94c09bf4f2c4c4c029040", name = "UC4RB_AC_CLIENT_SECRET", label = "Client Secret")
+	private String clientSecret;
 
 	/**
 	 * Client
@@ -38,7 +38,7 @@ public abstract class AbstractAcronisAction extends EndpointAction {
 		try {
 			prepareInputParameters();
 			client = HttpClientConfig.getClient(url.getScheme(), true);
-			client.addFilter(new HTTPBasicAuthFilter(username, password));
+			client.addFilter(new HTTPBasicAuthFilter(clientId, clientSecret));
 			client.addFilter(new GenericResponseFilter());
 			executeSpecific();
 		} catch (Exception exception) {
@@ -70,8 +70,8 @@ public abstract class AbstractAcronisAction extends EndpointAction {
 			throw new AcronisException(msg);
 		}
 
-		if (StringUtils.isEmpty(username)) {
-			String msg = String.format(Constants.ISEMPTY, "Username");
+		if (StringUtils.isEmpty(clientId)) {
+			String msg = String.format(Constants.ISEMPTY, "Client Id");
 			throw new AcronisException(msg);
 		}
 
@@ -80,8 +80,8 @@ public abstract class AbstractAcronisAction extends EndpointAction {
 			throw new AcronisException(msg);
 		}
 
-		if (StringUtils.isEmpty(password)) {
-			String msg = String.format(Constants.ISEMPTY, "Password");
+		if (StringUtils.isEmpty(clientSecret)) {
+			String msg = String.format(Constants.ISEMPTY, "Client Secret");
 			throw new AcronisException(msg);
 		}
 	}
