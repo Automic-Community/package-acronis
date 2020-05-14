@@ -15,6 +15,7 @@ import com.broadcom.helper.TokenHelper;
 import com.broadcom.util.ConsoleWriter;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.WebResource.Builder;
 
 /**
  * This action will get the token.
@@ -37,12 +38,12 @@ public class ActivateUserAction extends APIClientAuthAction {
 		try {
 			String accessToken = getToken();
 			WebResource webResource = client.resource(url);
-			webResource.header("Authorization", "Bearer " + accessToken);
 			webResource = webResource.path(Constants.API).path(version).path(Constants.USERS).path(userId)
 					.path("password");
+			Builder builder = webResource.header("Authorization", "Bearer " + accessToken);
 			LOGGER.info("Calling url: " + webResource.getURI());
 			ConsoleWriter.writeln("Calling url: " + webResource.getURI());
-			webResource.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, createRequest());
+			builder.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, createRequest());
 		} catch (Exception e) {
 			String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);
 			LOGGER.warning(e.getMessage());
