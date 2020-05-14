@@ -1,5 +1,10 @@
 package com.broadcom;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.ws.rs.core.MediaType;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.broadcom.apdk.api.annotations.Action;
@@ -8,6 +13,7 @@ import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
 import com.broadcom.helper.TokenHelper;
 import com.broadcom.util.ConsoleWriter;
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 /**
@@ -36,6 +42,7 @@ public class ActivateUserAction extends APIClientAuthAction {
 					.path("password");
 			LOGGER.info("Calling url: " + webResource.getURI());
 			ConsoleWriter.writeln("Calling url: " + webResource.getURI());
+			webResource.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, createRequest());
 		} catch (Exception e) {
 			String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);
 			LOGGER.warning(e.getMessage());
@@ -62,6 +69,12 @@ public class ActivateUserAction extends APIClientAuthAction {
 			String msg = String.format(Constants.ISEMPTY, "New Password");
 			throw new AcronisException(msg);
 		}
+	}
+
+	private Map<String, String> createRequest() {
+		Map<String, String> request = new HashMap<>(1);
+		request.put("password", newPassword);
+		return request;
 	}
 
 	@Override
