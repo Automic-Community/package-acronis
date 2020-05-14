@@ -34,6 +34,8 @@ public final class Constants {
     public static final String CONTACT = "contact";
     public static final String BLANK_INPUT_PARAMETER_ERROR_MESSAGE = "All input parameter [%s, %s, %s] cannot left "
             + "blank.";
+    public static final String CLIENTS = "clients";
+    public static final String RESET_SECRET = "reset_secret";
 
     /** EMAIL_VALIATION_REGEX used to validate the email. */
     public static final String EMAIL_VALIATION_REGEX = "^(.+)@(.+)$";
