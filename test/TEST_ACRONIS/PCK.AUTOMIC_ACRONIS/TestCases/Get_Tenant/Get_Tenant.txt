@@ -1,0 +1,49 @@
+*** Settings ***
+Suite Setup       Startup
+Suite Teardown    Teardown
+Force Tags        get_tenant
+Test Template     Get Tenant Template
+Library           com.automic.robot.itpa.ItpaLibrary
+Library           String
+Library           DateTime
+Resource          ../../Resources/messages.txt
+Resource          ../../Resources/keywords.txt
+Resource          ../../Resources/variables.txt
+Resource          ../../Resources/actions.txt
+
+*** Test Cases ***    OK_NOK    TenantID
+Get tenant details for valid ID
+                      [Tags]    main_scenarios
+                      OK        ${Gen_Tenant_ID}
+
+Get tenant details for invalid ID
+                      NOK       Invalid
+
+Get tenant details without ID
+                      NOK       ${EMPTY}
+
+*** Keywords ***
+Startup
+    Log    *******Start Test "GET TENANT"*******
+    Log    *******Connect to AE*******
+    Connect AE
+    Generate String
+    Create Tenant    ${CREATE_TENANT_ACTION}    ${Generated_Name}    ${Parent_TenantID}    Customer    ${Generated_Name}@broadcom.com    ${FirstName}
+    ...    ${LastName}
+
+Get Tenant Template
+    [Arguments]    ${OK_NOK}    ${TenantID}
+    [Documentation]    This action fetches a tenant details from Acronis.
+    ...    -${OK_NOK}: Boolean value indicate if the action is ENDED_OK or ENDED_NOT_OK. Value of this variable should be OK or NOK.
+    ...    -${TenantID}: Provide the tenant id that you want to fetch details.
+    Generate String
+    Init Action    ${GET_TENANT_ACTION}
+    Connect to Acronis
+    Run Keyword If    '${TenantID}' == 'Invalid'    Action Set    &UC4RB_AC_TENANT_ID#    ${Generated_Name}_${Time}    ELSE    Action Set
+    ...    &UC4RB_AC_TENANT_ID#    ${TenantID}
+    Action Execute
+    Run Keyword If    '${OK_NOK}' == 'OK'    Assert Success    ELSE    Assert Failure
+
+Teardown
+    Delete Tenant    ${DELETE_TENANT_ACTION}    ${Gen_Tenant_ID}    true
+    Log    *******End Test "GET TENANT"*******
