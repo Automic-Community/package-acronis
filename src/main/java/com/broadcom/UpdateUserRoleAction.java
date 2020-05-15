@@ -3,6 +3,7 @@ package com.broadcom;
 import com.broadcom.apdk.api.annotations.Action;
 import com.broadcom.apdk.api.annotations.ActionInputParam;
 import com.broadcom.constants.Constants;
+import com.broadcom.constants.Constants.Role;
 import com.broadcom.exceptions.AcronisException;
 import com.broadcom.util.CommonUtil;
 import com.broadcom.util.ConsoleWriter;
@@ -43,9 +44,9 @@ public class UpdateUserRoleAction extends AbstractAcronisAction {
                     + "6f2e420b-bd8c-4ade-b3bb-4942d7c89032", label = "Trustee ID")
     private String trusteeId;
 
-    @ActionInputParam(name = "UC4RB_AC_ROLE_ID", required = true, tooltip = "Provide the role to be assigned. E.g: "
-            + "Compay admin", label = "Role ID")
-    Constants.Role roleId = Constants.Role.company_admin;
+    @ActionInputParam(name = "UC4RB_AC_ROLE_ID", tooltip = "Provide the role to be assigned. E.g: "
+            + "Company admin", label = "Role ID")
+    Role roleId = Role.company_admin;
 
     @Override
     protected void executeSpecific() throws AcronisException {
@@ -57,7 +58,8 @@ public class UpdateUserRoleAction extends AbstractAcronisAction {
                     Constants.ACCESS_POLICIES);
             LOGGER.info("Calling url: " + webResource.getURI());
             ConsoleWriter.writeln("Calling url: " + webResource.getURI());
-            response = webResource.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, request);
+            ConsoleWriter.writeln("Request Body: " + request);
+            response = webResource.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, request);
             LOGGER.info("Response: " + CommonUtil.jsonObjectResponse(response.getEntityInputStream()));
         } catch (Exception e) {
             String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);

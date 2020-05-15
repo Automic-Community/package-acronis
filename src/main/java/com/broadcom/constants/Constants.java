@@ -60,7 +60,8 @@ public final class Constants {
         @EnumValue("SYNC_SHARE_ADMIN") sync_share_admin,
         @EnumValue("SYNC_SHARE_USER") sync_share_user,
         @EnumValue("NOTARY_ADMIN") notary_admin,
-        @EnumValue("NOTARY_USER") notary_user
+        @EnumValue("NOTARY_USER") notary_user;
+
     }
 
     private Constants() {
