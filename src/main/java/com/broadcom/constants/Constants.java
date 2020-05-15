@@ -36,7 +36,6 @@ public final class Constants {
             + "blank.";
     public static final String CLIENTS = "clients";
     public static final String RESET_SECRET = "reset_secret";
-    public static final String PRICING = "pricing";
 
     /** EMAIL_VALIATION_REGEX used to validate the email. */
     public static final String EMAIL_VALIATION_REGEX = "^(.+)@(.+)$";
