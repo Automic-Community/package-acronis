@@ -55,7 +55,6 @@ public class ActivateUserAction extends APIClientAuthAction {
 		WebResource webResource = client.resource(url);
 		webResource = webResource.path(Constants.API).path(version).path(Constants.IDP).path(Constants.TOKEN);
 		LOGGER.info("Calling url: " + webResource.getURI());
-		ConsoleWriter.writeln("Calling url: " + webResource.getURI());
 		return TokenHelper.getToken(webResource);
 	}
 
