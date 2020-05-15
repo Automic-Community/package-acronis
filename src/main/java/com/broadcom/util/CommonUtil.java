@@ -12,6 +12,10 @@ import javax.json.JsonWriter;
 import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
 
+import com.broadcom.helper.GetHelper;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+
 /**
  * Utility class
  * 
@@ -92,5 +96,4 @@ public final class CommonUtil {
 
 		return stringWriter.toString();
 	}
-
 }
