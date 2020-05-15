@@ -44,5 +44,5 @@ Get User Template
     Run Keyword If    '${OK_NOK}' == 'OK'    Assert Success    ELSE    Assert Failure
 
 Teardown
-    Delete User    ${DELETE_USER}    ${Gen_UserID}
+    Delete User    ${DELETE_USER_ACTION}    ${Gen_UserID}    true
     Log    *******End Test "GET USER"*******

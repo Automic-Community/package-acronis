@@ -3,7 +3,6 @@ package com.broadcom;
 import java.util.logging.Level;
 
 import javax.json.JsonObject;
-import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -12,6 +11,7 @@ import com.broadcom.apdk.api.annotations.ActionInputParam;
 import com.broadcom.apdk.api.annotations.ActionOutputParam;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
+import com.broadcom.helper.GetHelper;
 import com.broadcom.util.CommonUtil;
 import com.broadcom.util.ConsoleWriter;
 import com.sun.jersey.api.client.ClientResponse;
@@ -58,11 +58,10 @@ public class GetTenantAction extends AbstractAcronisAction {
 		ClientResponse response = null;
 		try {
 			WebResource webResource = client.resource(url);
-			webResource = webResource.path("api").path(version).path("tenants").path(tenantId);
+			webResource = webResource.path(Constants.API).path(version).path(Constants.TENANTS).path(tenantId);
 			LOGGER.info("Calling url: " + webResource.getURI());
 			ConsoleWriter.writeln("Calling url: " + webResource.getURI());
-			webResource.accept(MediaType.APPLICATION_JSON);
-			response = webResource.get(ClientResponse.class);
+			response = GetHelper.urlCall(webResource);
 			prepareOutput(CommonUtil.jsonObjectResponse(response.getEntityInputStream()));
 		} catch (Exception ex) {
 			String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);
