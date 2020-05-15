@@ -56,6 +56,7 @@ Enable tenant Template
     ...    &UC4RB_AC_TENANT_VERSION#    ${Version}
     Action Execute
     Run Keyword If    '${OK_NOK}' == 'OK'    Assert Success    ELSE    Assert Failure
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_NEW_VERSION#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_NEW_VERSION#
 
 Teardown
     Delete Tenant    ${DELETE_TENANT_ACTION}    ${Gen_Tenant_ID}    true

@@ -43,6 +43,11 @@ Get Tenant Template
     ...    &UC4RB_AC_TENANT_ID#    ${TenantID}
     Action Execute
     Run Keyword If    '${OK_NOK}' == 'OK'    Assert Success    ELSE    Assert Failure
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_ENABLED#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_ENABLED#
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_PARENT_TENANT_ID#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_PARENT_TENANT_ID#
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_TENANT_KIND#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_TENANT_KIND#
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_TENANT_NAME#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_TENANT_NAME#
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_TENANT_VERSION#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_TENANT_VERSION#
 
 Teardown
     Delete Tenant    ${DELETE_TENANT_ACTION}    ${Gen_Tenant_ID}    true
