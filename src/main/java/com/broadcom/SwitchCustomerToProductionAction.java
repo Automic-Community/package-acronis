@@ -36,27 +36,29 @@ public class SwitchCustomerToProductionAction extends AbstractAcronisAction  {
 	@ActionOutputParam(name = "UC4RB_AC_TENANT_MODE")
 	String tenantMode;
 	
-	/** tenantMode. */
-	@ActionOutputParam(name = "UC4RB_AC_TENANT_CURRENCY")
-	String currency;
-
-	/** tenantNewVersion. */
-	@ActionOutputParam(name = "UC4RB_AC_TENANT_NEW_VERSION")
-	Long tenantNewVersion;
+	/** currencyVersion. */
+	@ActionOutputParam(name = "UC4RB_AC_CURRENCY_VERSION")
+	Long currencyVersion;
+	
+	private boolean isModeAlreadyProduction;
 
 	
 	@Override
 	protected void executeSpecific() throws AcronisException {
 		validateInputs();
 		ClientResponse response = null;
-		Map<String, Object> request = createRequest();
+		Map<String, Object> request = null;
 		try {			
 			WebResource webResource = client.resource(url);
-			webResource = webResource.path(Constants.API).path(version).path(Constants.TENANTS).path(tenantId).path("pricing");
+			webResource = webResource.path(Constants.API).path(version).path(Constants.TENANTS).path(tenantId).path(Constants.PRICING);
+			request=createRequest(webResource);
+			
+			if(!isModeAlreadyProduction) {
 			ConsoleWriter.writeln("Calling url: " + webResource.getURI());
-			ConsoleWriter.writeln("Request: " + request);			
+			ConsoleWriter.writeln("Request: " + request);				
 			response = webResource.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, request);			
-			prepareOutput(CommonUtil.jsonObjectResponse(response.getEntityInputStream()));			
+			prepareOutput(CommonUtil.jsonObjectResponse(response.getEntityInputStream()));
+			}
 		} catch (Exception ex) {
 			String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);
 			LOGGER.log(Level.SEVERE, ex.toString(), ex);
@@ -67,9 +69,8 @@ public class SwitchCustomerToProductionAction extends AbstractAcronisAction  {
 	private void prepareOutput(JsonObject jsonObjectResponse) {
 		// write response to console
 		ConsoleWriter.writeln("Response: \n" + CommonUtil.jsonPrettyPrinting(jsonObjectResponse));
-		tenantNewVersion = jsonObjectResponse.getJsonNumber(Constants.VERSION).longValue();
+		currencyVersion = jsonObjectResponse.getJsonNumber(Constants.VERSION).longValue();
 		tenantMode=jsonObjectResponse.getString("mode");
-		currency=jsonObjectResponse.isNull("curreny")?"":jsonObjectResponse.getString("curreny");
 	}
 
 	private void validateInputs() throws AcronisException {
@@ -85,25 +86,23 @@ public class SwitchCustomerToProductionAction extends AbstractAcronisAction  {
 	 * @return map with string keys and object type values
 	 * @throws AcronisException
 	 */
-	private Map<String, Object> createRequest() throws AcronisException {	
-		ClientResponse response = null;
-		WebResource webResource = client.resource(url);
-		webResource = webResource.path("api").path(version).path("tenants").path(tenantId).path("pricing");
-		LOGGER.info("Calling url: " + webResource.getURI());
-		ConsoleWriter.writeln("Calling url: " + webResource.getURI());
+	private Map<String, Object> createRequest(WebResource webResource) throws AcronisException {	
 		
-		webResource.accept(MediaType.APPLICATION_JSON);
-		response = webResource.get(ClientResponse.class);
+		ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
 		JsonObject jsonResponse = CommonUtil.jsonObjectResponse(response.getEntityInputStream());
-		ConsoleWriter.writeln("Response: " + CommonUtil.jsonPrettyPrinting(jsonResponse));
+		LOGGER.info("Response: " + CommonUtil.jsonPrettyPrinting(jsonResponse));
 			
-		if(jsonResponse.getString("mode").equalsIgnoreCase("production")) {
-			String msg = String.format(Constants.REQ_ERROR_MESSAGE, " Tenant Mode is "+ jsonResponse.getString("mode"));
-			throw new AcronisException(msg);
-		}	
 		Map<String, Object> request = new HashMap<>();
+		isModeAlreadyProduction=jsonResponse.getString("mode").equals("production")?true:false;
+		
+		if(isModeAlreadyProduction) {	
+			ConsoleWriter.writeln("Customer Mode is already in production");		
+			LOGGER.info("Customer Mode is already in production");
+			prepareOutput(jsonResponse);	
+		}else {
 		request.put(Constants.VERSION, jsonResponse.getJsonNumber(Constants.VERSION).longValue());
-		request.put("mode", "production");		
+		request.put("mode", "production");	
+		}
 		return request;
 	}
 	
