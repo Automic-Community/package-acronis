@@ -1,8 +1,8 @@
 *** Settings ***
 Suite Setup       Startup
 Suite Teardown    Teardown
-Force Tags        update_user_contact_info
-Test Template     Update User Contact Info Template
+Force Tags        update_user
+Test Template     Update User Template
 Library           com.automic.robot.itpa.ItpaLibrary
 Library           String
 Library           DateTime
@@ -29,13 +29,13 @@ Update user without providing any input to update
 
 *** Keywords ***
 Startup
-    Log    *******Start Test "UPDATE USER CONTACT INFO"*******
+    Log    *******Start Test "UPDATE USER"*******
     Log    *******Connect to AE*******
     Connect AE
     Generate String
     Create User    ${CREATE_USER_ACTION}    ${Parent_TenantID}    ${Generated_Name}    ${Generated_Name}@broadcom.com    ${EMPTY}    ${EMPTY}
 
-Update User Contact Info Template
+Update User Template
     [Arguments]    ${OK_NOK}    ${UserID}    ${Version}    ${Email}    ${FirstName}    ${LastName}
     [Documentation]    This action updates a user on Acronis.
     ...    -${OK_NOK}: Boolean value indicate if the action is ENDED_OK or ENDED_NOT_OK. Value of this variable should be OK or NOK.
@@ -45,7 +45,7 @@ Update User Contact Info Template
     ...    -${FirstName}: Provide the user first name you want to update.
     ...    -${LastName}: Provide the user last name you want to update.
     Generate String
-    Init Action    ${UPDATE_USER_CONTACT_INFO_ACTION}
+    Init Action    ${UPDATE_USER_ACTION}
     Connect to Acronis
     Run Keyword If    '${UserID}' == 'Invalid'    Action Set    &UC4RB_AC_USER_ID#    ${Generated_Name}_${Time}    ELSE    Action Set
     ...    &UC4RB_AC_USER_ID#    ${UserID}
@@ -59,5 +59,5 @@ Update User Contact Info Template
     Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_NEW_USER_VERSION#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_NEW_USER_VERSION#
 
 Teardown
-    #Delete User    ${DELETE_USER}    ${Gen_UserID}
-    Log    *******End Test "UPDATE USER CONTACT INFO"*******
+    Delete User    ${DELETE_USER_ACTION}    ${Gen_UserID}    true
+    Log    *******End Test "UPDATE USER"*******

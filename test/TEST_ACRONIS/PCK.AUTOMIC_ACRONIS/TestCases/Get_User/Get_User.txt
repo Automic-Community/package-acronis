@@ -42,7 +42,11 @@ Get User Template
     ...    &UC4RB_AC_USER_ID#    ${UserID}
     Action Execute
     Run Keyword If    '${OK_NOK}' == 'OK'    Assert Success    ELSE    Assert Failure
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_ACTIVATED#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_ACTIVATED#
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_ENABLED#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_ENABLED#
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_TENANT_ID#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_TENANT_ID#
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_USER_VERSION#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_USER_VERSION#
 
 Teardown
-    Delete User    ${DELETE_USER}    ${Gen_UserID}
+    Delete User    ${DELETE_USER_ACTION}    ${Gen_UserID}    true
     Log    *******End Test "GET USER"*******

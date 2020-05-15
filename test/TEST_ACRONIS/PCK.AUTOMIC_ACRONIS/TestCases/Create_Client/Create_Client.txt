@@ -1,0 +1,47 @@
+*** Settings ***
+Suite Setup       Startup
+Suite Teardown    Teardown
+Force Tags        create_client
+Test Template     Create Client Template
+Library           com.automic.robot.itpa.ItpaLibrary
+Library           String
+Library           DateTime
+Resource          ../../Resources/messages.txt
+Resource          ../../Resources/keywords.txt
+Resource          ../../Resources/variables.txt
+Resource          ../../Resources/actions.txt
+
+*** Test Cases ***    OK_NOK    ClientName            ParentTenantID
+Create client for valid client name
+                      [Tags]    main_scenarios
+                      OK        ${Generated_Name}     ${Parent_TenantID}
+
+Create client with non existing parent id
+                      NOK       ${Generated_Name}1    ${Generated_Number}
+
+*** Keywords ***
+Startup
+    Log    *******Start Test "CREATE CLIENT"*******
+    Log    *******Connect to AE*******
+    Connect AE
+    Generate String
+    Generate Number
+
+Create Client Template
+    [Arguments]    ${OK_NOK}    ${ClientName}    ${ParentTenantID}
+    [Documentation]    This action creates a new client on Acronis.
+    ...    -${OK_NOK}: Boolean value indicate if the action is ENDED_OK or ENDED_NOT_OK. Value of this variable should be OK or NOK.
+    ...    -${ClientName}: Provide the client name to be created.
+    ...    -${ParentTenantID}: Provide the parent tenant id under which tenant will be created..
+    Init Action    ${CREATE_CLIENT_ACTION}
+    Connect to Acronis
+    Action Set    &UC4RB_AC_CLIENT_NAME#    ${ClientName}
+    Run Keyword If    '${ParentTenantID}' == 'Invalid'    Action Set    &UC4RB_AC_PARENT_ID#    ${Generated_Number}    ELSE    Action Set
+    ...    &UC4RB_AC_PARENT_ID#    ${ParentTenantID}
+    Action Execute
+    Run Keyword If    '${OK_NOK}' == 'OK'    Assert Success    ELSE    Assert Failure
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_CLIENT_ID#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_CLIENT_ID#
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_CLIENT_SECRET#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_CLIENT_SECRET#
+
+Teardown
+    Log    *******End Test "CREATE CLIENT"*******
