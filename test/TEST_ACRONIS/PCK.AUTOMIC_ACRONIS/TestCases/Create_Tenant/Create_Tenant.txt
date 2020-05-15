@@ -1,0 +1,59 @@
+*** Settings ***
+Suite Setup       Startup
+Suite Teardown    Teardown
+Force Tags        create_tenant
+Test Template     Create Tenant Template
+Library           com.automic.robot.itpa.ItpaLibrary
+Library           String
+Library           DateTime
+Resource          ../../Resources/messages.txt
+Resource          ../../Resources/keywords.txt
+Resource          ../../Resources/variables.txt
+Resource          ../../Resources/actions.txt
+
+*** Test Cases ***    OK_NOK    TenantName        ParentTenantID        Type        Email             FirstName        LastName
+Create tenant for valid parent tenant id
+                      [Tags]    main_scenarios
+                      OK        GeneratedName     ${Parent_TenantID}    Customer    GeneratedEmail    ${First_Name}    ${Last_Name}
+
+Create tenant for invalid parent tenant id
+                      NOK       GeneratedName     Invalid               Customer    ${EMPTY}          ${EMPTY}         ${EMPTY}
+
+*** Keywords ***
+Startup
+    Log    *******Start Test "CREATE TENANT"*******
+    Log    *******Connect to AE*******
+    Connect AE
+    Generate String
+
+Create Tenant Template
+    [Arguments]    ${OK_NOK}    ${TenantName}    ${ParentTenantID}    ${Type}    ${Email}    ${FirstName}
+    ...    ${LastName}
+    [Documentation]    This action creates a new tenant on Acronis.
+    ...    -${OK_NOK}: Boolean value indicate if the action is ENDED_OK or ENDED_NOT_OK. Value of this variable should be OK or NOK.
+    ...    -${TenantName}: Provide the tenant name to be created.
+    ...    -${ParentTenantID}: Provide the parent tenant id under which tenant will be created..
+    ...    -${Type}: Provide the tenant type to be created.
+    ...    -${Email}: Provide the email to be created for user under tenant.
+    ...    -${FirstName}: Provide the first name to be created for user under tenant.
+    ...    -${LastName}: Provide the last name to be created.for user under tenant.
+    Init Action    ${CREATE_TENANT_ACTION}
+    Connect to Acronis
+    Run Keyword If    '${TenantName}' == 'GeneratedName'    Action Set    &UC4RB_AC_TENANT_NAME#    ${Generated_Name}    ELSE    Action Set
+    ...    &UC4RB_AC_TENANT_NAME#    ${TenantName}
+    Run Keyword If    '${ParentTenantID}' == 'Invalid'    Action Set    &UC4RB_AC_PARENT_ID#    ${Generated_Name}    ELSE    Action Set
+    ...    &UC4RB_AC_PARENT_ID#    ${ParentTenantID}
+    Action Set    &UC4RB_AC_TENANT_KIND#    ${Type}
+    Run Keyword If    '${Email}' == 'GeneratedEmail'    Action Set    &UC4RB_AC_EMAIL#    ${Generated_Name}@broadcom.com    ELSE    Action Set
+    ...    &UC4RB_AC_EMAIL#    ${Email}
+    Action Set    &UC4RB_AC_FIRST_NAME#    ${FirstName}
+    Action Set    &UC4RB_AC_LAST_NAME#    ${LastName}
+    Action Execute
+    Run Keyword If    '${OK_NOK}' == 'OK'    Assert Success    ELSE    Assert Failure
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_TENANT_VERSION#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_TENANT_VERSION#
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_TENANT_ID#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_TENANT_ID#
+    Run Keyword If    '${OK_NOK}' == 'OK'    Set ID Global    &UC4RB_AC_TENANT_ID#
+
+Teardown
+    Delete Tenant    ${DELETE_TENANT_ACTION}    ${ID}    false
+    Log    *******End Test "CREATE TENANT"*******

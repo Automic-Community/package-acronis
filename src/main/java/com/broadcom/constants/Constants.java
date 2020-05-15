@@ -35,23 +35,29 @@ public final class Constants {
     public static final String BLANK_INPUT_PARAMETER_ERROR_MESSAGE = "All input parameter [%s, %s, %s] cannot left "
             + "blank.";
     public static final String PRICING = "pricing";
+	public static final String TRUE_FALSE = "The value for %s should be true or false";
+	public static final String CLIENTS = "clients";
+	public static final String TENANT_VERSION_MISMATCH = "Tenant version does not match";
+	public static final String TOKEN = "token";
+	public static final String IDP = "idp";
 
-    /** EMAIL_VALIATION_REGEX used to validate the email. */
-    public static final String EMAIL_VALIATION_REGEX = "^(.+)@(.+)$";
+	/** EMAIL_VALIATION_REGEX used to validate the email. */
+	public static final String EMAIL_VALIATION_REGEX = "^(.+)@(.+)$";
 
-    public enum Kind {
-        @EnumValue("Customer") CUSTOMER,
-        @EnumValue("Partner") PARTNER,
-        @EnumValue("Folder") FOLDER,
-        @EnumValue("Unit") UNIT;
+	public enum Kind {
+		@EnumValue("Customer")
+		CUSTOMER, @EnumValue("Partner")
+		PARTNER, @EnumValue("Folder")
+		FOLDER, @EnumValue("Unit")
+		UNIT;
 
-        @Override
-        public String toString() {
-            return name().toLowerCase();
-        }
-    }
+		@Override
+		public String toString() {
+			return name().toLowerCase();
+		}
+	}
 
-    private Constants() {
-    }
+	private Constants() {
+	}
 
 }

@@ -1,0 +1,66 @@
+*** Settings ***
+Suite Setup       Startup
+Suite Teardown    Teardown
+Force Tags        update_tenant
+Test Template     Update Tenant Template
+Library           com.automic.robot.itpa.ItpaLibrary
+Library           String
+Library           DateTime
+Resource          ../../Resources/messages.txt
+Resource          ../../Resources/keywords.txt
+Resource          ../../Resources/variables.txt
+Resource          ../../Resources/actions.txt
+
+*** Test Cases ***    OK_NOK    TenantID            Version                  TenantName    Enable      Email             FirstName        LastName
+Update tenant name and enabling it for existing tenant id while providing version as well
+                      OK        ${Gen_Tenant_ID}    ${Gen_Tenant_Version}    Generated     true        ${EMPTY}          ${EMPTY}         ${EMPTY}
+
+Update tenant email, first name and last name for existing tenant id while not providing version
+                      OK        ${Gen_Tenant_ID}    ${EMPTY}                 ${EMPTY}      ${EMPTY}    GeneratedEmail    ${First_Name}    ${Last_Name}
+
+Update tenant for invalid Tenant ID
+                      NOK       Invalid             ${EMPTY}                 ${EMPTY}      false       ${EMPTY}          ${EMPTY}         ${EMPTY}
+
+Update tenant with invalid Version
+                      NOK       ${Gen_Tenant_ID}    ${Generated_Number}      ${EMPTY}      false       ${EMPTY}          ${EMPTY}         ${EMPTY}
+
+*** Keywords ***
+Startup
+    Log    *******Start Test "UPDATE TENANT"*******
+    Log    *******Connect to AE*******
+    Connect AE
+    Generate String
+    Generate Number
+    Create Tenant    ${CREATE_TENANT_ACTION}    ${Generated_Name}    ${Parent_TenantID}    Customer    ${Generated_Name}@broadcom.com    ${FirstName}
+    ...    ${LastName}
+
+Update Tenant Template
+    [Arguments]    ${OK_NOK}    ${TenantID}    ${Version}    ${TenantName}    ${Enable}    ${Email}
+    ...    ${FirstName}    ${LastName}
+    [Documentation]    This action updates a tenant on Acronis.
+    ...    -${OK_NOK}: Boolean value indicate if the action is ENDED_OK or ENDED_NOT_OK. Value of this variable should be OK or NOK.
+    ...    -${TenantID}: Provide the tenant id that you want to update.
+    ...    -${Version}: Version should be same as the tenant that you want to update.
+    ...    -${TenantName}: Provide the tenant name if you want to update.
+    ...    -${Enable}: Enable or Disable the tenant.
+    ...    -${Email}: Provide the customer email if you want to update.
+    ...    -${FirstName}: Provide the customer first name if you want to update.
+    ...    -${LastName}: Provide the customer last name if you want to update.
+    Init Action    ${UPDATE_TENANT_ACTION}
+    Connect to Acronis
+    Run Keyword If    '${TenantID}' == 'Invalid'    Action Set    &UC4RB_AC_TENANT_ID#    ${Generated_Name}_${Time}    ELSE    Action Set
+    ...    &UC4RB_AC_TENANT_ID#    ${TenantID}
+    Action Set    &UC4RB_AC_TENANT_VERSION#    ${Version}
+    Action Set    &UC4RB_AC_TENANT_NAME#    ${TenantName}
+    Action Set    &UC4RB_AC_ENABLED#    ${Enable}
+    Run Keyword If    '${Email}' == 'GeneratedEmail'    Action Set    &UC4RB_AC_EMAIL#    ${Generated_Name}@broadcom.com    ELSE    Action Set
+    ...    &UC4RB_AC_EMAIL#    ${Email}
+    Action Set    &UC4RB_AC_FIRST_NAME#    ${FirstName}
+    Action Set    &UC4RB_AC_LAST_NAME#    ${LastName}
+    Action Execute
+    Run Keyword If    '${OK_NOK}' == 'OK'    Assert Success    ELSE    Assert Failure
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_NEW_VERSION#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_NEW_VERSION#
+
+Teardown
+    Delete Tenant    ${DELETE_TENANT_ACTION}    ${Gen_Tenant_ID}    false
+    Log    *******End Test "UPDATE TENANT"*******
