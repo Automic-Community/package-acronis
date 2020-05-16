@@ -167,6 +167,8 @@ Create User
     Action Execute
     ${Gen_UserID}=    Action Get Variable    &UC4RB_AC_USER_ID#
     Set Global Variable    ${Gen_UserID}
+    ${Gen_Version}=    Action Get Variable    &UC4RB_AC_USER_VERSION#
+    Set Global Variable    ${Gen_Version}
 
 Delete User
     [Arguments]    ${DELETE_USER_ACTION}    ${UserID}    ${FailIfNonExisting}
