@@ -102,6 +102,10 @@ Assert Failure
     Action Return Status Should Not Be    ${ENDED_OK}
     Action Return Code Should Not Equal    ${RETURN_CODE_SUCCESS}
 
+Generate Number
+    ${Generated_Number}    Generate Random String    8    [NUMBERS]
+    Set Global Variable    ${Generated_Number}
+
 Generate String
     ${Generated_Name}    Generate Random String    8    [LETTERS]
     ${Time}    Get Time
@@ -131,10 +135,13 @@ Create User
     Action Execute
     ${Gen_UserID}=    Action Get Variable    &UC4RB_AC_USER_ID#
     Set Global Variable    ${Gen_UserID}
+    ${Gen_Version}=    Action Get Variable    &UC4RB_AC_USER_VERSION#
+    Set Global Variable    ${Gen_Version}
 
 Delete User
-    [Arguments]    ${DELETE_USER}    ${UserID}
-    Init Action    ${DELETE_USER}
+    [Arguments]    ${DELETE_USER_ACTION}    ${UserID}    ${FailIfNonExisting}
+    Init Action    ${DELETE_USER_ACTION}
     Connect to Acronis
     Action Set    &UC4RB_AC_USER_ID#    ${UserID}
+    Action Set    &UC4RB_AC_FAIL#    ${FailIfNonExisting}
     Action Execute
