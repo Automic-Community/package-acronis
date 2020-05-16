@@ -7,6 +7,7 @@ import com.broadcom.apdk.api.annotations.EnumValue;
  */
 public final class Constants {
 
+
 	/**
 	 * int constant for IO Buffer used to buffer the data.
 	 */
@@ -35,6 +36,7 @@ public final class Constants {
 	public static final String CONTACT = "contact";
 	public static final String BLANK_INPUT_PARAMETER_ERROR_MESSAGE = "All input parameter [%s, %s, %s] cannot left "
 			+ "blank.";
+	public static final String PRICING = "pricing";
 	public static final String TRUE_FALSE = "The value for %s should be true or false";
 	public static final String CLIENTS = "clients";
 	public static final String TENANT_VERSION_MISMATCH = "Tenant version does not match";

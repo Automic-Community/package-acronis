@@ -102,6 +102,7 @@ Assert Failure
     Action Return Status Should Not Be    ${ENDED_OK}
     Action Return Code Should Not Equal    ${RETURN_CODE_SUCCESS}
 
+
 Set ID Global
     [Arguments]    ${Object_Variable}
     ${ID}=    Action Get Variable    ${Object_Variable}
