@@ -6,6 +6,7 @@ import com.broadcom.apdk.api.annotations.EnumValue;
  * Class contains all the constants used in Automation engine java application.
  */
 public final class Constants {
+
 	/**
 	 * int constant for IO Buffer used to buffer the data.
 	 */
@@ -42,6 +43,7 @@ public final class Constants {
 
 	/** EMAIL_VALIATION_REGEX used to validate the email. */
 	public static final String EMAIL_VALIATION_REGEX = "^(.+)@(.+)$";
+
 
 	public enum Kind {
 		@EnumValue("Customer")
