@@ -11,42 +11,38 @@ Resource          ../../Resources/keywords.txt
 Resource          ../../Resources/variables.txt
 Resource          ../../Resources/actions.txt
 
-*** Test Cases ***    OK_NOK    UserID            Version
-Delete user for valid ID and version
+*** Test Cases ***    OK_NOK    UserID                 FailIfNonExisting
+Delete user for existing tenant id and fail if non existing is set as true
                       [Tags]    main_scenarios
-                      OK        ${User_ID}        ${User_Version}
+                      OK        ${Gen_UserID}          true
 
-Delete user for invalid ID
-                      NOK       Invalid           ${User_Version}
+Delete user for an non-existing tenant ID and fail if non existing is set as false
+                      OK        ${Generated_Number}    false
 
-Delete user details without ID
-                      NOK       ${EMPTY}          ${User_Version}
-
-Delete user for invalid version
-                      NOK       ${User_ID}        Invalid
-
-Delete user without version
-                      NOK       ${User_ID}        ${EMPTY}
+Delete user for an non-existing tenant ID and fail if non existing is set as true
+                      NOK       ${Generated_Number}    true
 
 *** Keywords ***
 Startup
     Log    *******Start Test "DELETE USER"*******
     Log    *******Connect to AE*******
     Connect AE
+    Generate String
+    Generate Number
+    Create User    ${CREATE_USER_ACTION}    ${Parent_TenantID}    ${Generated_Name}    ${Generated_Name}@broadcom.com    ${EMPTY}    ${EMPTY}
 
 Delete User Template
-    [Arguments]    ${OK_NOK}    ${UserID}    ${Version}
+    [Arguments]    ${OK_NOK}    ${UserID}    ${FailIfNonExisting}
     [Documentation]    This action fetches a user details from Acronis.
     ...    -${OK_NOK}: Boolean value indicate if the action is ENDED_OK or ENDED_NOT_OK. Value of this variable should be OK or NOK.
     ...    -${UserID}: Provide the user id that you want to fetch details.
-    ...    -${Version}: Provide the user version.
+    ...    -${FailIfNonExisting}: Select true if you want to fail action in case of non-existing id.
     Generate String
-    Init Action    ${DELETE_USER}
+    Init Action    ${DELETE_USER_ACTION}
     Connect to Acronis
     Run Keyword If    '${UserID}' == 'Invalid'    Action Set    &UC4RB_AC_USER_ID#    ${Generated_Name}_${Time}    ELSE    Action Set
     ...    &UC4RB_AC_USER_ID#    ${UserID}
-    Run Keyword If    '${Version}' == 'Invalid'    Action Set    &UC4RB_AC_USER_VERSION#    ${Generated_Name}_${Time}    ELSE    Action Set
-    ...    &UC4RB_AC_USER_VERSION#    ${Version}
+    Action Set    &UC4RB_AC_FAIL#    ${FailIfNonExisting}
     Action Execute
     Run Keyword If    '${OK_NOK}' == 'OK'    Assert Success    ELSE    Assert Failure
 
