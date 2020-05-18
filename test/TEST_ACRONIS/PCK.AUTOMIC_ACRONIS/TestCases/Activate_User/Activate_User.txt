@@ -1,0 +1,50 @@
+*** Settings ***
+Suite Setup       Startup
+Suite Teardown    Teardown
+Force Tags        activate_user
+Test Template     Activate User Template
+Library           com.automic.robot.itpa.ItpaLibrary
+Library           String
+Library           DateTime
+Resource          ../../Resources/messages.txt
+Resource          ../../Resources/keywords.txt
+Resource          ../../Resources/variables.txt
+Resource          ../../Resources/actions.txt
+
+*** Test Cases ***    OK_NOK    UserID            Password
+Activate user details for valid ID
+                      [Tags]    main_scenarios
+                      OK        ${Gen_UserID}     ${Generated_Name}
+
+Activate user details for invalid ID
+                      NOK       Invalid           ${Generated_Name}
+
+*** Keywords ***
+Startup
+    Log    *******Start Test "ACTIVATE USER"*******
+    Log    *******Connect to AE*******
+    Connect AE
+    Generate String
+    Create Tenant    ${CREATE_TENANT_ACTION}    ${Generated_Name}    ${Parent_TenantID}    Customer    ${Generated_Name}@broadcom.com    ${FirstName}
+    ...    ${LastName}
+    Create User    ${CREATE_USER_ACTION}    ${Gen_Tenant_ID}    ${Generated_Name}    ${Generated_Name}@broadcom.com    ${EMPTY}    ${EMPTY}
+    Create Client    ${CREATE_CLIENT_ACTION}    ${Generated_Name}    ${Parent_TenantID}
+
+Activate User Template
+    [Arguments]    ${OK_NOK}    ${UserID}    ${Password}
+    [Documentation]    This action activates a user on Acronis.
+    ...    -${OK_NOK}: Boolean value indicate if the action is ENDED_OK or ENDED_NOT_OK. Value of this variable should be OK or NOK.
+    ...    -${UserID}: Provide the user id that you want to fetch details.
+    ...    -${Password}: Provide password which you want to set for user.
+    Init Action    ${ACTIVATE_USER_ACTION}
+    Connect to Acronis using Token
+    Run Keyword If    '${UserID}' == 'Invalid'    Action Set    &UC4RB_AC_USER_ID#    ${Generated_Name}_${Time}    ELSE    Action Set
+    ...    &UC4RB_AC_USER_ID#    ${UserID}
+    Action Set    &UC4RB_AC_USER_PWD#    ${Password}
+    Action Execute
+    Run Keyword If    '${OK_NOK}' == 'OK'    Assert Success    ELSE    Assert Failure
+
+Teardown
+    Delete User    ${DELETE_USER_ACTION}    ${Gen_UserID}    true
+    Delete Tenant    ${DELETE_TENANT_ACTION}    ${Gen_Tenant_ID}    false
+    Log    *******End Test "ACTIVATE USER"*******

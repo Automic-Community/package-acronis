@@ -1,0 +1,63 @@
+*** Settings ***
+Suite Setup       Startup
+Suite Teardown    Teardown
+Force Tags        disable_tenant
+Test Template     Disable Tenant Template
+Library           com.automic.robot.itpa.ItpaLibrary
+Library           String
+Library           DateTime
+Resource          ../../Resources/messages.txt
+Resource          ../../Resources/keywords.txt
+Resource          ../../Resources/variables.txt
+Resource          ../../Resources/actions.txt
+
+*** Test Cases ***    OK_NOK    TenantID            Version
+Disable tenant for valid ID and version
+                      [Tags]    main_scenarios
+                      OK        ${Gen_Tenant_ID}    ${Gen_Tenant_Version}
+
+Disable tenant without version
+                      OK        ${Gen_Tenant_ID}    ${EMPTY}
+
+Disable tenant for invalid version
+                      OK        ${Gen_Tenant_ID}    Invalid
+
+Disable tenant for invalid ID
+                      NOK       Invalid             ${Gen_Tenant_Version}
+
+Disable tenant details without ID
+                      NOK       ${EMPTY}            ${Gen_Tenant_Version}
+
+Disable tenant for version not current
+                      NOK       ${Gen_Tenant_ID}    1
+
+*** Keywords ***
+Startup
+    Log    *******Start Test "DISABLE TENANT"*******
+    Log    *******Connect to AE*******
+    Connect AE
+    Generate String
+    Generate Number
+    Create Tenant    ${CREATE_TENANT_ACTION}    ${Generated_Name}    ${Parent_TenantID}    Customer    ${Generated_Name}@broadcom.com    ${FirstName}
+    ...    ${LastName}
+
+Disable tenant Template
+    [Arguments]    ${OK_NOK}    ${TenantID}    ${Version}
+    [Documentation]    This action disables tenant on Acronis.
+    ...    -${OK_NOK}: Boolean value indicate if the action is ENDED_OK or ENDED_NOT_OK. Value of this variable should be OK or NOK.
+    ...    -${TenantID}: Provide the tenant id that you want to disable.
+    ...    -${Version}: Provide the tenant version.
+    Generate String
+    Init Action    ${DISABLE_TENANT}
+    Connect to Acronis
+    Run Keyword If    '${TenantID}' == 'Invalid'    Action Set    &UC4RB_AC_TENANT_ID#    ${Generated_Name}_${Time}    ELSE    Action Set
+    ...    &UC4RB_AC_TENANT_ID#    ${TenantID}
+    Run Keyword If    '${Version}' == 'Invalid'    Action Set    &UC4RB_AC_TENANT_VERSION#    ${Generated_Name}_${Time}    ELSE    Action Set
+    ...    &UC4RB_AC_TENANT_VERSION#    ${Version}
+    Action Execute
+    Run Keyword If    '${OK_NOK}' == 'OK'    Assert Success    ELSE    Assert Failure
+    Run Keyword If    '${OK_NOK}' == 'OK'    Action Object Variable Should Be Found    &UC4RB_AC_NEW_VERSION#    ELSE    Action Object Variable Should Not Be Found    &UC4RB_AC_NEW_VERSION#
+
+Teardown
+    Delete Tenant    ${DELETE_TENANT_ACTION}    ${Gen_Tenant_ID}    true
+    Log    *******End Test "DISABLE TENANT"*******

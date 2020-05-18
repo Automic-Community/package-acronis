@@ -102,6 +102,13 @@ Assert Failure
     Action Return Status Should Not Be    ${ENDED_OK}
     Action Return Code Should Not Equal    ${RETURN_CODE_SUCCESS}
 
+
+Set ID Global
+    [Arguments]    ${Object_Variable}
+    ${ID}=    Action Get Variable    ${Object_Variable}
+    Should Not Be Empty    ${ID}
+    Set Global Variable    ${ID}
+
 Generate Number
     ${Generated_Number}    Generate Random String    8    [NUMBERS]
     Set Global Variable    ${Generated_Number}
@@ -160,10 +167,31 @@ Create User
     Action Execute
     ${Gen_UserID}=    Action Get Variable    &UC4RB_AC_USER_ID#
     Set Global Variable    ${Gen_UserID}
+    ${Gen_Version}=    Action Get Variable    &UC4RB_AC_USER_VERSION#
+    Set Global Variable    ${Gen_Version}
 
 Delete User
-    [Arguments]    ${DELETE_USER}    ${UserID}
-    Init Action    ${DELETE_USER}
+    [Arguments]    ${DELETE_USER_ACTION}    ${UserID}    ${FailIfNonExisting}
+    Init Action    ${DELETE_USER_ACTION}
     Connect to Acronis
     Action Set    &UC4RB_AC_USER_ID#    ${UserID}
+    Action Set    &UC4RB_AC_FAIL#    ${FailIfNonExisting}
     Action Execute
+
+Create Client
+    [Arguments]    ${CREATE_CLIENT_ACTION}    ${ClientName}    ${ParentTenantID}
+    Init Action    ${CREATE_CLIENT_ACTION}
+    Connect to Acronis
+    Action Set    &UC4RB_AC_CLIENT_NAME#    ${ClientName}
+    Action Set    &UC4RB_AC_PARENT_ID#    ${ParentTenantID}
+    Action Execute
+    ${Gen_ClientID}=    Action Get Variable    &UC4RB_AC_CLIENT_ID#
+    Set Global Variable    ${Gen_ClientID}
+    ${Gen_ClientSecret}=    Action Get Variable    &UC4RB_AC_CLIENT_SECRET#
+    Set Global Variable    ${Gen_ClientSecret}
+
+Connect to Acronis using Token
+    Action Set    &UC4RB_AC_ENDPOINT#    ${Acronis_URL}
+    Action Set    &UC4RB_AC_API_VERSION#    ${Acronis_Version}
+    Action Set    &UC4RB_AC_CLIENT_ID#    ${Gen_ClientID}
+    Action Set    &UC4RB_AC_CLIENT_SECRET#    ${Gen_ClientSecret}
