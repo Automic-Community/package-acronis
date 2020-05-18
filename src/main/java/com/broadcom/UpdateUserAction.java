@@ -1,5 +1,15 @@
 package com.broadcom;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.json.JsonObject;
+import javax.ws.rs.core.MediaType;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.broadcom.apdk.api.annotations.Action;
 import com.broadcom.apdk.api.annotations.ActionInputParam;
 import com.broadcom.apdk.api.annotations.ActionOutputParam;
@@ -9,14 +19,6 @@ import com.broadcom.util.CommonUtil;
 import com.broadcom.util.ConsoleWriter;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import org.apache.commons.lang3.StringUtils;
-
-import javax.json.JsonObject;
-import javax.ws.rs.core.MediaType;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * This action class used to update the existing user contact info.
