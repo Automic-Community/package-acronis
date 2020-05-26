@@ -35,6 +35,7 @@ public final class Constants {
 	public static final String CONTACT = "contact";
 	public static final String BLANK_INPUT_PARAMETER_ERROR_MESSAGE = "All input parameter [%s, %s, %s] cannot left "
 			+ "blank.";
+	public static final String PRICING = "pricing";
 	public static final String TRUE_FALSE = "The value for %s should be true or false";
 	public static final String CLIENTS = "clients";
 	public static final String TENANT_VERSION_MISMATCH = "Tenant version does not match";
@@ -44,6 +45,7 @@ public final class Constants {
 	/** EMAIL_VALIATION_REGEX used to validate the email. */
 	public static final String EMAIL_VALIATION_REGEX = "^(.+)@(.+)$";
 	public static final String ACCESS_POLICIES = "access_policies";
+
 
 
 	public enum Kind {
