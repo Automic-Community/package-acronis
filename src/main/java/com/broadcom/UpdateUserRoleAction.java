@@ -12,7 +12,9 @@ import com.sun.jersey.api.client.WebResource;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,25 +26,6 @@ public class UpdateUserRoleAction extends AbstractAcronisAction {
     @ActionInputParam(required = true, name = "UC4RB_AC_USER_ID", tooltip = "Provide the user id to fetch the details"
             + ". E.g. d540ac7f-2e8b-4451-a1cc-18ee9586af69", label = "User Id")
     private String userId;
-
-    @ActionInputParam(name = "UC4RB_AC_ID", required = true, tooltip = "Provide the any valid UUID string. E.g: User ID"
-            + "6f2e420b-bd8c-4ade-b3bb-4942d7c89032", label = "ID")
-    private String Id;
-
-    @ActionInputParam(name = "UC4RB_AC_ISSUER_ID", required = true, tooltip =
-            "Provide the any valid UUID string. E.g: User ID"
-                    + "6f2e420b-bd8c-4ade-b3bb-4942d7c89032", label = "Issuer ID")
-    private String issuerId;
-
-    @ActionInputParam(name = "UC4RB_AC_TENANT_ID", required = true, tooltip =
-            "Provide the UUID of the tenant. E.g: User ID"
-                    + "6f2e420b-bd8c-4ade-b3bb-4942d7c89032", label = "Tenant ID")
-    private String tenantId;
-
-    @ActionInputParam(name = "UC4RB_AC_TRUSTEE_ID", required = true, tooltip =
-            "Provide the UUID of the user account. E.g: User ID"
-                    + "6f2e420b-bd8c-4ade-b3bb-4942d7c89032", label = "Trustee ID")
-    private String trusteeId;
 
     @ActionInputParam(name = "UC4RB_AC_ROLE_ID", tooltip = "Provide the role to be assigned. E.g: "
             + "Company admin", label = "Role ID")
@@ -79,24 +62,6 @@ public class UpdateUserRoleAction extends AbstractAcronisAction {
             String msg = String.format(Constants.ISEMPTY, "User Id");
             throw new AcronisException(msg);
         }
-        if (StringUtils.isBlank(Id)) {
-            String msg = String.format(Constants.ISEMPTY, "Id");
-            throw new AcronisException(msg);
-        }
-        if (StringUtils.isBlank(issuerId)) {
-            String msg = String.format(Constants.ISEMPTY, "Issuer ID");
-            throw new AcronisException(msg);
-        }
-
-        if (StringUtils.isBlank(tenantId)) {
-            String msg = String.format(Constants.ISEMPTY, "Tenant ID");
-            throw new AcronisException(msg);
-        }
-
-        if (StringUtils.isBlank(trusteeId)) {
-            String msg = String.format(Constants.ISEMPTY, "Trustee ID");
-            throw new AcronisException(msg);
-        }
 
         if (roleId == null) {
             String msg = String.format(Constants.ISEMPTY, "Role");
@@ -114,14 +79,19 @@ public class UpdateUserRoleAction extends AbstractAcronisAction {
     private Map<String, Object> createRequest() throws AcronisException {
         validateInputs();
         Map<String, Object> request = new HashMap<>();
-        request.put("id", Id);
-        request.put("issuer_id", issuerId);
-        request.put("tenant_id", tenantId);
-        request.put("trustee_id", trusteeId);
+        request.put("id", userId);
+        request.put("issuer_id", userId);
+        request.put("tenant_id", userId);
+        request.put("trustee_id", userId);
         request.put("trustee_type", "user");
         request.put("role_id", roleId.toString());
         request.put("version", 0);
-        return request;
+
+        List<Map<String, Object>> itemList = new ArrayList<>();
+        itemList.add(request);
+        Map<String, Object> req = new HashMap<>();
+        req.put("items", itemList);
+        return req;
     }
 
     @Override
