@@ -7,7 +7,6 @@ import com.broadcom.apdk.api.annotations.EnumValue;
  */
 public final class Constants {
 
-
 	/**
 	 * int constant for IO Buffer used to buffer the data.
 	 */
@@ -45,6 +44,8 @@ public final class Constants {
 
 	/** EMAIL_VALIATION_REGEX used to validate the email. */
 	public static final String EMAIL_VALIATION_REGEX = "^(.+)@(.+)$";
+	public static final String ACCESS_POLICIES = "access_policies";
+
 
 
 	public enum Kind {
@@ -60,7 +61,20 @@ public final class Constants {
 		}
 	}
 
-	private Constants() {
-	}
+    public enum Role {
+        @EnumValue("PARTNER_ADMIN") partner_admin,
+        @EnumValue("HCI_ADMIN") hci_admin,
+        @EnumValue("COMPANY_ADMIN") company_admin,
+        @EnumValue("UNIT_ADMIN") unit_admin,
+        @EnumValue("BACKUP_USER") backup_user,
+        @EnumValue("SYNC_SHARE_ADMIN") sync_share_admin,
+        @EnumValue("SYNC_SHARE_USER") sync_share_user,
+        @EnumValue("NOTARY_ADMIN") notary_admin,
+        @EnumValue("NOTARY_USER") notary_user;
+
+    }
+
+    private Constants() {
+    }
 
 }
