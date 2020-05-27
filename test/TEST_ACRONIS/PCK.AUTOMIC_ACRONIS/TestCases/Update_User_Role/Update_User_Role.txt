@@ -1,0 +1,62 @@
+*** Settings ***
+Suite Setup       Startup
+Suite Teardown    Teardown
+Force Tags        update_user_role
+Test Template     Update User Role Template
+Library           com.automic.robot.itpa.ItpaLibrary
+Library           String
+Library           DateTime
+Resource          ../../Resources/messages.txt
+Resource          ../../Resources/keywords.txt
+Resource          ../../Resources/variables.txt
+Resource          ../../Resources/actions.txt
+
+*** Test Cases ***    OK_NOK    UserID             RoleID
+Update user role with valid user id and role id
+                      OK        ${Admin_UserID}    SYNC_SHARE_USER
+
+Update user role for same user id but different admin role id
+                      OK        ${Admin_UserID}    PARTNER_ADMIN
+
+Update user role for same user id but different non-admin role id
+                      OK        ${Admin_UserID}    SYNC_SHARE_USER
+
+Update user role with invalid user id but valid role id
+                      NOK       Invalid            NOTARY_ADMIN
+
+Update user role without user id but valid role id
+                      NOK       ${EMPTY}           UNIT_ADMIN
+
+Update user role with valid user id but invalid role id
+                      NOK       ${Admin_UserID}    Invalid
+
+Update user role with valid user id but without role id
+                      NOK       ${Admin_UserID}    ${EMPTY}
+
+*** Keywords ***
+Startup
+    Log    *******Start Test "UPDATE USER ROLE"*******
+    Log    *******Connect to AE*******
+    Connect AE
+    Generate String
+    Create User    ${CREATE_USER_ACTION}    ${Parent_TenantID}    ${Generated_Name}    ${Generated_Name}@broadcom.com    ${EMPTY}    ${EMPTY}
+
+Update User Role Template
+    [Arguments]    ${OK_NOK}    ${UserID}    ${RoleID}
+    [Documentation]    This action updates a user's role on Acronis.
+    ...    -${OK_NOK}: Boolean value indicate if the action is ENDED_OK or ENDED_NOT_OK. Value of this variable should be OK or NOK.
+    ...    -${UserID}: Provide the user id that you want to update.
+    ...    -${RoleID}: Provide the role id.
+    Generate String
+    Init Action    ${UPDATE_USER_ROLE_ACTION}
+    Connect to Acronis
+    Run Keyword If    '${UserID}' == 'Invalid'    Action Set    &UC4RB_AC_USER_ID#    ${Generated_Name}_${Time}    ELSE    Action Set
+    ...    &UC4RB_AC_USER_ID#    ${UserID}
+    Run Keyword If    '${RoleID}' == 'Invalid'    Action Set    &UC4RB_AC_ROLE_ID#    ${Generated_Name}    ELSE    Action Set
+    ...    &UC4RB_AC_ROLE_ID#    ${RoleID}
+    Action Execute
+    Run Keyword If    '${OK_NOK}' == 'OK'    Assert Success    ELSE    Assert Failure
+
+Teardown
+    Delete User    ${DELETE_USER_ACTION}    ${Gen_UserID}    true
+    Log    *******End Test "UPDATE USER ROLE"*******
