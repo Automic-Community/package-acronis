@@ -12,7 +12,6 @@ import com.broadcom.apdk.api.annotations.Action;
 import com.broadcom.apdk.api.annotations.ActionInputParam;
 import com.broadcom.apdk.api.annotations.ActionOutputParam;
 import com.broadcom.constants.Constants;
-import com.broadcom.constants.Constants.Kind;
 import com.broadcom.exceptions.AcronisException;
 import com.broadcom.util.CommonUtil;
 import com.broadcom.util.ConsoleWriter;
@@ -31,7 +30,7 @@ public class CreateClientAction extends AbstractAcronisAction {
 	@ActionOutputParam(name = "UC4RB_AC_CLIENT_ID")
 	String clientId;
 
-	@ActionOutputParam(name = "UC4RB_AC_CLIENT_SECRET")
+	@ActionOutputParam(name = "UC4RB_AC_CLIENT_SECRET", password = true)
 	String clientSecret;
 
 	@Override

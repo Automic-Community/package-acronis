@@ -17,7 +17,7 @@ import com.sun.jersey.api.client.WebResource;
 @Action(name = "GET_TOKEN", title = "Get Token", path = "ACRONIS")
 public class GetTokenAction extends APIClientAuthAction {
 
-	@ActionOutputParam(name = "UC4RB_AC_ACCESS_TOKEN")
+	@ActionOutputParam(name = "UC4RB_AC_ACCESS_TOKEN", password = true)
 	String accessToken;
 
 	@Override

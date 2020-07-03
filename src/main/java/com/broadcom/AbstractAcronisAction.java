@@ -3,10 +3,12 @@ package com.broadcom;
 import org.apache.commons.lang3.StringUtils;
 
 import com.broadcom.apdk.api.annotations.ActionInputParam;
+import com.broadcom.apdk.api.annotations.PromptSet;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
+@PromptSet(name = "ACRONIS_CREDENTIALS", title = "Acronis Credentials")
 public abstract class AbstractAcronisAction extends EndpointAction {
 
 	@ActionInputParam(required = true, tooltip = "Provide the username to connect to the acronis. E.g. SP1089871", name = "UC4RB_AC_USERNAME", label = "Username")

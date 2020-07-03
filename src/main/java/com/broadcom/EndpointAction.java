@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.broadcom.apdk.api.BaseAction;
 import com.broadcom.apdk.api.annotations.ActionInputParam;
+import com.broadcom.apdk.api.annotations.PromptSet;
 import com.broadcom.config.HttpClientConfig;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
@@ -15,6 +16,7 @@ import com.broadcom.filter.GenericResponseFilter;
 import com.broadcom.util.ConsoleWriter;
 import com.sun.jersey.api.client.Client;
 
+@PromptSet(name = "ENDPOINT", title = "Endpoint")
 public abstract class EndpointAction extends BaseAction {
 
 	@ActionInputParam(required = true, tooltip = "Provide the endpoint to connect to the acronis. E.g. https://sg-cloud.acronis.com", name = "UC4RB_AC_ENDPOINT", label = "Endpoint")
