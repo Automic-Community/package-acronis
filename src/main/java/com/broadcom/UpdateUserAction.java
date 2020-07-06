@@ -49,6 +49,40 @@ public class UpdateUserAction extends AbstractAcronisAction {
     @ActionOutputParam(name = "UC4RB_AC_NEW_USER_VERSION")
     private long newVersion;
 
+    public UpdateUserAction() {
+		setDocumentation("= Action name =\r\n" + 
+				"PCK.AUTOMIC_ACRONIS.PUB.ACTION.UPDATE_USER\r\n" + 
+				"\r\n" + 
+				"= General description =\r\n" + 
+				"This action updates a user in Acronis.\r\n" + 
+				"\r\n" + 
+				"= Inputs =\r\n" + 
+				"* User Id*                	: Provide the User ID. E.g: 2720cf58-d084-4b22-a284-4a4564fe1e4d\r\n" + 
+				"* Current Version			: Provide the user current version. E.g: 2\r\n" + 
+				"* Email			        : Provide the email of the tenant administrator. E.g. test@gmail.com\r\n" + 
+				"* First Name               : Provide the first name of the tenant administrator. E.g. Vishal\r\n" + 
+				"* Last Name				: Provide the last name of the tenant administrator. E.g. Kumar\r\n" + 
+				"\r\n" + 
+				"= Failure Conditions =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Behaviour =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Return value =\r\n" + 
+				"* UC4RB_AC_NEW_USER_VERSION#	: Updated version of the user.\r\n" + 
+				"\r\n" + 
+				"= Outputs =\r\n" + 
+				"* Return code is 0 in case of success.\r\n" + 
+				"* Return code is non-zero in case of failure.\r\n" + 
+				"\r\n" + 
+				"= Rollback =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Logging =\r\n" + 
+				"AE logs will be displayed in the AE report.");
+	}
+    
     /**
      * <ul>This method perform the tasks:
      * <li>Call the Acronis update api.</li>

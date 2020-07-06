@@ -29,6 +29,37 @@ public class UpdateUserPasswordAction extends APIClientAuthAction {
 	@ActionInputParam(label = "User Password", name = "UC4RB_AC_USER_PWD", required = true, password = true, tooltip = "Provide the new password you want to update.")
 	String newPassword;
 
+	public UpdateUserPasswordAction() {
+		setDocumentation("= Action name =\r\n" + 
+				"PCK.AUTOMIC_ACRONIS.PUB.ACTION.UPDATE_USER_PASSWORD\r\n" + 
+				"\r\n" + 
+				"= General description =\r\n" + 
+				"This action updates the password of a user.\r\n" + 
+				"\r\n" + 
+				"= Inputs =\r\n" + 
+				"* User Id*                	: Provide the user id. E.g. 98431f36-6bcc-4ed5-8020-5ad0abd24a9f\r\n" + 
+				"* New Password				: Provide the new password you want to update.\r\n" + 
+				"\r\n" + 
+				"= Failure Conditions =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Behaviour =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Return value =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Outputs =\r\n" + 
+				"* Return code is 0 in case of success.\r\n" + 
+				"* Return code is non-zero in case of failure.\r\n" + 
+				"\r\n" + 
+				"= Rollback =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Logging =\r\n" + 
+				"AE logs will be displayed in the AE report.");
+	}
+	
 	@Override
 	protected void executeSpecific() throws AcronisException {
 		validateInputs();

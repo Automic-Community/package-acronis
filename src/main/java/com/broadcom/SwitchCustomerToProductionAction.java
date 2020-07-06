@@ -43,7 +43,37 @@ public class SwitchCustomerToProductionAction extends AbstractAcronisAction  {
 	Long currencyVersion;
 	
 	private boolean isModeAlreadyProduction;
-
+	
+	public SwitchCustomerToProductionAction() {
+		setDocumentation("= Action name =\r\n" + 
+				"PCK.AUTOMIC_ACRONIS.PUB.ACTION.SWITCH_CUSTOMER_TO_PRODUCTION\r\n" + 
+				"\r\n" + 
+				"= General description =\r\n" + 
+				"This action switch the customer to production mode.\r\n" + 
+				"\r\n" + 
+				"= Inputs =\r\n" + 
+				"* Tenant Id*                : Provide the tenant id that you want to switch to production. E.g. 9b81bf31-0c04-4f6e-8ebe-56900a3f9e76\r\n" + 
+				"\r\n" + 
+				"= Failure Conditions =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Behaviour =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Return value =\r\n" + 
+				"* UC4RB_AC_TENANT_MODE#        : Mode of the tenant.\r\n" + 
+				"* UC4RB_AC_CURRENCY_VERSION#	: Version of the currency.\r\n" + 
+				"\r\n" + 
+				"= Outputs =\r\n" + 
+				"* Return code is 0 in case of success.\r\n" + 
+				"* Return code is non-zero in case of failure.\r\n" + 
+				"\r\n" + 
+				"= Rollback =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Logging =\r\n" + 
+				"AE logs will be displayed in the AE report.");
+	}
 	
 	@Override
 	protected void executeSpecific() throws AcronisException {
