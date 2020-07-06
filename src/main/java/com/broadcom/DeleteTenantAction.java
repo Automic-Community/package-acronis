@@ -93,4 +93,35 @@ public class DeleteTenantAction extends AbstractAcronisAction {
 	protected String getActionName() {
 		return "Delete Tenant";
 	}
+	
+	public DeleteTenantAction() {
+		setDocumentation("= Action name =\r\n" + 
+				"PCK.AUTOMIC_ACRONIS.PUB.ACTION.DELETE_TENANT\r\n" + 
+				"\r\n" + 
+				"= General description =\r\n" + 
+				"This action deletes a tenant from Acronis.\r\n" + 
+				"\r\n" + 
+				"= Inputs =\r\n" + 
+				"* Tenant ID*	            : Provide the name of the tenant to be deleted. E.g. d540ac7f-2e8b-4451-a1cc-18ee9586af69\r\n" + 
+				"* Fail if non-existing		: Specifies if the job should fail in case of non-existing tenant E.g. true/false\r\n" + 
+				"\r\n" + 
+				"= Failure Conditions =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Behaviour =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Return value =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Outputs =\r\n" + 
+				"* Return code is 0 in case of success.\r\n" + 
+				"* Return code is non-zero in case of failure.\r\n" + 
+				"\r\n" + 
+				"= Rollback =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Logging =\r\n" + 
+				"AE logs will be displayed in the AE report.");
+	}
 }

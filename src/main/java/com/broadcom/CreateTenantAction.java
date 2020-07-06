@@ -142,4 +142,39 @@ public class CreateTenantAction extends AbstractAcronisAction {
 	protected String getActionName() {
 		return "Create Tenant";
 	}
+	public CreateTenantAction() {
+		setDocumentation("= Action name =\r\n" + 
+				"PCK.AUTOMIC_ACRONIS.PUB.ACTION.CREATE_TENANT\r\n" + 
+				"\r\n" + 
+				"= General description =\r\n" + 
+				"This action creates a tenant in Acronis.\r\n" + 
+				"\r\n" + 
+				"= Inputs =\r\n" + 
+				"* Tenant Name*	            : Provide the name of the tenant to be created. E.g. New Tenant\r\n" + 
+				"* Parent Id*                : Provide the parent id of the tenant to be created. E.g. 2720cf58-d084-4b22-a284-4a4564fe1e4d\r\n" + 
+				"* Tenant Kind				: Provide the kind of tenant to be created. Default - Customer\r\n" + 
+				"* Email			            : Provide the email of the tenant administrator. E.g. test@gmail.com\r\n" + 
+				"* First Name                : Provide the first name of the tenant administrator. E.g. Vishal\r\n" + 
+				"* Last Name					: Provide the last name of the tenant administrator. E.g. Kumar\r\n" + 
+				"\r\n" + 
+				"= Failure Conditions =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Behaviour =\r\n" + 
+				"Email required when First Name and/or Last Name is/are provided.\r\n" + 
+				"\r\n" + 
+				"= Return value =\r\n" + 
+				"* UC4RB_AC_TENANT_ID#       : Id of the newly created tenant.\r\n" + 
+				"* UC4RB_AC_TENANT_VERSION#	: Version of the tenant.\r\n" + 
+				"\r\n" + 
+				"= Outputs =\r\n" + 
+				"* Return code is 0 in case of success.\r\n" + 
+				"* Return code is non-zero in case of failure.\r\n" + 
+				"\r\n" + 
+				"= Rollback =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Logging =\r\n" + 
+				"AE logs will be displayed in the AE report.");
+	}
 }

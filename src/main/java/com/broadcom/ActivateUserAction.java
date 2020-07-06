@@ -83,4 +83,35 @@ public class ActivateUserAction extends APIClientAuthAction {
 	protected String getActionName() {
 		return "Activate User";
 	}
+	
+	public ActivateUserAction() {
+		setDocumentation("= Action name =\r\n" + 
+				"PCK.AUTOMIC_ACRONIS.PUB.ACTION.ACTIVATE_USER\r\n" + 
+				"\r\n" + 
+				"= General description =\r\n" + 
+				"This action activates an acronis user.\r\n" + 
+				"\r\n" + 
+				"= Inputs =\r\n" + 
+				"* User Id*	                  : Provide the user id that you want to activate. E.g. 9b81bf31-0c04-4f6e-8ebe-56900a3f9e76                          \r\n" + 
+				"* User Password*              : Provide the password for the user. 	\r\n" + 
+				"\r\n" + 
+				"= Failure Conditions =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Behaviour =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Return value =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Outputs =\r\n" + 
+				"* Return code is 0 in case of success.\r\n" + 
+				"* Return code is non-zero in case of failure.\r\n" + 
+				"\r\n" + 
+				"= Rollback =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Logging =\r\n" + 
+				"AE logs will be displayed in the AE report.");
+	}
 }

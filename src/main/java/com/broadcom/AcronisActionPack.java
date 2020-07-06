@@ -99,9 +99,6 @@ public class AcronisActionPack extends BaseActionPack {
 				"* Action name: PCK.AUTOMIC_ACRONIS.PUB.ACTION.SWITCH_CUSTOMER_TO_PRODUCTION\r\n" + 
 				"* Action Description: This action will switch customer from trial to production mode .\r\n" + 
 				"\r\n" + 
-				"* Action name: PCK.AUTOMIC_ACRONIS.PUB.ACTION.RESET_CLIENT_SECRET\r\n" + 
-				"* Action Description: This action will reset the Client secret.\r\n" + 
-				"\r\n" + 
 				"* Action name: PCK.AUTOMIC_ACRONIS.PUB.ACTION.UPDATE_USER_ROLE\r\n" + 
 				"* Action Description: This action will update the role of the user.");
 		setLicenses("Licenses used\r\n" + 
