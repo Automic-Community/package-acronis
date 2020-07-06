@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.broadcom.apdk.api.annotations.Action;
 import com.broadcom.apdk.api.annotations.ActionInputParam;
+import com.broadcom.apdk.api.annotations.PromptSet;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
 import com.broadcom.exceptions.NotFoundRuntimeException;
@@ -17,6 +18,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 @Action(name = "DELETE_TENANT", title = "Delete Tenant", path = "ACRONIS")
+@PromptSet(name = "DELETE_TENANT", title = "Delete Tenant")
 public class DeleteTenantAction extends AbstractAcronisAction {
 
 	@ActionInputParam(required = true, name = "UC4RB_AC_TENANT_ID", tooltip = "Provide the name of the tenant to be deleted. E.g. d540ac7f-2e8b-4451-a1cc-18ee9586af69", label = "Tenant Id")

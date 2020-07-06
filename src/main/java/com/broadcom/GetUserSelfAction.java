@@ -4,6 +4,7 @@ import javax.json.JsonObject;
 
 import com.broadcom.apdk.api.annotations.Action;
 import com.broadcom.apdk.api.annotations.ActionOutputParam;
+import com.broadcom.apdk.api.annotations.PromptSet;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
 import com.broadcom.helper.GetHelper;
@@ -13,6 +14,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 @Action(name = "GET_USER_SELF", title = "Get User Self", path = "ACRONIS")
+@PromptSet(name = "GET_USER_SELF", title = "Get User Self")
 public class GetUserSelfAction extends AbstractAcronisAction {
 
 	@ActionOutputParam(name = "UC4RB_AC_TENANT_ID")

@@ -2,6 +2,7 @@ package com.broadcom;
 
 import com.broadcom.apdk.api.annotations.Action;
 import com.broadcom.apdk.api.annotations.ActionInputParam;
+import com.broadcom.apdk.api.annotations.PromptSet;
 import com.broadcom.constants.Constants;
 import com.broadcom.constants.Constants.Role;
 import com.broadcom.exceptions.AcronisException;
@@ -21,6 +22,7 @@ import java.util.Map;
  * This class used to update or assign a role to user.
  */
 @Action(name = "UPDATE_USER_ROLE", title = "Update User Role", path = "ACRONIS")
+@PromptSet(name = "UPDATE_USER_ROLE", title = "Update User Role")
 public class UpdateUserRoleAction extends AbstractAcronisAction {
 
     @ActionInputParam(required = true, name = "UC4RB_AC_USER_ID", tooltip = "Provide the user id to fetch the details"
@@ -98,5 +100,4 @@ public class UpdateUserRoleAction extends AbstractAcronisAction {
     protected String getActionName() {
         return "Update User Role";
     }
-
 }

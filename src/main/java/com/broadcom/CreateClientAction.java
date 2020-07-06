@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.broadcom.apdk.api.annotations.Action;
 import com.broadcom.apdk.api.annotations.ActionInputParam;
 import com.broadcom.apdk.api.annotations.ActionOutputParam;
+import com.broadcom.apdk.api.annotations.PromptSet;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
 import com.broadcom.util.CommonUtil;
@@ -19,6 +20,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 @Action(name = "CREATE_CLIENT", title = "Create Client", path = "ACRONIS")
+@PromptSet(name = "CREATE_CLIENT", title = "Create Client")
 public class CreateClientAction extends AbstractAcronisAction {
 
 	@ActionInputParam(label = "Client Name", name = "UC4RB_AC_CLIENT_NAME", tooltip = "Provide the name of the client to be created. E.g. API.Client")

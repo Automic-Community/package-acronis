@@ -3,6 +3,7 @@ package com.broadcom;
 import com.broadcom.apdk.api.annotations.Action;
 import com.broadcom.apdk.api.annotations.ActionInputParam;
 import com.broadcom.apdk.api.annotations.ActionOutputParam;
+import com.broadcom.apdk.api.annotations.PromptSet;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
 import com.broadcom.util.CommonUtil;
@@ -22,6 +23,7 @@ import java.util.regex.Pattern;
  * This class used to create a user.
  */
 @Action(title = "Create User", name = "CREATE_USER", path = "ACRONIS")
+@PromptSet(title = "Create User", name = "CREATE_USER")
 public class CreateUserAction extends AbstractAcronisAction {
 
     @ActionInputParam(name = "UC4RB_AC_TENANT_ID", required = true, tooltip = "Provide the Tenant ID. E.g: "

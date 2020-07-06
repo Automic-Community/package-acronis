@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.broadcom.apdk.api.annotations.Action;
 import com.broadcom.apdk.api.annotations.ActionInputParam;
 import com.broadcom.apdk.api.annotations.ActionOutputParam;
+import com.broadcom.apdk.api.annotations.PromptSet;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
 import com.broadcom.helper.GetHelper;
@@ -21,6 +22,7 @@ import com.sun.jersey.api.client.WebResource;
  * This action fetches the tenant info by using tenant id.
  */
 @Action(name = "GET_TENANT", title = "Get Tenant", path = "ACRONIS")
+@PromptSet(name = "GET_TENANT", title = "Get Tenant")
 public class GetTenantAction extends AbstractAcronisAction {
 
 	/** tenantId. */

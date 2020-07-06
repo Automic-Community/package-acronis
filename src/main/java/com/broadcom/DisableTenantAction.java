@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.broadcom.apdk.api.annotations.Action;
 import com.broadcom.apdk.api.annotations.ActionInputParam;
 import com.broadcom.apdk.api.annotations.ActionOutputParam;
+import com.broadcom.apdk.api.annotations.PromptSet;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
 import com.broadcom.helper.GetHelper;
@@ -27,6 +28,7 @@ import com.sun.jersey.api.client.WebResource;
  *
  */
 @Action(name = "DISABLE_TENANT", title = "Disable Tenant", path = "ACRONIS")
+@PromptSet(name = "DISABLE_TENANT", title = "Disable Tenant")
 public class DisableTenantAction extends AbstractAcronisAction {
 
 	@ActionInputParam(required = true, name = "UC4RB_AC_TENANT_ID", label = "Tenant Id", tooltip = "Provide the tenant id that you want to update. E.g. 9b81bf31-0c04-4f6e-8ebe-56900a3f9e76")

@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.broadcom.apdk.api.annotations.Action;
 import com.broadcom.apdk.api.annotations.ActionInputParam;
 import com.broadcom.apdk.api.annotations.ActionOutputParam;
+import com.broadcom.apdk.api.annotations.PromptSet;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
 import com.broadcom.util.CommonUtil;
@@ -26,6 +27,7 @@ import com.sun.jersey.api.client.WebResource;
  *
  */
 @Action(name = "SWITCH_CUSTOMER_TO_PRODUCTION", title = "Switch Customer to Production", path = "ACRONIS")
+@PromptSet(name = "SWITCH_CUSTOMER_TO_PRODUCTION", title = "Switch Customer to Production")
 public class SwitchCustomerToProductionAction extends AbstractAcronisAction  {
 	
 	/** tenantId. */

@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.broadcom.apdk.api.annotations.Action;
 import com.broadcom.apdk.api.annotations.ActionInputParam;
 import com.broadcom.apdk.api.annotations.ActionOutputParam;
+import com.broadcom.apdk.api.annotations.PromptSet;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
 import com.broadcom.helper.GetHelper;
@@ -16,6 +17,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 @Action(name = "GET_USER", title = "Get User", path = "ACRONIS")
+@PromptSet(name = "GET_USER", title = "Get User")
 public class GetUserAction extends AbstractAcronisAction {
 
 	@ActionInputParam(required = true, name = "UC4RB_AC_USER_ID", tooltip = "Provide the user id to fetch the details. E.g. d540ac7f-2e8b-4451-a1cc-18ee9586af69", label = "User Id")

@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.broadcom.apdk.api.annotations.Action;
 import com.broadcom.apdk.api.annotations.ActionInputParam;
+import com.broadcom.apdk.api.annotations.PromptSet;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
 import com.broadcom.helper.TokenHelper;
@@ -19,6 +20,7 @@ import com.sun.jersey.api.client.WebResource.Builder;
 
 
 @Action(name = "UPDATE_USER_PASSWORD", title = "Update User Password", path = "ACRONIS")
+@PromptSet(name = "UPDATE_USER_PASSWORD", title = "Update User Password")
 public class UpdateUserPasswordAction extends APIClientAuthAction {
 
 	@ActionInputParam(label = "User Id", name = "UC4RB_AC_USER_ID", required = true, tooltip = "Provide the user id. E.g. 98431f36-6bcc-4ed5-8020-5ad0abd24a9f")

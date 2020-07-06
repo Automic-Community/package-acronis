@@ -3,6 +3,7 @@ package com.broadcom;
 import com.broadcom.apdk.api.annotations.Action;
 import com.broadcom.apdk.api.annotations.ActionInputParam;
 import com.broadcom.apdk.api.annotations.ActionOutputParam;
+import com.broadcom.apdk.api.annotations.PromptSet;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
 import com.broadcom.util.CommonUtil;
@@ -21,6 +22,7 @@ import java.util.Objects;
  * This class used to disable the user.
  */
 @Action(name = "DISABLE_USER", title = "Disable User", path = "ACRONIS")
+@PromptSet(name = "DISABLE_USER", title = "Disable User")
 public class DisableUserAction extends AbstractAcronisAction {
     @ActionInputParam(name = "UC4RB_AC_USER_ID", label = "User ID", required = true, tooltip = "Provide the User Id.E"
             + ".g: 9b0df710-fcef-4c09-9c95-831764dc2c99")

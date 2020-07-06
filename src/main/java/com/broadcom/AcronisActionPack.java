@@ -5,8 +5,8 @@ import com.broadcom.apdk.api.annotations.ActionPack;
 
 @ActionPack(name = "PCK.AUTOMIC_ACRONIS", title = "Acronis action pack", category = "Acronis Actions", company = "Broadcom", homepage = "http://www.broadcom.com")
 public class AcronisActionPack extends BaseActionPack {
-
-	public AcronisActionPack() {
+	
+	AcronisActionPack() {
 		setDocumentation("About the Package\r\n" + 
 				"================================\r\n" + 
 				"Acronis Cyber Cloud is a cloud platform that enables service providers, re-sellers, and distributors to deliver data protection services to their partners and customers.\r\n" + 

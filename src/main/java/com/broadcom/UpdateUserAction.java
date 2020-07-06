@@ -3,6 +3,7 @@ package com.broadcom;
 import com.broadcom.apdk.api.annotations.Action;
 import com.broadcom.apdk.api.annotations.ActionInputParam;
 import com.broadcom.apdk.api.annotations.ActionOutputParam;
+import com.broadcom.apdk.api.annotations.PromptSet;
 import com.broadcom.constants.Constants;
 import com.broadcom.exceptions.AcronisException;
 import com.broadcom.util.CommonUtil;
@@ -22,6 +23,7 @@ import java.util.regex.Pattern;
  * This action class used to update the existing user contact info.
  */
 @Action(name = "UPDATE_USER", title = "Update User Contact Info", path = "ACRONIS")
+@PromptSet(name = "UPDATE_USER", title = "Update User Contact Info")
 public class UpdateUserAction extends AbstractAcronisAction {
 
     @ActionInputParam(name = "UC4RB_AC_USER_ID", required = true, tooltip = "Provide the User ID. E.g: "

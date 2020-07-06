@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.broadcom.apdk.api.annotations.Action;
 import com.broadcom.apdk.api.annotations.ActionInputParam;
 import com.broadcom.apdk.api.annotations.ActionOutputParam;
+import com.broadcom.apdk.api.annotations.PromptSet;
 import com.broadcom.constants.Constants;
 import com.broadcom.constants.Constants.Kind;
 import com.broadcom.exceptions.AcronisException;
@@ -24,6 +25,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 @Action(name = "CREATE_TENANT", title = "Create Tenant", path = "ACRONIS")
+@PromptSet(name = "CREATE_TENANT", title = "Create Tenant")
 public class CreateTenantAction extends AbstractAcronisAction {
 
 	@ActionInputParam(label = "Tenant Name", name = "UC4RB_AC_TENANT_NAME", tooltip = "Provide the name of the tenant to be created. E.g. New Tenant", required = true)
