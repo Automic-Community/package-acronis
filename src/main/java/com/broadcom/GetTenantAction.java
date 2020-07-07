@@ -96,5 +96,36 @@ public class GetTenantAction extends AbstractAcronisAction {
 	protected String getActionName() {
 		return "Get Tenant";
 	}
+	
+	public GetTenantAction() {
+		setDocumentation("= Action name =\r\n" + 
+				"PCK.AUTOMIC_ACRONIS.PUB.ACTION.GET_TENANT\r\n" + 
+				"\r\n" + 
+				"= General description =\r\n" + 
+				"This action gets the details of a tenant.\r\n" + 
+				"\r\n" + 
+				"= Inputs =\r\n" + 
+				"* Tenant Id                : Provide the Id of the tenant. E.g. 6f2e420b-bd8c-4ade-b3bb-4942d7c89032\r\n" +
+				"\r\n" + 
+				"= Failure Conditions =\r\n" + 
+				" If the Tenent does not exists with the input Tenent Id\r\n" + 
+				"\r\n" + 
+				"= Return value =\r\n" + 
+				" UC4RB_AC_ENABLED	          : Status of Tenant.\r\n" + 
+				" UC4RB_AC_PARENT_TENANT_ID#  : Provide the parent id of the tenant to be created.\r\n" + 
+				" UC4RB_AC_TENANT_KIND#       : Provide the kind of tenant to be created.\r\n" + 
+				" UC4RB_AC_TENANT_VERSION#	  : Version of the tenant.\r\n" + 
+				" UC4RB_AC_TENANT_NAME# 	  : Provide the name of the tenant administrator.\r\n" + 
+				"\r\n" + 
+				"= Outputs =\r\n" + 
+				"* Return code is 0 in case of success.\r\n" + 
+				"* Return code is non-zero in case of failure.\r\n" + 
+				"\r\n" + 
+				"= Rollback =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Logging =\r\n" + 
+				"AE logs will be displayed in the AE report.");
+	}
 
 }

@@ -72,4 +72,34 @@ public class GetUserAction extends AbstractAcronisAction {
 	protected String getActionName() {
 		return "Get User";
 	}
+	
+	public GetUserAction() {
+		setDocumentation("= Action name =\r\n" + 
+				"PCK.AUTOMIC_ACRONIS.PUB.ACTION.GET_USER\r\n" + 
+				"\r\n" + 
+				"= General description =\r\n" + 
+				"This action get the user by userId.\r\n" + 
+				"\r\n" + 
+				"= Inputs =\r\n" + 
+				"* User Id*	             : Provide the user id to get the details. E.g. 2720cf58-d084-4b22-a284-4a4564fe1e4d\r\n" + 
+				"\r\n" + 
+				"= Failure Conditions =\r\n" + 
+				"If the user does not exists with the input User Id. \r\n" + 
+				"\r\n" +
+				"= Return value =\r\n" + 
+				" UC4RB_AC_TENANT_ID#      : Id of the newly created tenant.\r\n" + 
+				" UC4RB_AC_USER_VERSION#   : Version of the newly created tenant.\r\n" + 
+				" UC4RB_AC_ACTIVATED#	   : A variable containing the user status.\r\n" + 
+				" UC4RB_AC_ENABLED#	       : A variable containing the user status..\r\n" + 
+				"\r\n" + 
+				"= Outputs =\r\n" + 
+				"* Return code is 0 in case of success.\r\n" + 
+				"* Return code is non-zero in case of failure.\r\n" + 
+				"\r\n" + 
+				"= Rollback =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Logging =\r\n" + 
+				"AE logs will be displayed in the AE report.");
+	}
 }

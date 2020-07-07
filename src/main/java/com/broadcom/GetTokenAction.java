@@ -39,4 +39,31 @@ public class GetTokenAction extends APIClientAuthAction {
 	protected String getActionName() {
 		return "Get Token";
 	}
+	
+	public GetTokenAction() {
+		setDocumentation("= Action name =\r\n" + 
+				"PCK.AUTOMIC_ACRONIS.PUB.ACTION.GET_TOKEN\r\n" + 
+				"\r\n" + 
+				"= General description =\r\n" + 
+				"This action will get the token using client id and secret.\r\n" + 
+				"\r\n" + 
+				"= Inputs =\r\n" + 
+				"* (none)\r\n" + 
+				"\r\n" + 
+				"= Failure Conditions =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" +
+				"= Return value =\r\n" + 
+				"* UC4RB_AC_ACCESS_TOKEN#      : A variable containing the access token.\r\n" + 
+				"\r\n" + 
+				"= Outputs =\r\n" + 
+				"* Return code is 0 in case of success.\r\n" + 
+				"* Return code is non-zero in case of failure.\r\n" + 
+				"\r\n" + 
+				"= Rollback =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Logging =\r\n" + 
+				"AE logs will be displayed in the AE report.");
+	}
 }

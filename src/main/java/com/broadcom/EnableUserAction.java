@@ -117,5 +117,33 @@ public class EnableUserAction extends AbstractAcronisAction {
     protected String getActionName() {
         return "Enable User";
     }
+	
+	public EnableUserAction() {
+		setDocumentation("= Action name =\r\n" + 
+				"PCK.AUTOMIC_ACRONIS.PUB.ACTION.ENABLE_USER\r\n" + 
+				"\r\n" + 
+				"= General description =\r\n" + 
+				"This action used to enable the user.\r\n" + 
+				"\r\n" + 
+				"= Inputs =\r\n" + 
+				"* User Id                : Provide the Id of the User. E.g. 6f2e420b-bd8c-4ade-b3bb-4942d7c89032\r\n" +
+				"  Current Version        : Provide the version for the user that you want to update. E.g. 2\r\n" +
+				"\r\n" + 
+				"= Failure Conditions =\r\n" + 
+				" If the User does not exists with the input User Id\r\n" + 
+				"\r\n" + 
+				"= Return value =\r\n" + 
+				" UC4RB_AC_NEW_USER_VERSION#  : Version of the User.\r\n" + 
+				"\r\n" + 
+				"= Outputs =\r\n" + 
+				"* Return code is 0 in case of success.\r\n" + 
+				"* Return code is non-zero in case of failure.\r\n" + 
+				"\r\n" + 
+				"= Rollback =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Logging =\r\n" + 
+				"AE logs will be displayed in the AE report.");
+	}
 
 }
