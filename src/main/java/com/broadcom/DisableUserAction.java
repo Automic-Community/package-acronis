@@ -24,98 +24,127 @@ import java.util.Objects;
 @Action(name = "DISABLE_USER", title = "Disable User", path = "ACRONIS")
 @PromptSet(name = "DISABLE_USER", title = "Disable User")
 public class DisableUserAction extends AbstractAcronisAction {
-    @ActionInputParam(name = "UC4RB_AC_USER_ID", label = "User ID", required = true, tooltip = "Provide the User Id.E"
-            + ".g: 9b0df710-fcef-4c09-9c95-831764dc2c99")
-    private String userId;
+	@ActionInputParam(name = "UC4RB_AC_USER_ID", label = "User ID", required = true, tooltip = "Provide the User Id. E.g. 9b0df710-fcef-4c09-9c95-831764dc2c99")
+	private String userId;
 
-    @ActionInputParam(name = "UC4RB_AC_USER_VERSION", tooltip = "Provide the user current version. E.g: 2", label =
-            "Current Version")
-    private String oldVersion;
+	@ActionInputParam(name = "UC4RB_AC_USER_VERSION", tooltip = "Provide the user current version. E.g. 2", label = "Current Version")
+	private String oldVersion;
 
-    @ActionOutputParam(name = "UC4RB_AC_NEW_USER_VERSION")
-    private long newVersion;
+	@ActionOutputParam(name = "UC4RB_AC_NEW_USER_VERSION")
+	private long newVersion;
 
-    private boolean enabled;
+	private boolean enabled;
 
-    @Override
-    protected void executeSpecific() throws AcronisException {
-        ClientResponse response = null;
-        Map<String, Object> request = createRequest();
-        if (enabled) {
-            try {
-                WebResource webResource = client.resource(url);
-                webResource = webResource.path(Constants.API).path(version).path(Constants.USERS).path(userId);
-                ConsoleWriter.writeln("Calling url: " + webResource.getURI());
-                response = webResource.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, request);
-                prepareOutput(CommonUtil.jsonObjectResponse(response.getEntityInputStream()));
-            } catch (Exception e) {
-                String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);
-                LOGGER.warning(e.getMessage());
-                throw new AcronisException(msg, e);
-            }
-        }
-    }
+	@Override
+	protected void executeSpecific() throws AcronisException {
+		ClientResponse response = null;
+		Map<String, Object> request = createRequest();
+		if (enabled) {
+			try {
+				WebResource webResource = client.resource(url);
+				webResource = webResource.path(Constants.API).path(version).path(Constants.USERS).path(userId);
+				ConsoleWriter.writeln("Calling url: " + webResource.getURI());
+				response = webResource.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, request);
+				prepareOutput(CommonUtil.jsonObjectResponse(response.getEntityInputStream()));
+			} catch (Exception e) {
+				String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);
+				LOGGER.warning(e.getMessage());
+				throw new AcronisException(msg, e);
+			}
+		}
+	}
 
-    /**
-     * Calls the get tenant API to get the current version only if user doesn't
-     * provide the current version.
-     *
-     * @throws AcronisException
-     */
-    private void getCurrentVersion() throws AcronisException {
-        try {
-            WebResource webResource = client.resource(url);
-            webResource = webResource.path(Constants.API).path(version).path(Constants.USERS).path(userId);
-            LOGGER.info("Calling url: " + webResource.getURI());
-            ClientResponse clientResponse = webResource.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-            JsonObject jsonResponseObject = CommonUtil.jsonObjectResponse(clientResponse.getEntityInputStream());
-            Long responseVersion = jsonResponseObject.getJsonNumber(Constants.VERSION).longValue();
-            if (Objects.nonNull(oldVersion) && !oldVersion.equals(responseVersion)) {
-                throw new AcronisException(Constants.TENANT_VERSION_MISMATCH);
-            }
+	/**
+	 * Calls the get tenant API to get the current version only if user doesn't
+	 * provide the current version.
+	 *
+	 * @throws AcronisException
+	 */
+	private void getCurrentVersion() throws AcronisException {
+		try {
+			WebResource webResource = client.resource(url);
+			webResource = webResource.path(Constants.API).path(version).path(Constants.USERS).path(userId);
+			LOGGER.info("Calling url: " + webResource.getURI());
+			ClientResponse clientResponse = webResource.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+			JsonObject jsonResponseObject = CommonUtil.jsonObjectResponse(clientResponse.getEntityInputStream());
+			Long responseVersion = jsonResponseObject.getJsonNumber(Constants.VERSION).longValue();
+			if (Objects.nonNull(oldVersion) && !oldVersion.equals(responseVersion)) {
+				throw new AcronisException(Constants.TENANT_VERSION_MISMATCH);
+			}
 
-            newVersion = responseVersion;
-            enabled = jsonResponseObject.getBoolean("enabled");
-        } catch (Exception e) {
-            String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);
-            LOGGER.warning(e.getMessage());
-            throw new AcronisException(msg, e);
-        }
-    }
+			newVersion = responseVersion;
+			enabled = jsonResponseObject.getBoolean("enabled");
+		} catch (Exception e) {
+			String msg = String.format(Constants.REQ_ERROR_MESSAGE, url);
+			LOGGER.warning(e.getMessage());
+			throw new AcronisException(msg, e);
+		}
+	}
 
-    private void prepareOutput(JsonObject jsonObjectResponse) {
-        // write response to console
-        ConsoleWriter.writeln("Response: " + CommonUtil.jsonPrettyPrinting(jsonObjectResponse));
-        newVersion = jsonObjectResponse.getJsonNumber(Constants.VERSION).longValue();
-    }
+	private void prepareOutput(JsonObject jsonObjectResponse) {
+		// write response to console
+		ConsoleWriter.writeln("Response: " + CommonUtil.jsonPrettyPrinting(jsonObjectResponse));
+		newVersion = jsonObjectResponse.getJsonNumber(Constants.VERSION).longValue();
+	}
 
-    /**
-     * Validates the inputs and creates the request
-     *
-     * @return map with string keys and object type values
-     * @throws AcronisException
-     */
-    private Map<String, Object> createRequest() throws AcronisException {
+	/**
+	 * Validates the inputs and creates the request
+	 *
+	 * @return map with string keys and object type values
+	 * @throws AcronisException
+	 */
+	private Map<String, Object> createRequest() throws AcronisException {
 
-        if (StringUtils.isEmpty(userId)) {
-            String msg = String.format(Constants.ISEMPTY, "User Id");
-            throw new AcronisException(msg);
-        }
+		if (StringUtils.isEmpty(userId)) {
+			String msg = String.format(Constants.ISEMPTY, "User Id");
+			throw new AcronisException(msg);
+		}
 
-        if (StringUtils.isNotBlank(oldVersion) && !StringUtils.isNumeric(oldVersion)) {
-            String msg = String.format(Constants.INVALID_INPUT_PARAMETER, "Current Version", oldVersion);
-            throw new AcronisException(msg);
-        }
-        getCurrentVersion();
-        Map<String, Object> request = new HashMap<>();
-        request.put("version", this.newVersion);
-        request.put("enabled", false);
-        return request;
-    }
+		if (StringUtils.isNotBlank(oldVersion) && !StringUtils.isNumeric(oldVersion)) {
+			String msg = String.format(Constants.INVALID_INPUT_PARAMETER, "Current Version", oldVersion);
+			throw new AcronisException(msg);
+		}
+		getCurrentVersion();
+		Map<String, Object> request = new HashMap<>();
+		request.put("version", this.newVersion);
+		request.put("enabled", false);
+		return request;
+	}
 
-    @Override
-    protected String getActionName() {
-        return "Disable User";
-    }
+	@Override
+	protected String getActionName() {
+		return "Disable User";
+	}
+	
+	public DisableUserAction() {
+		setDocumentation("= Action name =\r\n" + 
+				"PCK.AUTOMIC_ACRONIS.PUB.ACTION.DISABLE_USER\r\n" + 
+				"\r\n" + 
+				"= General description =\r\n" + 
+				"This action disables a user in Acronis.\r\n" + 
+				"\r\n" + 
+				"= Inputs =\r\n" + 
+				"* User Id*	      	        : Provide the User Id. E.g. 9b0df710-fcef-4c09-9c95-831764dc2c99\r\n" + 
+				"* Current Version   		: Provide the user current version. E.g. 2\r\n" + 
+				"\r\n" + 
+				"= Failure Conditions =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Behaviour =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Return value =\r\n" + 
+				"UC4RB_AC_NEW_USER_VERSION#   : New version of the user\r\n" + 
+				"\r\n" + 
+				"= Outputs =\r\n" + 
+				"* Return code is 0 in case of success.\r\n" + 
+				"* Return code is non-zero in case of failure.\r\n" + 
+				"\r\n" + 
+				"= Rollback =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Logging =\r\n" + 
+				"AE logs will be displayed in the AE report.");
+	}
 
 }

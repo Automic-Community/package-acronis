@@ -31,10 +31,10 @@ import com.sun.jersey.api.client.WebResource;
 @PromptSet(name = "DISABLE_TENANT", title = "Disable Tenant")
 public class DisableTenantAction extends AbstractAcronisAction {
 
-	@ActionInputParam(required = true, name = "UC4RB_AC_TENANT_ID", label = "Tenant Id", tooltip = "Provide the tenant id that you want to update. E.g. 9b81bf31-0c04-4f6e-8ebe-56900a3f9e76")
+	@ActionInputParam(required = true, name = "UC4RB_AC_TENANT_ID", label = "Tenant Id", tooltip = "Provide the tenant id that you want to disable. E.g. 9b81bf31-0c04-4f6e-8ebe-56900a3f9e76")
 	String tenantId;
 
-	@ActionInputParam(name = "UC4RB_AC_TENANT_VERSION", label = "Current Version", tooltip = "Version should be same as the tenant that you want to update. E.g. 1")
+	@ActionInputParam(name = "UC4RB_AC_TENANT_VERSION", label = "Current Version", tooltip = "Version should be same as the tenant that you want to disable. E.g. 1")
 	Long currentVersion;
 
 	@ActionOutputParam(name = "UC4RB_AC_NEW_VERSION")
@@ -119,6 +119,37 @@ public class DisableTenantAction extends AbstractAcronisAction {
 	@Override
 	protected String getActionName() {
 		return "Disable Tenant";
+	}
+	
+	public DisableTenantAction() {
+		setDocumentation("= Action name =\r\n" + 
+				"PCK.AUTOMIC_ACRONIS.PUB.ACTION.DISABLE_TENANT\r\n" + 
+				"\r\n" + 
+				"= General description =\r\n" + 
+				"This action disables a tenant in Acronis.\r\n" + 
+				"\r\n" + 
+				"= Inputs =\r\n" + 
+				"* Tenant Id*	      	        : Provide the tenant id that you want to disable. E.g. 9b81bf31-0c04-4f6e-8ebe-56900a3f9e76\r\n" + 
+				"* Current Version   			: Version should be same as the tenant that you want to disable. E.g. 1\r\n" + 
+				"\r\n" + 
+				"= Failure Conditions =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Behaviour =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Return value =\r\n" + 
+				"UC4RB_AC_NEW_VERSION#   : New version of tenant\r\n" + 
+				"\r\n" + 
+				"= Outputs =\r\n" + 
+				"* Return code is 0 in case of success.\r\n" + 
+				"* Return code is non-zero in case of failure.\r\n" + 
+				"\r\n" + 
+				"= Rollback =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Logging =\r\n" + 
+				"AE logs will be displayed in the AE report.");
 	}
 
 }

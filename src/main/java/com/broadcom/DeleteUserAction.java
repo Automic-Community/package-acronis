@@ -95,4 +95,35 @@ public class DeleteUserAction extends AbstractAcronisAction {
 	protected String getActionName() {
 		return "Delete User";
 	}
+	
+	public DeleteUserAction() {
+		setDocumentation("= Action name =\r\n" + 
+				"PCK.AUTOMIC_ACRONIS.PUB.ACTION.DELETE_USER\r\n" + 
+				"\r\n" + 
+				"= General description =\r\n" + 
+				"This action deletes a user from Acronis.\r\n" + 
+				"\r\n" + 
+				"= Inputs =\r\n" + 
+				"* User Id*	      	        : Provide the id of the user to be deleted. E.g. 88b24185-9b91-43d1-aa2c-b94665adcade8\r\n" + 
+				"* Fail if non-existing		: Specifies if the Job should fail in case of non-existing user E.g. true/false\r\n" + 
+				"\r\n" + 
+				"= Failure Conditions =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Behaviour =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Return value =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Outputs =\r\n" + 
+				"* Return code is 0 in case of success.\r\n" + 
+				"* Return code is non-zero in case of failure.\r\n" + 
+				"\r\n" + 
+				"= Rollback =\r\n" + 
+				"(none)\r\n" + 
+				"\r\n" + 
+				"= Logging =\r\n" + 
+				"AE logs will be displayed in the AE report.");
+	}
 }
