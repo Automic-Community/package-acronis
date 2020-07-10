@@ -92,10 +92,7 @@ public class AcronisActionPack extends BaseActionPack {
 				"\r\n" + 
 				"* Action name: PCK.AUTOMIC_ACRONIS.PUB.ACTION.ACTIVATE_USER\r\n" + 
 				"* Action Description: This action will activate a user.\r\n" + 
-				"\r\n" + 
-				"* Action name: PCK.AUTOMIC_ACRONIS.PUB.ACTION.UPDATE_ USER_PASSWORD\r\n" + 
-				"* Action Description: This action used to update user password.\r\n" + 
-				"\r\n" + 
+				"\r\n" +
 				"* Action name: PCK.AUTOMIC_ACRONIS.PUB.ACTION.SWITCH_CUSTOMER_TO_PRODUCTION\r\n" + 
 				"* Action Description: This action will switch customer from trial to production mode .\r\n" + 
 				"\r\n" + 
