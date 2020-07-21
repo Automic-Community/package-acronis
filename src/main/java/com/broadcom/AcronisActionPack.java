@@ -38,7 +38,7 @@ public class AcronisActionPack extends BaseActionPack {
 				"\r\n" + 
 				"* Username 						: Username to access\r\n" + 
 				"* Password						: Password for username\r\n" + 
-				"or\r\n" + 
+				"Note: GET_TOKEN and ACTIVATE_USER action needs Client Id and Client Secret for the authentication instead of Username and Password. CREATE_CLIENT action can be used to get the client id and client secret.\r\n" + 
 				"* Client ID            		    : Client ID \r\n" + 
 				"* Client Secret                 : Client Secret \r\n" + 
 				"	\r\n" + 
@@ -72,6 +72,9 @@ public class AcronisActionPack extends BaseActionPack {
 				"* Action name: PCK.AUTOMIC_ACRONIS.PUB.ACTION.DELETE_USER\r\n" + 
 				"* Action Description: This action will delete a user.\r\n" + 
 				"\r\n" + 
+				"* Action name: PCK.AUTOMIC_ACRONIS.PUB.ACTION.GET_USER_SELF\r\n" + 
+				"* Action Description: This action will get the loggedin user details from Acronis.\r\n" +
+				"\r\n" + 
 				"* Action name: PCK.AUTOMIC_ACRONIS.PUB.ACTION.GET_USER\r\n" + 
 				"* Action Description: This action will get the user details from Acronis.\r\n" + 
 				"\r\n" + 
@@ -81,8 +84,8 @@ public class AcronisActionPack extends BaseActionPack {
 				"* Action name: PCK.AUTOMIC_ACRONIS.PUB.ACTION.CREATE_USER\r\n" + 
 				"* Action Description: This action used to create a User.\r\n" + 
 				"\r\n" + 
-				"* Action name: PCK.AUTOMIC_ACRONIS.PUB.ACTION.UPDATE_USER_CONTACT_INFO\r\n" + 
-				"* Action Description: This action used to update user contact info.\r\n" + 
+				"* Action name: PCK.AUTOMIC_ACRONIS.PUB.ACTION.UPDATE_USER\r\n" + 
+				"* Action Description: This action used to update a user.\r\n" + 
 				"\r\n" + 
 				"* Action name: PCK.AUTOMIC_ACRONIS.PUB.ACTION.ENABLE_USER\r\n" + 
 				"* Action Description: This action used to enable the user.\r\n" + 
