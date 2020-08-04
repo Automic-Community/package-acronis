@@ -108,7 +108,7 @@ public class AcronisActionPack extends BaseActionPack {
 				"=================\r\n" + 
 				"\r\n" + 
 				"jersey-client                  version 1.19.4  CDDL - Version 1.1             https://jersey.java.net/license.html\r\n" + 
-				"javax.json(org.glassfish)      version 1.0.4   CDDL - Version 1.1             https://jsonp.java.net/license.html\r\n" + 
+				"javax.json(org.glassfish)      version 1.1.4   CDDL - Version 1.1             https://jsonp.java.net/license.html\r\n" + 
 				"jersey-core                    version 1.19.4  CDDL - Version 1.1             https://jersey.java.net/license.html\r\n" + 
 				"commons-lang3                  version 3.8.1   APACHE LICENSE, VERSION 2.0    http://commons.apache.org/proper/commons-lang/download_lang.cgi\r\n" + 
 				"commons-cli                    version 1.4     APACHE LICENSE, VERSION 2.0    http://commons.apache.org/proper/commons-cli/download_cli.cgi\r\n" + 
