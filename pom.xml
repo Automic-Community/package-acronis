@@ -121,6 +121,8 @@
 							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 							<manifestEntries>
 								<Main-Class>com.broadcom.apdk.cli.CLI</Main-Class>
+                                <Build-Number>${build_number}</Build-Number>
+								<Revision-ID>${revision_id}</Revision-ID>
 							</manifestEntries>
 						</transformer>
 						<transformer
