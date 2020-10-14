@@ -4,7 +4,7 @@ pipeline {
     agent { label 'integration' }
     parameters {
         string(defaultValue: "PCK.AUTOMIC_ACRONIS", description: 'Package Name', name: 'package_name')
-        string(defaultValue: "Package.ACRONIS", description: 'lifecycleentity_name', name: 'lifecycleentity_name')
+        string(defaultValue: "Package.Acronis", description: 'lifecycleentity_name', name: 'lifecycleentity_name')
         string(defaultValue: "package.acronis", description: 'le_name_lowercase', name: 'le_name_lowercase')
         string(defaultValue: "pck_acronis", description: 'le_technical_name', name: 'le_technical_name')
         string(defaultValue: "pck.automic_acronis", description: 'component_name', name: 'component_name')
