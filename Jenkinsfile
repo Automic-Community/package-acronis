@@ -56,7 +56,6 @@ pipeline {
 				//rename zip
 				String output_filename = powershell label: 'Rename Zip', returnStdout: true, script: '''
 				$version = "${env:version_number}".replace(".","_")
-				Write-Host "Lifecycle Entity name: ${env:lifecycleentity_name}"
 				$output_filename = "${env:lifecycleentity_name}_${env:package_name}_$version+build.${env:BUILD_NUMBER}.zip"
 				rename-item -Path ${env:build_dir}\\${env:package_name}-${env:version_number}.zip -newName $output_filename
 				Write-Host "output filename $output_filename"
