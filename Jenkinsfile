@@ -52,7 +52,7 @@ pipeline {
 					)
 					mkdir "%build_dir%"
 					echo "Building %package_name% zip file"
-					copy target\\*.zip %build_dir%'''
+					copy target\\%package_name%-%version_number%.zip %build_dir%'''
 					
 					//rename zip
 					String output_filename = powershell label: 'Rename Zip', returnStdout: true, script: '''
