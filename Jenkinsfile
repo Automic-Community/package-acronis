@@ -50,7 +50,7 @@ pipeline {
 					rmdir /S/Q %build_dir%
 				)
 				mkdir "%build_dir%"
-				echo "Building %pluginname% zip file"
+				echo "Building %package_name% zip file"
 				copy target\\*.zip %build_dir%
 				
 				//rename zip
