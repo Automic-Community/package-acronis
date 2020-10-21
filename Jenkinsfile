@@ -37,7 +37,6 @@ pipeline {
 					Exit 1
 					} '''
 					
-					
 					//building tool
 					withMaven(mavenSettingsConfig: env.mvn_settings_file_key, options: [artifactsPublisher(disabled: true)]) {
 							bat label: 'Building Tool', script: 'pushd "%WORKSPACE%/" && mvn clean deploy -Dplugin.version=%version_number% -Dbuild.number=%BUILD_NUMBER% -Dbuild.revision=%GIT_COMMIT% -DskipTests -gs settings.xml'
