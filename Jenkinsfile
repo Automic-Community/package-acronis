@@ -11,6 +11,8 @@ pipeline {
       	string(defaultValue: "packages/$params.package_name", description: 'repository name', name: 'repo_name')
         string(defaultValue: "pck.automic_acronis.test", description: 'Pack Test Name', name: 'pck_test_name')
         string(defaultValue: "ee1f0b7a-ab60-42f8-808c-43e676cea993", description: 'Maven settings file key', name: 'mvn_settings_file_key')
+		string(name: 'project_name', defaultValue: "ESD-Automic-PCK_FILE_SYSTEM_OPERATIONS", description: 'Project name at the BlackDuck Server')
+        booleanParam(name: 'delete_logs', defaultValue: true, description: 'Whether to delete the logs from Detect utility run or not')
     }
     stages {
         stage('Build ActionPack') {
@@ -66,22 +68,9 @@ pipeline {
 					//Archiving Artifact to Jenkins
 					utilities.archiveArtifact(env.archive_artifact)
 					
-					// Deploy to Nexus and Close Repo
-					withCredentials([usernamePassword(credentialsId: 'spartan_nexus_user', passwordVariable: 'deployment_password', usernameVariable: 'deployment_user')]) {
-						String nexus_repository_id = powershell label: 'Deploy to Nexus', returnStdout: true, script: '''
-						# the staginrepository.id is stored in the nexus-staging folder -> we get it from there 
-						$repositoryID=(convertfrom-stringdata (get-content $env:WORKSPACE\\target\\nexus-staging\\staging\\*.properties | Out-String)).\'stagingRepository.id\'
-						if (($LASTEXITCODE > 0) -or ([string]::IsNullOrEmpty($repositoryID))) {
-							echo "Error: Staging repository id could not be found."
-						exit 1
-						} 
-						Write-Host "Nexus staging Repository ID: $repositoryID"
-						return $repositoryID'''
-						env.nexus_repository_id=nexus_repository_id.trim()
-				
-						utilities.closeNexusRepo(env.nexus_repository_id, env.toolsDir, env.output_filename, env.deployment_user, env.deployment_password)
-					}
-					utilities.echoCLMReport(env.toolsDir, env.BUILD_ID, env.nexus_repository_id)
+					//Runnig BlackDuck Scan
+					utilities.blackDuckScan(env.project_name, env.delete_logs)
+					
 				}
             }              
         }
