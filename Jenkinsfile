@@ -11,9 +11,10 @@ pipeline {
       	string(defaultValue: "packages/$params.package_name", description: 'repository name', name: 'repo_name')
         string(defaultValue: "pck.automic_acronis.test", description: 'Pack Test Name', name: 'pck_test_name')
         string(defaultValue: "ee1f0b7a-ab60-42f8-808c-43e676cea993", description: 'Maven settings file key', name: 'mvn_settings_file_key')
-		string(name: 'project_name', defaultValue: "", description: 'Project name at the BlackDuck Server')
-        booleanParam(name: 'delete_logs', defaultValue: true, description: 'Whether to delete the logs from Detect utility run or not')
+	string(name: 'project_name', defaultValue: "", description: 'Project name at the BlackDuck Server')
 	booleanParam(name: 'black_duck_scan', defaultValue: false, description: 'Whether to run the black duck scan or not')
+        booleanParam(name: 'delete_logs', defaultValue: true, description: 'Whether to delete the logs from Detect utility run or not')
+	
     }
     stages {
         stage('Build ActionPack') {
