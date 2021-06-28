@@ -70,7 +70,7 @@ pipeline {
 					utilities.archiveArtifact(env.archive_artifact)
 					
 					//Runnig BlackDuck Scan
-					if(env.black_duck_scan){
+					if(env.black_duck_scan == true){
 						utilities.blackDuckScan(env.project_name, env.delete_logs)
 					}
 					
