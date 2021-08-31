@@ -59,12 +59,12 @@ The management portal enables administrators to:
 
 ###### Package/Action Documentation
 
-Please refer to the link for [package documentation](Package.Acronis_PCK.AUTOMIC_ACRONIS_1_0_0+build.45.zip/DOCUMENTATION/PCK.AUTOMIC_ACRONIS.PUB.DOC.xml)
+Please refer to the link for [package documentation](distribution/Package.Acronis_PCK.AUTOMIC_ACRONIS_1_0_0+build.45.zip/DOCUMENTATION/PCK.AUTOMIC_ACRONIS.PUB.DOC.xml)
 
 
 ###### Third party licenses:
 
-The third-party library and license document reference.[Third party licenses](Package.Acronis_PCK.AUTOMIC_ACRONIS_1_0_0+build.45.zip/DOCUMENTATION/PCK.AUTOMIC_ACRONIS.PUB.LICENSES.xml)
+The third-party library and license document reference.[Third party licenses](distribution/Package.Acronis_PCK.AUTOMIC_ACRONIS_1_0_0+build.45.zip/DOCUMENTATION/PCK.AUTOMIC_ACRONIS.PUB.LICENSES.xml)
 
 ###### Useful References
 
