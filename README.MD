@@ -55,17 +55,6 @@ The management portal enables administrators to:
 4. After executing the step 3 it will create zip under the target folder. Upload the PCK.AUTOMIC_ACRONIS-1.0.0.zip 
    into the Automation Engine by going to the Administration tab and clicking the Packs section and In the Packs section clicking the Install From File and uploading the zip file there.
 
-
-
-###### Package/Action Documentation
-
-Please refer to the link for [package documentation](distribution/Package.Acronis_PCK.AUTOMIC_ACRONIS_1_0_0+build.45.zip/DOCUMENTATION/PCK.AUTOMIC_ACRONIS.PUB.DOC.xml)
-
-
-###### Third party licenses:
-
-The third-party library and license document reference.[Third party licenses](distribution/Package.Acronis_PCK.AUTOMIC_ACRONIS_1_0_0+build.45.zip/DOCUMENTATION/PCK.AUTOMIC_ACRONIS.PUB.LICENSES.xml)
-
 ###### Useful References
 
 1. [About Packs and Plug-ins](https://docs.automic.com/documentation/webhelp/english/AA/12.3/DOCU/12.3/Automic%20Automation%20Guides/help.htm#PluginManager/PM_AboutPacksandPlugins.htm?Highlight=Action%20packs)
